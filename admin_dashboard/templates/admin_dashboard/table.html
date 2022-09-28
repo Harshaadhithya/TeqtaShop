@@ -1,0 +1,369 @@
+{% extends 'admin_dashboard/admin_base.html' %}
+{% load static %}
+
+  
+{% block style_reference %}
+  <!-- CSS Libraries -->
+  <link rel="stylesheet" href=" {% static 'node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/datatables.net-select-bs4/css/select.bootstrap4.min.css' %} ">
+{% endblock %}
+ 
+<style>td{
+  vertical-align:middle;
+}
+.table td{
+  vertical-align:middle !important;
+}
+ 
+</style>
+
+
+      
+      
+
+      <!-- Main Content -->
+    
+        {% block content %}
+        <section class="section">
+          <div class="section-header">
+            {% if page %}
+            <h1>{{page}}</h1>
+            {% else %}
+            <h1>DataTables</h1>
+            {% endif %}
+            <div class="section-header-breadcrumb">
+              <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+              <div class="breadcrumb-item"><a href="#">Modules</a></div>
+              <div class="breadcrumb-item">DataTables</div>
+            </div>
+          </div>
+
+          <div class="section-body">
+            {% comment %} <h2 class="section-title">DataTables</h2>
+            <p class="section-lead">
+              We use 'DataTables' made by @SpryMedia. You can check the full documentation <a href="https://datatables.net/">here</a>.
+            </p> {% endcomment %}
+
+            <!-- <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Basic DataTables</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-striped" id="table-1">
+                        <thead>
+                          <tr>
+                            <th class="text-center">
+                              #
+                            </th>
+                            <th></th>
+                            <th>Product</th>
+                            <th>Progress</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              1
+                            </td>
+                            <td>Create a mobile app</td>
+                            <td class="align-middle">
+                              <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
+                                <div class="progress-bar bg-success" data-width="100%"></div>
+                              </div>
+                            </td>
+                            <td>
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-5.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Wildan Ahdian">
+                            </td>
+                            <td>2018-01-20</td>
+                            <td><div class="badge badge-success">Completed</div></td>
+                            <td><a href="#" class="btn btn-secondary">Detail</a></td>
+                          </tr>
+                          <tr>
+                            <td>
+                              2
+                            </td>
+                            <td>Redesign homepage</td>
+                            <td class="align-middle">
+                              <div class="progress" data-height="4" data-toggle="tooltip" title="0%">
+                                <div class="progress-bar" data-width="0"></div>
+                              </div>
+                            </td>
+                            <td>
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-1.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Nur Alpiana">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-3.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Hariono Yusup">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-4.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Bagus Dwi Cahya">
+                            </td>
+                            <td>2018-04-10</td>
+                            <td><div class="badge badge-info">Todo</div></td>
+                            <td><a href="#" class="btn btn-secondary">Detail</a></td>
+                          </tr>
+                          <tr>
+                            <td>
+                              3
+                            </td>
+                            <td>Backup database</td>
+                            <td class="align-middle">
+                              <div class="progress" data-height="4" data-toggle="tooltip" title="70%">
+                                <div class="progress-bar bg-warning" data-width="70%"></div>
+                              </div>
+                            </td>
+                            <td>
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-1.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-2.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Hasan Basri">
+                            </td>
+                            <td>2018-01-29</td>
+                            <td><div class="badge badge-warning">In Progress</div></td>
+                            <td><a href="#" class="btn btn-secondary">Detail</a></td>
+                          </tr>
+                          <tr>
+                            <td>
+                              4
+                            </td>
+                            <td>Input data</td>
+                            <td class="align-middle">
+                              <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
+                                <div class="progress-bar bg-success" data-width="100%"></div>
+                              </div>
+                            </td>
+                            <td>
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-2.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-5.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Isnap Kiswandi">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-4.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Yudi Nawawi">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-1.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Khaerul Anwar">
+                            </td>
+                            <td>2018-01-16</td>
+                            <td><div class="badge badge-success">Completed</div></td>
+                            <td><a href="#" class="btn btn-secondary">Detail</a></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header d-flex justify-content-end">
+                    <!-- <h4>Advanced Table</h4> -->
+                    <div class="btn-group mr-3">
+                      <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Actions
+                      </button>
+                      <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 36px, 0px);">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Separated link</a>
+                      </div>
+                    </div>
+                    <a href="{% url 'add_product' %}" class="btn btn-icon icon-left btn-success"><i class="fas fa-plus"></i> Add Product</a>
+
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-striped" id="table-2">
+                        <thead>
+                          <tr>
+                            <th class="text-center">
+                              <div class="custom-checkbox custom-control">
+                                <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad" class="custom-control-input" id="checkbox-all">
+                                <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
+                              </div>
+                            </th>
+                            <th>Cover</th>
+                            <th>Product</th>
+                            <th>Variants</th>
+                            <th>Inventory</th>
+                            <th style="white-space: nowrap; ">Total Sales</th>
+                            <th>Status</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                            
+                            
+
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for product_dict in products_list %}
+                          <tr>
+                            
+                            <td class="align-middle">
+                              <div class="custom-checkbox custom-control m-auto">
+                                <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-{{product_dict.product.id}}">
+                                <label for="checkbox-{{product_dict.product.id}}" class="custom-control-label">&nbsp;</label>
+                              </div>
+                            </td>
+                            <td class="align-middle">
+                              <img alt="image" src="{{product_dict.product_cover.url}}" class="rounded" width="55" data-toggle="tooltip" title="{{product_dict.product.name}}">
+                            </td>
+                            <td  align="center" class="align-middle" ><p class="m-auto font-weight-bold" >{{product_dict.product.name}}</p></td>
+                            
+                            <td class="align-middle">
+                              
+                              <div class="row gutters-xs">
+                                {% for product_variant in product_dict.product_variants %}
+                                  {% if product_variant.variant != '' %}
+                                    <div class="col-auto">
+                                      <label class="colorinput">
+                                        {% if product_variant.variant.variant_type.name == 'color' %}
+                                        <span class="colorinput-color  variant_color_table" data-colorvalue="{{product_variant.variant.value}}" name="variant_color_table" style="width: 20px; height:20px;"></span>
+                                        {% else %}
+                                          {{product_variant.variant.variant_name}}
+                                        {% endif %}
+                                      </label>
+                                    </div>
+                                  {% endif %}
+                                {% endfor %}
+                              </div>
+
+                              <td class="align-middle">
+                                {% if product_dict.available_stock >= 20 %}
+                                <span class="text-success font-weight-bold" >{{product_dict.available_stock}} stock </span> in {{product_dict.no_of_variants}} variant{{product_dict.no_of_variants|pluralize:"s"}}
+                                {% elif product_dict.available_stock == 0 %}
+                                <span class="text-danger font-weight-bold" >{{product_dict.available_stock}} stock </span> in {{product_dict.no_of_variants}} variant{{product_dict.no_of_variants|pluralize:"s"}}
+                                {% else %}
+                                <span class="text-warning font-weight-bold" >{{product_dict.available_stock}} stock </span> in {{product_dict.no_of_variants}} variant{{product_dict.no_of_variants|pluralize:"s"}}
+                                {% endif %}
+                              </td>
+                            
+                          </td>
+                            <td class="align-middle">
+                              {{product_dict.total_sales}}
+                              <!-- <div class="progress m-auto" data-height="4" data-toggle="tooltip" title="100%">
+                                <div class="progress-bar bg-success" data-width="100%"></div>
+                              </div> -->
+                            </td>
+                            
+                            <td class="align-middle">
+                              {% if product_dict.product.status == 'Active' %}
+                                <div class="badge badge-success">Active</div>
+                              {% elif product_dict.product.status == 'Draft' %}
+                                <div class="badge badge-warning">Draft</div>
+                              {% else %}
+                                <div class="badge badge-info">{{product_dict.product.status}}</div>
+                              {% endif %}
+                            </td>
+                            
+                            <td class="align-middle">
+                              <p>{{product_dict.product.description|slice:80}}</p>
+                            </td>
+                            <td class="align-middle"><a href="#" class="btn btn-icon btn-info"><i class="far fa-edit"></i></a></td>
+
+                          </tr>
+                          {% endfor %}
+                          {% comment %} <tr>
+                            <td>
+                              <div class="custom-checkbox custom-control">
+                                <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-2">
+                                <label for="checkbox-2" class="custom-control-label">&nbsp;</label>
+                              </div>
+                            </td>
+                            <td>Redesign homepage</td>
+                            <td class="align-middle">
+                              <div class="progress" data-height="4" data-toggle="tooltip" title="0%">
+                                <div class="progress-bar" data-width="0"></div>
+                              </div>
+                            </td>
+                            <td>
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-1.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Nur Alpiana">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-3.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Hariono Yusup">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-4.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Bagus Dwi Cahya">
+                            </td>
+                            <td>2018-04-10</td>
+                            <td><div class="badge badge-info">Todo</div></td>
+                            <td><a href="#" class="btn btn-secondary">Detail</a></td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div class="custom-checkbox custom-control">
+                                <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-3">
+                                <label for="checkbox-3" class="custom-control-label">&nbsp;</label>
+                              </div>
+                            </td>
+                            <td>Backup database</td>
+                            <td class="align-middle">
+                              <div class="progress" data-height="4" data-toggle="tooltip" title="70%">
+                                <div class="progress-bar bg-warning" data-width="70%"></div>
+                              </div>
+                            </td>
+                            <td>
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-1.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-2.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Hasan Basri">
+                            </td>
+                            <td>2018-01-29</td>
+                            <td><div class="badge badge-warning">In Progress</div></td>
+                            <td><a href="#" class="btn btn-secondary">Detail</a></td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div class="custom-checkbox custom-control">
+                                <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-4">
+                                <label for="checkbox-4" class="custom-control-label">&nbsp;</label>
+                              </div>
+                            </td>
+                            <td>Input data</td>
+                            <td class="align-middle">
+                              <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
+                                <div class="progress-bar bg-success" data-width="100%"></div>
+                              </div>
+                            </td>
+                            <td>
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-2.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-5.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Isnap Kiswandi">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-4.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Yudi Nawawi">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-1.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Khaerul Anwar">
+                            </td>
+                            <td>2018-01-16</td>
+                            <td><div class="badge badge-success">Completed</div></td>
+                            <td><a href="#" class="btn btn-secondary">Detail</a></td>
+                          </tr> {% endcomment %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        {% endblock %}
+      
+
+
+
+
+  
+<!-- JS Libraies -->
+{% block script_reference %}
+<script>
+  let variant_colors_span=document.querySelectorAll('.variant_color_table');
+  console.log("hello",variant_colors_span)
+  for(let each_span of variant_colors_span){
+    each_span.style.background=each_span.dataset.colorvalue;
+  }
+
+</script>
+  <script src=" {% static 'node_modules/datatables/media/js/jquery.dataTables.min.js' %} "></script>
+  <script src=" {% static 'node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %} "></script>
+  <script src=" {% static 'node_modules/datatables.net-select-bs4/js/select.bootstrap4.min.js' %} "></script>
+
+{% endblock %}
+
+  
+  
+ <!-- Page Specific JS File -->
+ {% block specific_script_reference %}
+ <script src=" {% static 'assets/js/page/modules-datatables.js' %} "></script>
+
+ {% endblock %}
+
+

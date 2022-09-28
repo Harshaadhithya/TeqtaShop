@@ -13,6 +13,7 @@ class Product(models.Model):
         ('Draft','Draft')
     )
     name=models.CharField(max_length=255,unique=True)
+    description=models.TextField(null=True)
     status=models.CharField(max_length=100,choices=status_choices)
     general_price=models.DecimalField(max_digits=10,decimal_places=2)
     vendor=models.CharField(max_length=200,null=True,blank=True)
@@ -40,7 +41,7 @@ class Variant(models.Model):
         return f'{self.variant_type}-{self.variant_name}'
 
 class ProductVariant(models.Model):
-    product=models.ForeignKey(Product,on_delete=models.CASCADE)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE,related_name='product_variants')
     variant=models.ForeignKey(Variant,on_delete=models.SET_NULL,null=True,blank=True)
     total_stock=models.PositiveIntegerField(default=0,null=True)
     available_stock=models.PositiveIntegerField(default=0,null=True)
@@ -59,7 +60,7 @@ class ProductVariant(models.Model):
             return self.product.name
 
 class ProductImage(models.Model):
-    product_variant=models.ForeignKey(ProductVariant,on_delete=models.CASCADE)
+    product_variant=models.ForeignKey(ProductVariant,on_delete=models.CASCADE,related_name='variant_image')
     image=models.ImageField(null=False,blank=False,upload_to='product_images/')
 
     def __str__(self):
