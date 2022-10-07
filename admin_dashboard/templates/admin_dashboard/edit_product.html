@@ -1,0 +1,519 @@
+{% extends 'admin_dashboard/admin_base.html' %}
+{% load custom_tags %}
+{% load static %}
+
+  <!-- CSS Libraries -->
+  {% block style_reference %}
+
+  <link rel="stylesheet" href=" {% static 'node_modules/bootstrap-daterangepicker/daterangepicker.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/select2/dist/css/select2.min.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/selectric/public/selectric.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/dropzone/dist/min/dropzone.min.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/chocolat/dist/css/chocolat.css' %} ">
+  <style>
+    .cke{
+      width: 100% !important;
+    }
+    .django-ckeditor-widget{
+      width: 100% !important;
+    }
+    .my-hide{
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+    }
+    .card.my-hide{
+        margin-bottom: 0px;
+    }
+
+  </style>
+  {% endblock %}
+  
+
+
+      
+      
+      
+
+      <!-- Main Content -->
+      
+{% block content %}
+<section class="section">
+    <div class="section-header">
+        <h1>Edit Product</h1>
+        <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+        <div class="breadcrumb-item"><a href="#">Forms</a></div>
+        <div class="breadcrumb-item">Advanced Forms</div>
+        </div>
+    </div>
+
+    <div class="section-body">
+        <div class="container">
+            <div class="row justify-content-center">
+                <form method="POST" action="" enctype="multipart/form-data" id="form_container">
+                    {% if product_form.errors %}
+                        {% for field in product_form %}
+                            {% for error in field.errors %} 
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                    {% csrf_token %}
+                    {{product_form.media}}
+                    <div class="col-12 col-xxl-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Add New Product</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Product Name</label>
+                                    <!-- <input type="text" class="form-control"> -->
+                                    {{product_form.name}}
+                                    
+                                    <div class="invalid-feedback">
+                                        {{product_form.errors}}
+                                    </div>
+                                    
+                                  </div>
+                                  <label>Description</label>
+                                  <div class="form-group">
+                                    
+                                    <!-- <input type="text" class="form-control"> -->
+                                    {{product_form.description}}
+                                  </div>
+                                 
+                                  <div class="form-group">
+                                    <label>General Price</label>
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                          &#8377;
+                                        </div>
+                                      </div>
+                                      {{product_form.general_price}}
+                                    </div>
+                                  </div>
+                                  
+                                  
+                                  <div class="form-group">
+                                    <label>Status</label>
+                                    {{product_form.status}}
+                                    
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Tags</label>
+                                    {{product_form.tags}}
+                                  </div>
+                                  
+                            </div>
+                        </div>
+
+                        {% for form,images_queryset,variant_obj in prefilled_variant_forms_list %}
+                            <div class="card" >
+                                <div class="card-header d-flex justify-content-between">
+                                    <h4>Variant</h4>
+                                    <!-- <a href="#" class="btn btn-icon btn-danger"><i class="fas fa-times"></i></a> -->
+                                </div>
+                                <div class="card-body">
+                                    <div class="container">
+                                        <div class="row mb-4" >
+                                            <div class="form-group col-12 col-md-4">
+                                                <label>Variant Type</label>
+                                                {{form.variant_type}}
+                                            </div>
+
+                                            <div class="form-group col-12 col-md-4">
+                                                <label>Variant Name</label>
+                                                {{form.variant_name}}
+                                            </div>
+
+                                            <div class="form-group col-12 col-md-4" id="{{forloop.counter0}}-prefilled_colorpicker">
+                                                <label>Pick Your Color</label>
+                                                <div class="input-group colorpickerinput">
+                                                {{form.value}}
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                    <i class="fas fa-fill-drip"></i>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-12 col-md-4">
+                                                <label>Total Stock</label>
+                                                {{form.total_stock}}
+                                            </div>
+                                            <div class="form-group col-12 col-md-4">
+                                                <label>Availabe Stock</label>
+                                                {{form.available_stock}}
+                                            </div>
+                
+                                            <div class="form-group col-12 col-md-4">
+                                                <label>Original Price</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        &#8377;
+                                                    </div>
+                                                    </div>
+                                                    {{form.original_price}}
+                                                </div>
+                                            </div>
+                    
+                                            <div class="form-group col-12 col-md-4">
+                                                <label>Current Price</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        &#8377;
+                                                    </div>
+                                                    </div>
+                                                    {{form.current_price}}
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <label>Description</label>
+                                                <div class="form-group">                                        
+                                                {{form.description}}
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                    <h4>Variant Images</h4>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="gallery gallery-md">
+                                                            {% for image_obj in images_queryset %}
+                                                                <div class="gallery-item" data-image="{{image_obj.image.url}}" data-title="Image 1"></div>
+                                                            {% endfor %}
+                                                            
+                                                            
+                                                            </div>
+                                                            <div class="gallery-item gallery-hide" data-image="{% static 'assets/img/news/img01.jpg" data-title="Image 9"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-12" style="padding-left: 15px; padding-right:15px;">
+                                                <!-- <div class="dropzone mydropzone " id="mydropzone-{{forloop.counter}}" name="dropzone" >
+                                                <div class="fallback">
+                                                    {{form.images}}
+                                                </div>
+                                                </div> -->
+                                                <label for="">Add More Images</label>
+                                                <div class="form-group">
+                                                    {{form.images}}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        {% endfor %}
+                    </div>
+
+                        {{ formset1.management_form }}
+                        {% for form in formset1 %}
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+
+                            {% if form.non_field_errors %}
+                                {% for field in form %}
+                                    {% for error in field.non_field_errors %} 
+                                        <div class="alert alert-danger">
+                                            <strong>{{ error|escape }}</strong>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                            <div class="card variant_form my-hide"  id="{{forloop.counter}}_variant_form">
+                                <div class="card-header d-flex justify-content-between">
+                                    <h4>Variant - {{forloop.counter}}</h4>
+                                    <a href="#" class="btn btn-icon btn-danger"><i class="fas fa-times"></i></a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="container">
+                                        <div class="row mb-4" >
+                                            <div class="form-group col-12 col-md-4">
+                                                <label>Variant Type</label>
+                                                {{form.variant_type}}
+                                            </div>
+
+                                            <div class="form-group col-12 col-md-4">
+                                                <label>Variant Name</label>
+                                                {{form.variant_name}}
+                                            </div>
+
+                                            <div class="form-group col-12 col-md-4" id="{{forloop.counter0}}-colorpicker" style="display:none;">
+                                                <label>Pick Your Color</label>
+                                                <div class="input-group colorpickerinput">
+                                                  {{form.value}}
+                                                  <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                      <i class="fas fa-fill-drip"></i>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-12 col-md-4">
+                                                <label>Total Stock</label>
+                                                {{form.total_stock}}
+                                            </div>
+                                            <div class="form-group col-12 col-md-4">
+                                                <label>Availabe Stock</label>
+                                                {{form.available_stock}}
+                                            </div>
+                
+                                            <div class="form-group col-12 col-md-4">
+                                                <label>Original Price</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        &#8377;
+                                                    </div>
+                                                    </div>
+                                                    {{form.original_price}}
+                                                </div>
+                                            </div>
+                    
+                                            <div class="form-group col-12 col-md-4">
+                                                <label>Current Price</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                    <div class="input-group-text">
+                                                        &#8377;
+                                                    </div>
+                                                    </div>
+                                                    {{form.current_price}}
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <label>Description</label>
+                                                <div class="form-group">                                        
+                                                  {{form.description}}
+                                                </div>
+                                            </div>
+                                            
+                                           
+                                            
+                                            <div class="col-12" style="padding-left: 15px; padding-right:15px;">
+                                                <!-- <div class="dropzone mydropzone " id="mydropzone-{{forloop.counter}}" name="dropzone" >
+                                                  <div class="fallback">
+                                                    {{form.images}}
+                                                  </div>
+                                                </div> -->
+                                                <label for="">Images</label>
+                                                <div class="form-group">
+                                                    {{form.images}}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+
+                        
+                        
+                        <div class="add-btn-conatiner d-flex w-100 justify-content-end mb-4">
+                            <button  class="btn btn-warning" id="add_button" onclick="add_button_handler(event);" style="left: 0px;">+ Add Variant</button>
+                            <button class="btn btn-success ml-4" type="submit" onclick="submitBtnHandler(event)" >Submit</button>
+  
+                        </div>
+                    </div>
+                </form>
+    
+            </div>
+        </div>
+       
+    </div>
+</section>
+
+
+{% endblock %}
+      
+     
+  
+
+
+<!-- JS Libraies -->
+{% block script_reference %}
+<script>
+    "{% if messages %}"
+      "{% for message in messages %}"
+        swal('{{message}}', '', '{{message.tags}}');
+      "{% endfor %}"
+    "{% endif %}"
+</script>
+<script src=" {% static 'node_modules/cleave.js/dist/cleave.min.js' %} "></script>
+<script src=" {% static 'node_modules/cleave.js/dist/addons/cleave-phone.us.js' %} "></script>
+<script src=" {% static 'node_modules/jquery-pwstrength/jquery.pwstrength.min.js' %} "></script>
+<script src=" {% static 'node_modules/bootstrap-daterangepicker/daterangepicker.js' %} "></script>
+<script src=" {% static 'node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js' %} "></script>
+<script src=" {% static 'node_modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js' %} "></script>
+<script src=" {% static 'node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %} "></script>
+<script src=" {% static 'node_modules/select2/dist/js/select2.full.min.js' %} "></script>
+<script src=" {% static 'node_modules/selectric/public/jquery.selectric.min.js' %} "></script>
+<script src=" {% static 'node_modules/dropzone/dist/min/dropzone.min.js' %} "></script>
+<script src=" {% static 'node_modules/chocolat/dist/js/jquery.chocolat.min.js' %} "></script>
+{% endblock %}
+
+
+
+
+<!-- Page Specific JS File -->
+{% block specific_script_reference %}
+<script src=" {% static 'assets/js/page/forms-advanced-forms.js' %} "></script>
+
+<!-- <script src=" {% static 'assets/js/page/component-multiple-upload-varaint-images.js' %}"></script> -->
+<script>
+    let form_container=document.getElementById("form_container");
+    let add_button=document.getElementById("add_button");
+    let variant_forms=document.querySelectorAll(".variant_form")
+    let current_active=-1;
+    
+    let pre_filled_fields=['variant_type','total_stock','available_stock']
+    let all_fields=['variant_type','variant_name','value','total_stock','available_stock','original_price','current_price','description','images'];
+    let required_fields=['original_price','current_price','images'];
+    
+    const check_is_form_filled=(form_num)=>{
+        let flag=false;
+        for(let each_field of all_fields){
+            if(pre_filled_fields.includes(each_field)){
+                //console.log(each_field,"includes");
+            }
+            else{
+                let field=document.getElementById(`id_product_variants-${form_num}-${each_field}`)
+                if(field.value.trim() === "" || field.value.trim() === null){
+                
+                }
+                else{
+                    console.log(field.id,"is filled");
+                    flag=true;
+                    return flag;
+                }
+            }   
+        }
+        return flag;   
+    }
+    
+    const set_fields_required=(form_num)=>{
+        for(let each_field of required_fields){
+            let field=document.getElementById(`id_product_variants-${form_num}-${each_field}`);
+            field.required=true;
+        }
+    }
+    
+    const set_fields_not_required=(form_num)=>{
+        for(let each_field of all_fields){
+            let field=document.getElementById(`id_product_variants-${form_num}-${each_field}`);
+            field.required=false;
+        }
+    }
+    
+    
+    
+    let variant_forms_length=variant_forms.length-1;
+    
+   
+    
+    
+    
+    
+    
+    for(let i=0;i<variant_forms_length;i++){
+        $(`#id_product_variants-${i}-variant_type`).on('select2:select', function (e) {
+        var data = e.params.data;
+        let color_picker_div=document.getElementById(`${i}-colorpicker`);
+        if (data.text==='color'){
+            
+            color_picker_div.style.display='block';
+            document.getElementById(`id_product_variants-${i}-value`).required=true;
+        }
+        else{
+
+            color_picker_div.style.display='none';
+            document.getElementById(`id_product_variants-${i}-value`).value='';
+            document.getElementById(`id_product_variants-${i}-value`).required=false;
+    
+        }
+        });
+        
+    }
+    
+    const add_button_handler=(event)=>{
+        event.preventDefault();
+        //let previous_input_field=document.getElementById(`id_questions-${current_active}-qn_name`)
+        //if(previous_input_field.value===''){
+            //DisplayCustomMessage(`Question-${current_active+1} is empty`,'warning');
+            //return
+        //}
+        //console.log(variant_forms)
+       // console.log(current_active,variant_forms[current_active]);
+        if (variant_forms[current_active+1])
+        if(current_active<variant_forms_length){
+            current_active+=1;
+            if (variant_forms[current_active].classList.contains("my-hide")){
+                variant_forms[current_active].classList.remove("my-hide");
+            }
+            else{
+                //current_active+=1;
+                //add_button_handler(event);
+            }
+            
+            //variant_forms[current_active].getElementsByClassName("qn_num_span")[0].innerHTML=current_active+1
+        }
+        else{
+            //DisplayCustomMessage("Question limit reached","info");
+        }
+        
+    }       
+    
+    
+    const submitBtnHandler=(event)=>{
+        console.log("exec");
+        event.preventDefault();
+        //set_fields_required(0); //first variant form is made required
+        for(let i=0;i<variant_forms_length;i++){ //i=1,because first variant is already been changed to required
+            if(check_is_form_filled(i)===true){
+                console.log(i+1,"is filled")
+                set_fields_required(i);
+            }
+            else{
+                set_fields_not_required(i);
+            }
+            
+        }
+        if (form_container.checkValidity() === false){
+            // This is the magic function that displays the validation errors to the user
+            form_container.reportValidity();   
+            return; 
+        }
+        form_container.submit();
+        
+    }
+    </script>
+
+
+
+
+{% endblock %}
+      
+      

@@ -6,5 +6,19 @@ urlpatterns = [
     path('demo_form',demo_form,name='demo_form'),
     
     path('products_list/',products_list,name='products_list'),
-    path('add_product/',add_product,name='add_product')
+    path('add_product/',add_product,name='add_product'),
+    path('edit_product/<str:pk>/',edit_product,name='edit_product'),
+
+    path('inventory/',inventory,name='inventory'),
+    path('edit_variant/<str:pk>/',edit_variant,name='edit_variant'),
+
+    path('collections/',collections,name='collections'),
+    path('add_collection/',add_collection,name='add_collection'),
+    path('edit_collection/<str:pk>/',edit_collection,name='edit_collection'),
+    path('delete_collection/<str:pk>/',delete_collection,name='delete_collection'),
+
+    path('update_stock_endpoint/',update_stock_endpoint,name='update_stock_endpoint'),
+    path('delete_img_endpoint/<str:pk>/',delete_img_endpoint,name='delete_img_endpoint'),
+
+    path('check/',check,name='check')
 ]

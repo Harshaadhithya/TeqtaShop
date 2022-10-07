@@ -332,6 +332,13 @@ $(function() {
     $(".select2").select2();
   }
 
+  if(jQuery().select2) {
+    $('.select2-tags').select2(
+      {
+        tags: true
+      }
+    );
+  }
   // Selectric
   if(jQuery().selectric) {
     $(".selectric").selectric({

@@ -254,7 +254,10 @@
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-tags"></i><span>Product</span></a>
                 <ul class="dropdown-menu">
                   <li><a class="nav-link" href=" {% url 'products_list' %} ">Product List</a></li>
-                  <li><a class="nav-link" href=" {% static 'index.html' %} ">Inventory</a></li>
+                  <li><a class="nav-link" href=" {% url 'inventory' %} ">Inventory</a></li>
+                  <li><a class="nav-link" href=" {% url 'collections' %} ">Collections</a></li>
+
+
                 </ul>
               </li>
               <li class="menu-header">Starter</li>
@@ -426,6 +429,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src=" {% static 'assets/js/stisla.js' %} "></script>
+  <!-- added by me -->
+  <script src="{% static 'node_modules/sweetalert/dist/sweetalert.min.js' %}"></script>
+  <script src="{% static 'assets/js/page/modules-sweetalert.js' %}"></script>
+
 
   <!-- JS Libraies -->
   {% block script_reference %}

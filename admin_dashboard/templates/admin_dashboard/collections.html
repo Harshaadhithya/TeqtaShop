@@ -1,0 +1,353 @@
+{% extends 'admin_dashboard/admin_base.html' %}
+{% load static %}
+
+  
+{% block style_reference %}
+  <!-- CSS Libraries -->
+  <link rel="stylesheet" href=" {% static 'node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/datatables.net-select-bs4/css/select.bootstrap4.min.css' %} ">
+  <!-- <link rel="stylesheet" href=" {% static 'node_modules/prismjs/themes/prism.css' %} "> -->
+
+{% endblock %}
+ 
+<style>td{
+  vertical-align:middle;
+}
+.table td{
+  vertical-align:middle !important;
+}
+ 
+</style>
+
+
+      
+      
+
+      <!-- Main Content -->
+    
+        {% block content %}
+        <section class="section">
+          <div class="section-header">
+            {% if page %}
+            <h1>{{page}}</h1>
+            {% else %}
+            <h1>DataTables</h1>
+            {% endif %}
+            <div class="section-header-breadcrumb">
+              <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+              <div class="breadcrumb-item"><a href="#">Modules</a></div>
+              <div class="breadcrumb-item">DataTables</div>
+            </div>
+          </div>
+
+          <div class="section-body">
+            {% comment %} <h2 class="section-title">DataTables</h2>
+            <p class="section-lead">
+              We use 'DataTables' made by @SpryMedia. You can check the full documentation <a href="https://datatables.net/">here</a>.
+            </p> {% endcomment %}
+
+            <!-- <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Basic DataTables</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-striped" id="table-1">
+                        <thead>
+                          <tr>
+                            <th class="text-center">
+                              #
+                            </th>
+                            <th></th>
+                            <th>Product</th>
+                            <th>Progress</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              1
+                            </td>
+                            <td>Create a mobile app</td>
+                            <td class="align-middle">
+                              <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
+                                <div class="progress-bar bg-success" data-width="100%"></div>
+                              </div>
+                            </td>
+                            <td>
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-5.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Wildan Ahdian">
+                            </td>
+                            <td>2018-01-20</td>
+                            <td><div class="badge badge-success">Completed</div></td>
+                            <td><a href="#" class="btn btn-secondary">Detail</a></td>
+                          </tr>
+                          <tr>
+                            <td>
+                              2
+                            </td>
+                            <td>Redesign homepage</td>
+                            <td class="align-middle">
+                              <div class="progress" data-height="4" data-toggle="tooltip" title="0%">
+                                <div class="progress-bar" data-width="0"></div>
+                              </div>
+                            </td>
+                            <td>
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-1.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Nur Alpiana">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-3.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Hariono Yusup">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-4.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Bagus Dwi Cahya">
+                            </td>
+                            <td>2018-04-10</td>
+                            <td><div class="badge badge-info">Todo</div></td>
+                            <td><a href="#" class="btn btn-secondary">Detail</a></td>
+                          </tr>
+                          <tr>
+                            <td>
+                              3
+                            </td>
+                            <td>Backup database</td>
+                            <td class="align-middle">
+                              <div class="progress" data-height="4" data-toggle="tooltip" title="70%">
+                                <div class="progress-bar bg-warning" data-width="70%"></div>
+                              </div>
+                            </td>
+                            <td>
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-1.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-2.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Hasan Basri">
+                            </td>
+                            <td>2018-01-29</td>
+                            <td><div class="badge badge-warning">In Progress</div></td>
+                            <td><a href="#" class="btn btn-secondary">Detail</a></td>
+                          </tr>
+                          <tr>
+                            <td>
+                              4
+                            </td>
+                            <td>Input data</td>
+                            <td class="align-middle">
+                              <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
+                                <div class="progress-bar bg-success" data-width="100%"></div>
+                              </div>
+                            </td>
+                            <td>
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-2.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-5.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Isnap Kiswandi">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-4.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Yudi Nawawi">
+                              <img alt="image" src=" {% static 'assets/img/avatar/avatar-1.png' %} " class="rounded-circle" width="35" data-toggle="tooltip" title="Khaerul Anwar">
+                            </td>
+                            <td>2018-01-16</td>
+                            <td><div class="badge badge-success">Completed</div></td>
+                            <td><a href="#" class="btn btn-secondary">Detail</a></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header d-flex justify-content-end">
+                    <!-- <h4>Advanced Table</h4> -->
+                    
+                    <a href="{% url 'add_collection' %}" class="btn btn-icon icon-left btn-success"><i class="fas fa-plus"></i> Add Collections</a>
+
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-striped" id="table-2">
+                        <thead>
+                          <tr>
+                            
+                            <th>Name</th>
+                            <th>Count</th>
+                            <th>Products</th>
+                            <th>Actions</th>
+                            
+                            
+                            
+
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for collection in collections %}
+                          <tr>
+                            
+                            
+                            
+                            <td  class="align-middle" ><p class="m-auto font-weight-bold text-primary" >{{collection.name}}</p></td>
+                            
+                            <td  class="align-middle">
+                              <p>{{collection.products.count}}</p>
+                            </td>
+                         
+                            <td  class="align-middle">
+                                <a href="" data-toggle="modal" data-target="#view_collection_modal" id="{{collection.id_eye_btn}}"><i class="far fa-eye" id="{{collection.id_eye_icon}}"></i></a>
+                            </td>
+                            
+                            
+                            
+                            <!-- <td class="align-middle">
+                              <p>{{product_dict.product.description|slice:80}}</p>
+                            </td> -->
+                            <td  class="align-middle">
+                                <a href="{% url 'edit_collection' collection.id %}" class="btn btn-icon btn-warning"><i class="far fa-edit"></i></a>
+                                <a href="{% url 'delete_collection' collection.id %}" class="btn btn-icon btn-danger ml-3"><i class="fas fa-trash"></i></a>
+                            </td>
+
+                          </tr>
+                          {% endfor %}
+                          
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Button trigger modal -->
+<button type="button" data-book-id="my_id_value" class="btn btn-primary" data-toggle="modal" data-target="#view_collection_modal" id="dummy_modal-btn">
+    Launch demo modal
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="view_collection_modal" tabindex="-1" role="dialog" aria-labelledby="view_collection_modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modal-body">
+           
+            <!-- <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-4">
+                        <img alt="image" src="{% static 'iphone_purple.png' %}" class="rounded" width="55" data-toggle="tooltip" title="" data-original-title="iPhone Pro">
+                    </div>
+                    <div class="col-6 ">
+                        <p class="mb-0">iPhone Pro</p>
+                    </div>
+                    <div class="col-2">
+                        <a href="" class="text-danger"><i class="fas fa-times"></i></a>
+                    </div>
+                </div>
+                <hr>
+            </div> -->
+            
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+
+{% endblock %}
+
+
+
+
+
+  
+<!-- JS Libraies -->
+{% block script_reference %}
+
+<script>
+    "{% if messages %}"
+        "{% for message in messages %}"
+        swal('{{message}}', '', '{{message.tags}}');
+        "{% endfor %}"
+    "{% endif %}"
+
+    $('#view_collection_modal').on('shown.bs.modal', function (event) {
+        console.log(event.target.id)
+        document.getElementById('modal-body').innerHTML='';
+        const div = document.createElement('div');
+      
+        div.className = 'row';
+        div.id = 'appended_div'
+      
+        div.innerHTML = `
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Image</th>
+                <th scope="col">Product</th>
+                <th scope="col">Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>
+                    <img alt="image" src="{% static 'iphone_purple.png' %}" class="rounded mt-3 mb-3" width="55" data-toggle="tooltip" title="" data-original-title="iPhone Pro">
+                </td>
+                <td>iPhone 14 Pro</td>
+                <td>
+                    <a href="" class="text-danger"><i class="fas fa-times"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>
+                    <img alt="image" src="{% static 'iphone_purple.png' %}" class="rounded mt-3 mb-3" width="55" data-toggle="tooltip" title="" data-original-title="iPhone Pro">
+                </td>
+                <td>iPhone 14 Pro</td>
+                <td>
+                    <a href="" class="text-danger"><i class="fas fa-times"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>
+                    <img alt="image" src="{% static 'iphone_purple.png' %}" class="rounded mt-3 mb-3" width="55" data-toggle="tooltip" title="" data-original-title="iPhone Pro">
+                </td>
+                <td>iPhone 14 ProiPhone 14 ProiPhone 14 ProiPhone 14 Pro</td>
+                <td>
+                    <a href="" class="text-danger"><i class="fas fa-times"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        `;
+      
+        document.getElementById('modal-body').appendChild(div);
+        
+    })
+
+   
+</script>
+
+  <script src=" {% static 'node_modules/datatables/media/js/jquery.dataTables.min.js' %} "></script>
+  <script src=" {% static 'node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %} "></script>
+  <script src=" {% static 'node_modules/datatables.net-select-bs4/js/select.bootstrap4.min.js' %} "></script>
+
+{% endblock %}
+
+  
+  
+ <!-- Page Specific JS File -->
+ {% block specific_script_reference %}
+ <!-- <script src=" {% static 'node_modules/prismjs/prism.js' %} "></script> -->
+
+ <script src=" {% static 'assets/js/page/modules-datatables.js' %} "></script>
+ <!-- <script src=" {% static 'assets/js/page/bootstrap-modal.js' %} "></script> -->
+
+ {% endblock %}
+
+

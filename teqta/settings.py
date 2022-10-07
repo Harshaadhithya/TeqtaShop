@@ -42,7 +42,31 @@ INSTALLED_APPS = [
     'users',
     'inventory',
     'admin_dashboard',
+
+    'ckeditor',
+    'ckeditor_uploader',
 ]
+
+CKEDITOR_UPLOAD_PATH='product_desc_images/'
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': None,
+        'height':500,
+        'contentsCss': 'img {max-width: 100%;height: auto! important;}',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline','Image'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink','Anchor'],
+            ['Flash','Table'],
+            ['TextColor','BGColor'],
+            ['Smiley','SpecialChar'],
+            ['RemoveFormat', 'Source'],
+
+        ],
+        # 'extraPlugins':','.join(['youtube'])
+    }
+}
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

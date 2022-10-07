@@ -1,6 +1,10 @@
-from django.shortcuts import render
+from multiprocessing import context
+from sys import prefix
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from inventory.models import *
+from .forms import *
+from django.contrib import messages
 
 # Create your views here.
 
@@ -24,7 +28,7 @@ def products_list(request):
         product_obj_dict['no_of_variants']=len(product_variant_objs.all())
         product_obj_dict['available_stock']=sum([i.available_stock for i in product_variant_objs.all()])
         product_obj_dict['total_sales']=sum([i.total_sales for i in product_variant_objs.all()])
-        print(product_variant_objs.all())
+        # print(product_variant_objs.all())
         
         products_list.append(product_obj_dict)
 
@@ -33,5 +37,263 @@ def products_list(request):
     return render(request,'admin_dashboard/table.html',context)
 
 
+from django.forms import modelformset_factory
+from django.forms import inlineformset_factory
+
+
 def add_product(request):
-    return render(request,'admin_dashboard/add_product.html')
+    product_form=AddProductForm()
+    product_variant_form=ProductVariantFullForm(prefix='product_variant_form')
+    product_variant_formset=modelformset_factory(ProductVariant,
+                                        form=ProductVariantFullForm, extra=10,can_delete=True)
+    i_pv_formset=inlineformset_factory(Product,ProductVariant,form=ProductVariantFullForm,extra=10, can_delete=True)
+    formset1=i_pv_formset(queryset=ProductVariant.objects.none())
+    formset = product_variant_formset(queryset=ProductVariant.objects.none())
+    if request.method=='POST':
+        post=request.POST.copy()
+        tag_list=[]
+        for tag_id in request.POST.getlist('tags'):
+            print(tag_id)
+            try:
+                if ProductTag.objects.filter(id=tag_id).exists(): #if this arises any error then there exist no such tag, this error is arised because we will be getting id if already tag is exist, else we will get the name of the new tag entered and when we try to match with tag id it causes an error.
+                    pass
+                
+                else:
+                    tag_obj=ProductTag.objects.create(name=tag_id)
+                    tag_id=tag_obj.id
+
+            except:
+                tag_obj=ProductTag.objects.create(name=tag_id)
+                tag_id=tag_obj.id
+            tag_list.append(tag_id)
+            print("taglist",tag_list)
+
+        post.setlist('tags', tag_list)
+        request.POST=post
+        print(request.POST['tags'],request.POST)
+
+        
+        product_form=AddProductForm(request.POST)
+        print(product_form.errors)
+        if product_form.is_valid():
+            print("inisde first valid")
+            product_obj=product_form.save()
+            formset1=i_pv_formset(request.POST,request.FILES,instance=product_obj,queryset=ProductVariant.objects.none())
+            # print("formset1",formset1)
+            for index,form in enumerate(formset1):
+                all_product_variant_objs=[]
+                all_varaint_img_objs=[]
+                if form.is_valid():
+                    # try:
+                    product_variant_obj=form.save()
+                    all_product_variant_objs.append(all_product_variant_objs)
+
+                    images=request.FILES.getlist(f'product_variants-{index}-images')
+                    if len(images) < 1:
+                        messages.warning(request,f"{product_variant_obj.product.name} should have atleast 1 Image !!")
+                        # delete product obj, all product variant objs and image objs
+                        # return redirect
+
+                    print("images",images)
+                    for image in images:
+                        variant_image_obj=ProductImage.objects.create(product_variant=product_variant_obj,image=image)
+                        all_varaint_img_objs.append(variant_image_obj)
+                        print("image saved")
+                    # except:
+                    #     # capture exception
+                    #     print("exception occured")
+                    #     for each_obj in all_product_variant_objs:
+                    #         each_obj.delete()
+                    #     for each_obj in all_varaint_img_objs:
+                    #         each_obj.delete()
+                    #     product_obj.delete()
+                    #     context={'product_form':product_form,'formset':formset,'formset1':formset1}
+                    #     messages.error(request,"Something went wrong !!")
+                    #     return render(request,'admin_dashboard/add_product1.html',context)
+                else:
+                    if form.non_field_errors():
+                        print("yes non field error",form.non_field_errors)
+                        for error in form.non_field_errors():
+                            print("non field error",error)
+                            messages.error(request,f"{error}")
+                        # for each_obj in all_product_variant_objs:
+                        #     each_obj.delete()
+                        # for each_obj in all_varaint_img_objs:
+                        #     each_obj.delete()
+                        # product_obj.delete()
+                        
+                        # context={'product_form':product_form,'formset':formset,'formset1':formset1}
+                        # return render(request,'admin_dashboard/add_product1.html',context)
+                        # return redirect('add_product')
+                    print(f'form-{index+1} not valid')
+                    
+            messages.success(request,"Product Added Successfully !!")
+            return redirect('products_list')
+        else:
+            messages.error(request,"Unable to add this product !!")
+        
+
+    context={'product_form':product_form,'formset':formset,'formset1':formset1}
+    return render(request,'admin_dashboard/add_product1.html',context)
+
+
+
+def edit_product(request,pk):
+    context={}
+    product_obj=Product.objects.get(id=pk)
+    product_form=AddProductForm(instance=product_obj)
+    product_variant_objs=product_obj.product_variants.all()
+    prefilled_variant_forms_list=[]
+    list_of_variant_image_qs=[variant_obj.variant_image.all() for variant_obj in product_variant_objs]
+    print("list of images",list_of_variant_image_qs)
+    for index,variant_obj in enumerate(product_variant_objs):
+        variant_form=ProductVariantFullForm(request.POST or None,instance=variant_obj,prefix=f"{index}_variant_form")
+        variant_images=variant_obj.variant_image.all()
+        prefilled_variant_forms_list.append((variant_form,variant_images,variant_obj)) #this tuple contains teh form and images queryset for that particular variant obj
+    print(product_obj,product_variant_objs)
+    i_pv_formset=inlineformset_factory(Product,ProductVariant,form=ProductVariantFullForm,extra=10, can_delete=True)
+    formset1=i_pv_formset(instance=product_obj,queryset=ProductVariant.objects.none())
+    if request.method=='POST':
+        product_form=AddProductForm(request.POST,instance=product_obj)
+        formset1=i_pv_formset(request.POST,request.FILES,instance=product_obj)
+        if product_form.is_valid():
+            product_form.save()
+            for index,zipped_items in enumerate(prefilled_variant_forms_list):
+                (form,_,variant_obj) = zipped_items
+                if form.is_valid():
+                    form.save()
+                    images=request.FILES.getlist(f'{index}_variant_form-images')
+                    for image in images:
+                        variant_image_obj=ProductImage.objects.create(product_variant=variant_obj,image=image)
+                        # all_varaint_img_objs.append(variant_image_obj)
+                        print("image saved")
+                    print("prefilled form saved")
+            for index,form in enumerate(formset1):
+                if form.is_valid():
+                    print("inise frm valid")
+                    variant_obj=form.save()
+                    images=request.FILES.getlist(f'product_variants-{index}-images')
+                    for image in images:
+                        ProductImage.objects.create(product_variant=variant_obj,image=image)
+            messages.success(request,"Product Updated Successfully !!")
+            return redirect('edit_product',pk=pk)
+        else:
+            messages.error(request,"Failed to update!!")
+            return redirect('products_list')
+    # messages.success(request,"rendered")
+    context={'product_form':product_form,'formset1':formset1,'list_of_variant_image_qs':list_of_variant_image_qs,'prefilled_variant_forms_list':prefilled_variant_forms_list}
+    return render(request,'admin_dashboard/edit_product.html',context)
+
+def inventory(request):
+    product_variants=ProductVariant.objects.all().order_by('product')
+    print(product_variants)
+    context={'product_variants':product_variants}
+    return render(request,'admin_dashboard/inventory.html',context)
+
+def edit_variant(request,pk):
+    variant_obj=ProductVariant.objects.get(id=pk)
+    form=ProductVariantFullForm(instance=variant_obj)
+    variant_images=ProductImage.objects.filter(product_variant=variant_obj)
+    if request.method == 'POST':
+        form=ProductVariantFullForm(request.POST,request.FILES,instance=variant_obj)
+        if form.is_valid():
+            form.save()
+            images=request.FILES.getlist('images')
+            for image in images:
+                ProductImage.objects.create(product_variant=variant_obj,image=image)
+            messages.success(request,"variant Updated Successfully !!")
+            return redirect('inventory')
+        else:
+            messages.error(request,"Enter proper data!!")
+
+    context={'form':form,'variant_images':variant_images}
+    return render(request,'admin_dashboard/edit_variant.html',context)
+
+from django.http import JsonResponse,HttpResponse
+def update_stock_endpoint(request):
+    print("fetch success")
+    if request.method=='POST':
+        variant_obj_id=request.POST.get('variant_id')
+        updated_stock=request.POST.get('updated_stock')
+        try:
+            variant_obj=ProductVariant.objects.get(id=variant_obj_id)
+            variant_obj.available_stock=int(updated_stock)
+            variant_obj.save()
+            return JsonResponse({'status':'success','updated_stock':variant_obj.available_stock})
+        except:
+            return JsonResponse({'status':'failed'})
+    return JsonResponse({'status':'GET REQUEST'})
+
+
+def delete_img_endpoint(request,pk):
+    # print(request.data)
+    try:
+        image_obj=ProductImage.objects.get(id=pk)
+        cover_imgs_length=len(ProductImage.objects.filter(product_variant=image_obj.product_variant))
+        if cover_imgs_length>1:
+            image_obj.delete()
+            return JsonResponse({'status':'success'})
+        else:
+            return JsonResponse({'status':'unable to delete','msg':"Can't delete this, there must be atleast one image for each variant !!"})
+    except:
+        return JsonResponse({'status':'failed'})
+        
+def collections(request):
+    collections=Collection.objects.all()
+    context={'collections':collections}
+    return render(request,'admin_dashboard/collections.html',context)
+
+def add_collection(request):
+    form=CollectionForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request,"New Collections Added !!")
+            return redirect('collections')
+        else:
+            messages.error(request,"Something Went Wrong")
+    context={'form_title':'New Collection','form':form}
+    return render(request,'admin_dashboard/add_collection.html',context)
+
+def edit_collection(request,pk):
+    collection_obj=Collection.objects.get(id=pk)
+    form=CollectionForm(request.POST or None,instance=collection_obj)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Collection Updated Successfully !!")
+            return redirect('collections')
+        else:
+            messages.error(request,"Something Went Wrong!!")
+    context={'form_title':'Edit Collection','form':form}
+    return render(request,'admin_dashboard/add_collection.html',context)
+
+
+def delete_collection(request,pk):
+    collection_obj=Collection.objects.get(id=pk)
+    collection_obj.delete()
+    messages.success(request,"Collection Deleted Successfully !!")
+    return redirect('collections')
+    
+# from barcode import EAN13
+import barcode
+  
+# import ImageWriter to generate an image file
+from barcode.writer import ImageWriter
+from teqta import settings
+
+def check(request):
+    number = 'NAW00042L'
+    
+    # Now, let's create an object of EAN13 class and 
+    # pass the number with the ImageWriter() as the 
+    # writer
+    EAN = barcode.get_barcode_class('code128')
+    print(EAN)
+    my_code = EAN(number, writer=ImageWriter())
+    
+    # Our barcode is ready. Let's save it.
+    img_name = f'form_id_dummy.png'
+    my_code.save(settings.MEDIA_ROOT + '/product_bar_code/' + img_name)
+    # my_code.save("new_code1")
+    return HttpResponse("hello")
