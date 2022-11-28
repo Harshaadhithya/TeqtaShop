@@ -1,0 +1,837 @@
+{% extends 'user_base.html' %}
+{% load static %}
+{% block content %}
+<section class="products-section mb-5 mt-5 pt-5">
+  <div class="filter-products-layout">
+      <div class="left-layout " id="left-filter-layout">
+          <div class="filter-heading-container text-center">
+              <p class="banner-subtitle medium-font">FILTERS</p>
+          </div>
+          <div class="filters-container">
+              <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                      <button class="accordion-button filter-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                          <div class="filter-icon-text-wrapper">
+                              <i class="bi bi-stack me-2"></i>
+                              <h2 class="h6 mb-0">Product Category</h2>
+                          </div>
+                      </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" >
+                      <div class="accordion-body">
+                          <div class="filter-options">
+                              <div class="filter-option">
+                                  <div class="custom-input-group">
+                                      <label class="control control--checkbox pt-1">USB Hubs
+                                          <input type="checkbox" />
+                                          <div class="control__indicator"></div>
+                                      </label>
+                                  </div>
+                                  <div class="custom-input-group">
+                                      <label class="control control--checkbox pt-1">Watches
+                                          <input type="checkbox" />
+                                          <div class="control__indicator"></div>
+                                      </label>
+                                  </div>
+                                  <div class="custom-input-group">
+                                      <label class="control control--checkbox pt-1">Mobile Phones
+                                          <input type="checkbox" checked="checked"/>
+                                          <div class="control__indicator"></div>
+                                      </label>
+                                  </div>
+                                  <div class="custom-input-group">
+                                      <label class="control control--checkbox pt-1">Headphones
+                                          <input type="checkbox" />
+                                          <div class="control__indicator"></div>
+                                      </label>
+                                  </div> 
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingTwo">
+                      <button class="accordion-button filter-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseOne">
+                          <div class="filter-icon-text-wrapper">
+                              <i class="bi bi-laptop-fill me-2"></i>
+                              <h2 class="h6 mb-0">Compatible With</h2>
+                          </div>
+                      </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="flush-headingTwo" >
+                      <div class="accordion-body">
+                          <div class="filter-options">
+                              <div class="filter-option">
+                                  <div class="custom-input-group">
+                                      <label class="control control--checkbox pt-1">USB Hubs
+                                          <input type="checkbox" />
+                                          <div class="control__indicator"></div>
+                                      </label>
+                                  </div>
+                                  <div class="custom-input-group">
+                                      <label class="control control--checkbox pt-1">Watches
+                                          <input type="checkbox" />
+                                          <div class="control__indicator"></div>
+                                      </label>
+                                  </div>
+                                  <div class="custom-input-group">
+                                      <label class="control control--checkbox pt-1">Mobile Phones
+                                          <input type="checkbox" checked="checked"/>
+                                          <div class="control__indicator"></div>
+                                      </label>
+                                  </div>
+                                  <div class="custom-input-group">
+                                      <label class="control control--checkbox pt-1">Headphones
+                                          <input type="checkbox" />
+                                          <div class="control__indicator"></div>
+                                      </label>
+                                  </div> 
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingThree">
+                      <button class="accordion-button filter-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseOne">
+                          <div class="filter-icon-text-wrapper">
+                              <i class="bi bi-currency-exchange me-2"></i>
+                              <h2 class="h6 mb-0">Price</h2>
+                          </div>
+                      </button>
+                    </h2>
+                    <div id="flush-collapseThree" class="accordion-collapse collapse show" aria-labelledby="flush-headingThree">
+                      <div class="accordion-body">
+                          <div class="filter-options">
+                              <div class="filter-option">
+                                  <div class="custom-input-group">
+                                      <label class="control control--checkbox pt-1">USB Hubs
+                                          <input type="checkbox" />
+                                          <div class="control__indicator"></div>
+                                      </label>
+                                  </div>
+                                  <div class="custom-input-group">
+                                      <label class="control control--checkbox pt-1">Watches
+                                          <input type="checkbox" />
+                                          <div class="control__indicator"></div>
+                                      </label>
+                                  </div>
+                                  <div class="custom-input-group">
+                                      <label class="control control--checkbox pt-1">Mobile Phones
+                                          <input type="checkbox" checked="checked"/>
+                                          <div class="control__indicator"></div>
+                                      </label>
+                                  </div>
+                                  <div class="custom-input-group">
+                                      <label class="control control--checkbox pt-1">Headphones
+                                          <input type="checkbox" />
+                                          <div class="control__indicator"></div>
+                                      </label>
+                                  </div> 
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          </div>
+      </div>
+      <div class="right-layout">
+          <div class="container">
+              <div class="row">
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+                      
+                      
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/products/apple-watch-pcq.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                  </div></a>
+                  
+                </div>
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+                      <!-- <div class="badge-container">
+                        <div class="dummy-badge">
+                          <span class="badge  bg-primary ">Best Selling</span>
+                        </div>
+                      </div> -->
+                      <span class=" product-badge-outer-span position-absolute  badge  bg-primary">
+                        Best Selling
+                        <!-- <span class="visually-hidden">unread messages</span> -->
+                      </span>
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/products/Apple-Airpods-Transparent-PNG.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                  </div></a>
+                  
+                </div>
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+                      
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/iphone_purple.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                  </div></a>
+                  
+                </div>
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+                      <!-- <div class="badge-container">
+                        <div class="dummy-badge">
+                          <span class="badge  bg-primary ">Best Selling</span>
+                        </div>
+                      </div> -->
+                      <span class=" product-badge-outer-span position-absolute  badge  bg-primary">
+                        Best Selling
+                        <!-- <span class="visually-hidden">unread messages</span> -->
+                      </span>
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/products/hub3.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                  </div></a>
+                  
+                </div>
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+                      
+                      
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/products/apple-watch-pcq.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                  </div></a>
+                  
+                </div>
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+                      <!-- <div class="badge-container">
+                        <div class="dummy-badge">
+                          <span class="badge  bg-primary ">Best Selling</span>
+                        </div>
+                      </div> -->
+                      <span class=" product-badge-outer-span position-absolute  badge  bg-primary">
+                        Best Selling
+                        <!-- <span class="visually-hidden">unread messages</span> -->
+                      </span>
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/products/Apple-Airpods-Transparent-PNG.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                  </div></a>
+                  
+                </div>
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+                      
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/iphone_purple.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                  </div></a>
+                  
+                </div>
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+                      <!-- <div class="badge-container">
+                        <div class="dummy-badge">
+                          <span class="badge  bg-primary ">Best Selling</span>
+                        </div>
+                      </div> -->
+                      <span class=" product-badge-outer-span position-absolute  badge  bg-primary">
+                        Best Selling
+                        <!-- <span class="visually-hidden">unread messages</span> -->
+                      </span>
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/products/hub3.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                  </div></a>
+                  
+                </div>
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+                      
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/products/apple-watch-pcq.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                  </div></a>
+                  
+                </div>
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+                      
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/products/Apple-Airpods-Transparent-PNG.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                  </div></a>
+                  
+                </div>
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+                      
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/iphone_purple.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                  </div></a>
+                  
+                </div>
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+                     
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/products/hub3.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                  </div></a>
+                  
+                </div>
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+                      
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/products/apple-watch-pcq.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div></a>
+                  
+                </div>
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+                     
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/products/Apple-Airpods-Transparent-PNG.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                  </div></a>
+                  
+                </div>
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+                      
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/iphone_purple.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                  </div></a>
+                  
+                </div>
+                <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+                  <a href=" {% static '' %} ">
+                    <div class="card product-card" >
+        
+                      
+                    <div class="card-img-top-container">
+                      <img src=" {% static 'user_ui/images/products/hub3.png' %} " class="card-img-top img-fluid" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      
+                      <div class="variants-container mb-2">
+                        <div class="color-variants">
+                          <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                          <div class="color-box"><span class="color-box-span color-black"></span></div>
+                          <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                          <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                        </div>
+                      </div>
+                      <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+                      <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+                      <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+                      <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+                      <div class=" d-flex justify-content-center align-items-center">
+                        <div class="small-ratings">
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill rating-color"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="small-rating-count-container">
+                          <p class="small-rating-count mb-0 ms-2" >954</p>
+                        </div>
+                        
+                      </div>
+                      <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                    </div>
+                  </div></a>
+                  
+                </div>
+        
+        
+              </div>
+            </div>
+      </div>
+      <div class="mobile-filter-btn-container" id="mobile-filter-btn-container">
+          <button class="btn btn-primary my-primary-bg m-auto text-center" onclick="mobile_filter_btn(event)" >Filter</button>
+      </div>
+  </div>
+  
+
+</section>
+{% endblock %}
+    
+   
+
+   
+
+ 
+    
+   

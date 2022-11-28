@@ -1,0 +1,214 @@
+{% load static %}
+{% load custom_tags %}
+
+{% if page_title == 'home_page' or page_title == 'products_page' %}
+    <div class="gradient-background-container">
+{% else %}
+    <div class="">
+
+{% endif %}
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <div
+          class="container-fluid d-flex justify-content-between my-navbar-container"
+        >
+          <div>
+            <button
+              style=""
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <!-- <span class="navbar-toggler-icon"></span> -->
+              <!-- <i
+                class="fas fa-bars"
+                id="hamburger-btn"
+                style="color: #2c3034"
+              ></i> -->
+              <i class="bi bi-list" style="color: #2c3034"></i>
+            </button>
+          </div>
+
+          <div class="nav-left-logo-container">
+            <a class="navbar-logo" href="#"
+              ><img src=" {% static 'user_ui/images/link-logo.png' %} " alt=""
+            /></a>
+          </div>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-0 pr-4 pl-4">
+              <li class="nav-item pr-4 pl-4">
+                <a class="nav-link" aria-current="page" href=" {% url 'home' %} ">Home</a>
+              </li>
+              <li class="nav-item pr-4 pl-4">
+                <a class="nav-link" href="#">About Us</a>
+              </li>
+              <li class="nav-item pr-4 pl-4">
+                <a class="nav-link" href=" {% url 'products' %} ">Products</a>
+              </li>
+              <li class="nav-item pr-4 pl-4">
+                <a class="nav-link" href="#">My Orders</a>
+              </li>
+              <li class="nav-item pr-4 pl-4">
+                <a class="nav-link" href="#">Contact Us</a>
+              </li>
+              <li class="nav-item pr-4 pl-4">
+                <a class="nav-link" href="#">Login</a>
+              </li>
+            </ul>
+          </div>
+          <div class="nav-right-icons">
+            <li>
+              <a href="#" class="link-search"></a>
+            </li>
+
+
+
+            
+            <li class="nav-item pr-4 pl-4">
+              
+              <a href="{% url 'cart' %}">
+                <div class="cart">
+                  <span class="count" id="cart_total_badge">{% get_cart_total_qty request %}</span>
+                  <!--   <span class="count">1</span> -->
+                  <!-- <i class="material-icons">shopping_cart</i> -->
+                  <i data-feather="shopping-bag" class="link-bag material-icons"  style="font-size: 15px"></i>
+  
+                </div>
+              </a>
+              
+             
+              
+            </li>
+          </div>
+        </div>
+
+        <div class="search-container hide">
+          <div class="link-search" id="link-search"></div>
+          <div class="search-bar">
+              <form action="">
+                  <input type="text" placeholder="Search Products">
+              </form>
+          </div>
+          <div class="link-close"></div>
+
+          <div class="quick-links">
+              <h2>Quick Links</h2>
+              <ul>
+                  <li>
+                      <a href="#">iPhone</a>
+                  </li>
+                  <li>
+                      <a href="#">iMac</a>
+                  </li>
+                  <li>
+                      <a href="#">Accessories</a>
+                  </li>
+                  <li>
+                      <a href="#">AirPods</a>
+                  </li>
+                  <li>
+                      <a href="#">USB-C Hub</a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+      </nav>
+    </header>
+
+    <div class="overlay"></div>
+{% if page_title == 'home_page' %}
+    <section id="home" class="banner_container">
+      <div class="container hero-container">
+        <div class="row align-items-center justify-content-center">
+          <div
+            class="col-md-6 mb-5 mb-md-0 text-center text-md-start my-banner-text"
+            id="banner-content"
+            data-aos="fade-left"
+            data-aos-delay="500"
+          >
+            <p class="banner-subtitle">PLUG. EXPAND.</p>
+            <h1 class="banner-title gradient-text">
+              Aluminium unibody design.
+            </h1>
+            <p class="banner-subtitle banner-light-text">
+              Powerful processor, 100W power delivery, <br />
+              5K display output and multiple ports <br />
+              cased in a soft alloy design.
+            </p>
+            <div class="contact-btn-section mt-3">
+              <a class="" href=" {% static '#about' %} "
+                ><button
+                  class="btn btn-primary my-primary-bg pt-2 pb-2 pl-3 pr-3"
+                >
+                  Browse
+                </button></a
+              >
+            </div>
+          </div>
+          <div class="col-md-6 " data-aos="fade-right">
+            <div class="banner-img-container">
+              <img class="ban-img img-fluid"  src=" {% static 'user_ui/images/mac.png' %} " alt="flagship_img">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+    <div class="small-sliding-container mb-5">
+        <p class="text-center banner-subtitle small-font mb-4" >OUR OFFICIAL SPONSORS</p>
+        <div class="sponsors-sliding-background"></div>
+    </div>
+{% elif page_title == 'products_page' %}
+    <section id="home" class="banner_container">
+        <div class="container hero-container">
+        <div class="row align-items-center justify-content-center">
+            <div
+            class="col-md-6 mb-5 mb-md-0 text-center text-md-start my-banner-text"
+            id="banner-content"
+            data-aos="fade-left"
+            data-aos-delay="500"
+            >
+            <p class="banner-subtitle" style="text-transform: uppercase;">Find it, love it, buy it.</p>
+            <h1 class="banner-title gradient-text">
+                The connectivity you want, all in one place.
+            </h1>
+            <p class="banner-subtitle banner-light-text">
+                Powerful processor, 100W power delivery, <br />
+                5K display output and multiple ports <br />
+                cased in a soft alloy design.
+            </p>
+            <div class="contact-btn-section mt-3">
+                <a class="" href=" {% static '#about' %} "
+                ><button
+                    class="btn btn-primary my-primary-bg pt-2 pb-2 pl-3 pr-3"
+                >
+                    Browse
+                </button></a
+                >
+            </div>
+            </div>
+            <div class="col-md-6 " data-aos="fade-right">
+            <div class="banner-img-container">
+                <img class="ban-img img-fluid"  src=" {% static 'user_ui/images/apple-devices3.png' %} " alt="flagship_img">
+            </div>
+            </div>
+        </div>
+        </div>
+        
+    </section>
+    
+
+
+    <div class="small-sliding-container mb-5">
+    <p class="text-center banner-subtitle small-font mb-4" >OUR OFFICIAL SPONSORS</p>
+    <div class="sponsors-sliding-background"></div>
+    </div>
+{% else %}
+
+{% endif %}
+    </div>

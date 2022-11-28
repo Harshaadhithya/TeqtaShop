@@ -1,0 +1,1170 @@
+{% extends 'user_base.html' %}
+{% load static %}
+{% block content %}
+<section class="single-product-section" >
+  <div class="container mb-5">
+      <div class="row">
+          <div class="col-sm-6 col-md-6 col-lg-5">
+              <div class="row single-product-images-row">
+                  
+                  
+                  <div class="col single-product-main-image-col" id="{{product.id}}_display_image_container">
+                      
+                        <div class="owl-carousel single-product-carousel owl-theme" style="position: relative;">
+                          {% for variant_img_obj in product.product_variants.first.variant_image.all %}
+                          <div class="item custom-owl-item">                      
+                              <div class="single-product-main-image-container">
+                                  <img src=" {{variant_img_obj.image.url}} " alt="" class="img-fluid single-product-main-image">
+                              </div>
+                           </div>
+                           {% endfor %}
+  
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+          <div class="col-sm-6 col-md-6 col-lg-7 single-product-text-col">
+              <div class="single-product-detail-container pt-5">
+                  <h2 class="product-detail-title mb-0" >{{product.name}}</h2>
+                  <div class=" d-flex justify-content-start  align-items-center mb-2">
+                      <div class="small-ratings">
+                          <i class="bi bi-star-fill rating-color"></i>
+                          <i class="bi bi-star-fill rating-color"></i>
+                          <i class="bi bi-star-fill rating-color"></i>
+                          <i class="bi bi-star-fill"></i>
+                          <i class="bi bi-star-fill"></i>
+                      </div>
+                      <div class="small-rating-count-container">
+                        <p class="small-rating-count mb-0 ms-2" > <span style="font-weight:bold" >(954)</span></p>
+                      </div>
+                      
+                    </div>
+                    <div id="{{product.id}}_product_detail_container">
+                      <div class="d-flex justify-content-start align-items-center" >
+                        {% if product.product_variants.first.original_price > product.product_variants.first.current_price %}
+                        <del class="me-1" style="font-size:14px; color:#7e7e7e;">Rs .{{product.product_variants.first.original_price}}</del>
+                        {% endif %}
+                        {% if product.offer != None %}
+                        <span class="ms-1 badge bg-success rounded-pill" style="height:fit-content;">{{product.offer.percentage}}%</span>
+                        {% endif %}
+              
+            
+                      </div>
+                      <p class="product-card-price mb-2 text-success">Rs. {{product.product_variants.first.current_price}}</p>
+                    </div>
+                      <div class="variants-container mb-2">
+                        <div class="color-variants justify-content-start ">
+                          {% for variant in product.product_variants.all %}
+                            {% if variant.variant_type == 'color' %}
+                              {% if forloop.counter0 == 0 %}
+                                  <div class="color-box active" id="{{product.id}}_{{variant.id}}_color_box" name="{{product.id}}_color_boxes">
+                              {% else %}
+                                  <div class="color-box" id="{{product.id}}_{{variant.id}}_color_box" name="{{product.id}}_color_boxes">
+                              {% endif %}
+                                  <a id="{{product.id}}_{{variant.id}}_color_link" onclick="variant_change_handler(event)">
+                                    <span id="{{product.id}}_{{variant.id}}_color_span" class="color-box-span" style="background-color:{{variant.value}};"></span> 
+                                  </a>
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                          
+                        </div>
+                      </div>
+                      <div id="{{product.id}}_product_extra_detail_container">
+                        <p class="single-product-availabilty mb-2">Availabilty : 
+                          {% if product.product_variants.first.available_stock > 9 %}
+                          <span class="text-success" >In Stock</span>
+                          {% elif product.product_variants.first.available_stock < 10 and product.product_variants.first.available_stock > 5 %}
+                          <span class="text-warning" >Only {{product.product_variants.first.available_stock}} left in Stock</span>
+                          {% elif  product.product_variants.first.available_stock < 6 and product.product_variants.first.available_stock > 0 %}                      
+                          <span class="text-danger" >Only {{product.product_variants.first.available_stock}} left in Stock</span>
+                          {% else %}
+                          <span class="text-danger" >Out of Stock !!</span>
+                          {% endif %}
+    
+                        </p>
+                        <p class="single-product-delivery-date" >Free delivery to <span>641014</span> by <span>27 September</span> </p>
+                        
+                        
+                      </div>
+
+                      {% if product.product_variants.first.available_stock > 0 %}
+                        <button class="btn btn-primary my-primary-bg mb-4 add-to-cart-btn update-cart" id="{{product.id}}_update_cart_btn" data-product_variant_id="{{product.product_variants.first.id}}" data-action="add" data-page="product_page" data-button_type="add_to_cart">Add to Cart</button>
+                        {% else %}
+                        <button disabled class="btn btn-primary my-primary-bg mb-4 add-to-cart-btn update-cart" id="{{product.id}}_update_cart_btn" data-product_variant_id="{{product.product_variants.first.id}}" data-action="add" data-page="product_page" data-button_type="add_to_cart">Add to Cart</button>
+                      {% endif %}
+                        
+                        <div id="{{product.id}}_product_description_container">
+                          <div class="single-product-description-container">
+                            {% if product.product_variants.first.description != '' %}
+                              {{product.product_variants.first.description | safe}}
+                            {% else %}
+                              {{product.description | safe}}
+                            {% endif %}
+                            
+                          </div>
+                        </div>
+                        
+                      
+                     
+                    </div>
+                    
+              
+              
+          </div>
+      </div>
+  </div>
+
+  <div class="container mb-5">
+      <div class="single-product-tags-container justify-content-start justify-content-lg-center">
+          <div class="single-product-tag rounded ">
+              <div class="shopping-tag-icon-container">
+                  <img  src=" {% static 'user_ui/images/shield.png' %} " alt="">
+              </div>
+              <p class="shopping-tag-text mb-0" >2 Years Warranty</p>
+          </div>
+          
+          <div class="single-product-tag rounded ">
+              <div class="shopping-tag-icon-container">
+                  <img  src=" {% static 'user_ui/images/packing.png' %} " alt="">
+              </div>
+              <p class="shopping-tag-text mb-0" >Free Shipping</p>
+          </div>
+          <div class="single-product-tag rounded ">
+              <div class="shopping-tag-icon-container">
+                  <img  src=" {% static 'user_ui/images/call-center.png' %} " alt="">
+              </div>
+              <p class="shopping-tag-text mb-0" >Awesome Support</p>
+          </div>
+          <div class="single-product-tag rounded ">
+              <div class="shopping-tag-icon-container">
+                  <img  src=" {% static 'user_ui/images/return.png' %} " alt="">
+              </div>
+              <p class="shopping-tag-text mb-0" >30 Day Return</p>
+          </div>
+      </div>
+  </div>
+
+  <!-- <div class="slider-container mb-5" >
+      <p class="text-center banner-subtitle small-font" >OUR OFFICIAL SPONSORS</p>
+      <div class="clients-slider mt-4"></div>
+  </div> -->
+  <div class="small-sliding-container mb-5">
+    <p class="text-center banner-subtitle small-font mb-4" >OUR OFFICIAL SPONSORS</p>
+    <div class="sponsors-sliding-background"></div>
+  </div>
+
+  <div class="sliding-container mb-5">
+      <div class="sliding-background"></div>
+  </div>
+
+  
+
+  
+  <div class="container mb-5">
+    <div class="row product-table-comment-row">
+      <div class="col-lg-5 product-table-col">
+        <div class="row">
+          
+        </div>
+        <p class="component-heading-text" >Product Specification</p>
+        <div class="card product-table-card shadow-sm">
+          <div class="card-body">
+            <div class="table-container">
+              <table class="product-table">
+                <tbody>
+                  <tr>
+                    <th>Name</th>
+                    <td>Teqta 6 in 1 USB-C Hub Teqta 6 in 1 USB-C Hub</td>
+                  </tr>
+                  <tr>
+                    <th>Warranty</th>
+                    <td>6 Months</td>
+                  </tr>
+                  <tr>
+                    <th>Manufactured Date</th>
+                    <td>24th September 2022</td>
+                  </tr>
+                  <tr>
+                    <th>Compatible with</th>
+                    <td>
+                      <ul class="checkmark ps-0 mb-0">
+                        <li>Macbook Pro</li>
+                        <li>Macbook Air</li>
+                        <li>iPad Pro</li>
+                      </ul>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <th>Name</th>
+                    <td>Teqta 6 in 1 USB-C Hub Teqta 6 in 1 USB-C Hub</td>
+                  </tr>
+                  <tr>
+                    <th>Warranty</th>
+                    <td>6 Months</td>
+                  </tr>
+                  <tr>
+                    <th>Manufactured Date</th>
+                    <td>24th September 2022</td>
+                  </tr>
+                  <tr>
+                    <th>Compatible with</th>
+                    <td>
+                      <ul class="checkmark ps-0 mb-0">
+                        <li>Macbook Pro</li>
+                        <li>Macbook Air</li>
+                        <li>iPad Pro</li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Name</th>
+                    <td>Teqta 6 in 1 USB-C Hub Teqta 6 in 1 USB-C Hub</td>
+                  </tr>
+                  <tr>
+                    <th>Warranty</th>
+                    <td>6 Months</td>
+                  </tr>
+                  <tr>
+                    <th>Manufactured Date</th>
+                    <td>24th September 2022</td>
+                  </tr>
+                  <tr>
+                    <th>Compatible with</th>
+                    <td>
+                      <ul class="checkmark ps-0 mb-0">
+                        <li>Macbook Pro</li>
+                        <li>Macbook Air</li>
+                        <li>iPad Pro</li>
+                      </ul>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      <div class="col-lg-7 p-md-4 mt-5 mt-lg-0">
+        <div class="comment-section-container p-1">
+          <div class="comment-form-container">
+            <form>
+              
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label my-form-label mb-0">Post a Review:</label>
+                
+                <!-- <div class="mb-3 d-flex comment-rating" id="comment_rating">
+                  <i class="bi bi-star-fill rating-checked" name="review-star" data-rating_value="1" onmouseover="ratingHandler(event,'review-star')" onmouseout="ratingHandler(event,'review-star')"></i>
+                  <i class="bi bi-star-fill" name="review-star" data-rating_value="2" onmouseover="ratingHandler(event,'review-star')" onmouseout="ratingHandler(event,'review-star')"></i>
+                  <i class="bi bi-star-fill" name="review-star" data-rating_value="3" onmouseover="ratingHandler(event,'review-star')" onmouseout="ratingHandler(event,'review-star')"></i>
+                  <i class="bi bi-star-fill" name="review-star" data-rating_value="4" onmouseover="ratingHandler(event,'review-star')" onmouseout="ratingHandler(event,'review-star')"></i>
+                  <i class="bi bi-star-fill" name="review-star" data-rating_value="5" onmouseover="ratingHandler(event,'review-star')" onmouseout="ratingHandler(event,'review-star')"></i>
+                </div> -->
+                <div class="rate_container">
+                  <!-- <div class="post">
+                    <div class="text">Thanks for rating us!</div>
+                    <div class="edit">EDIT</div>
+                  </div> -->
+                  <div class="star-widget">
+                    <input type="radio" name="rate" id="rate-5">
+                    <label for="rate-5" class="bi bi-star-fill "></label>
+                    <input type="radio" name="rate" id="rate-4">
+                    <label for="rate-4" class="bi bi-star-fill "></label>
+                    <input type="radio" name="rate" id="rate-3">
+                    <label for="rate-3" class="bi bi-star-fill "></label>
+                    <input type="radio" name="rate" id="rate-2">
+                    <label for="rate-2" class="bi bi-star-fill "></label>
+                    <input type="radio" name="rate" id="rate-1">
+                    <label for="rate-1" class="bi bi-star-fill"></label>
+                  </div>
+                </div>
+                <textarea class="form-control" placeholder="Describe your experience..." id="exampleFormControlTextarea1" rows="3"></textarea>
+              </div>
+              
+              <button type="submit" class="btn btn-primary my-primary-bg add-to-cart-btn">Post</button>
+            </form>
+          </div>
+          <div class="other-comments-container">
+            <div class="card shadow-sm testimonial-card mt-4" style="border-top:5px solid #389fff;">
+                    
+              <div class="card-body">
+                <!-- <h3 class="text-center">Search Engine Optimization</h3> -->
+                <div class="client-flex">
+                  <div class="client-img">
+                    <img src=" {% static 'user_ui/images/clients/prof_img.png' %} " alt="">
+                  </div>
+                  <div class="testimonial-client-name-wrapper my-auto">
+                    <p class=" mb-0 testimonial-client-name">Harshaadhithya K</p>
+                    <div class="small-ratings">
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                  </div>
+                  </div>
+                </div>
+               
+                <hr class="mx-auto w-100 mt-2  mb-2" style="color: rgb(200, 225, 233);">
+                <p>
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>                            
+              </div>
+            </div>
+            <div class="card shadow-sm testimonial-card mt-4" style="border-top:5px solid #389fff;">
+                    
+              <div class="card-body">
+                <!-- <h3 class="text-center">Search Engine Optimization</h3> -->
+                <div class="client-flex">
+                  <div class="client-img">
+                    <img src=" {% static 'user_ui/images/clients/prof_img.png' %} " alt="">
+                  </div>
+                  <div class="testimonial-client-name-wrapper my-auto">
+                    <p class=" mb-0 testimonial-client-name">Harshaadhithya K</p>
+                    <div class="small-ratings">
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                  </div>
+                  </div>
+                </div>
+               
+                <hr class="mx-auto w-100 mt-2  mb-2" style="color: rgb(200, 225, 233);">
+                <p>
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>                            
+              </div>
+            </div>
+            <div class="card shadow-sm testimonial-card mt-4" style="border-top:5px solid #389fff;">
+                    
+              <div class="card-body">
+                <!-- <h3 class="text-center">Search Engine Optimization</h3> -->
+                <div class="client-flex">
+                  <div class="client-img">
+                    <img src=" {% static 'user_ui/images/clients/prof_img.png' %} " alt="">
+                  </div>
+                  <div class="testimonial-client-name-wrapper my-auto">
+                    <p class=" mb-0 testimonial-client-name">Harshaadhithya K</p>
+                    <div class="small-ratings">
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                  </div>
+                  </div>
+                </div>
+               
+                <hr class="mx-auto w-100 mt-2  mb-2" style="color: rgb(200, 225, 233);">
+                <p>
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>                            
+              </div>
+            </div>
+            <div class="card shadow-sm testimonial-card mt-4" style="border-top:5px solid #389fff;">
+                    
+              <div class="card-body">
+                <!-- <h3 class="text-center">Search Engine Optimization</h3> -->
+                <div class="client-flex">
+                  <div class="client-img">
+                    <img src=" {% static 'user_ui/images/clients/prof_img.png' %} " alt="">
+                  </div>
+                  <div class="testimonial-client-name-wrapper my-auto">
+                    <p class=" mb-0 testimonial-client-name">Harshaadhithya K</p>
+                    <div class="small-ratings">
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                  </div>
+                  </div>
+                </div>
+               
+                <hr class="mx-auto w-100 mt-2  mb-2" style="color: rgb(200, 225, 233);">
+                <p>
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>                            
+              </div>
+            </div>
+            <div class="card shadow-sm testimonial-card mt-4" style="border-top:5px solid #389fff;">
+                    
+              <div class="card-body">
+                <!-- <h3 class="text-center">Search Engine Optimization</h3> -->
+                <div class="client-flex">
+                  <div class="client-img">
+                    <img src=" {% static 'user_ui/images/clients/prof_img.png' %} " alt="">
+                  </div>
+                  <div class="testimonial-client-name-wrapper my-auto">
+                    <p class=" mb-0 testimonial-client-name">Harshaadhithya K</p>
+                    <div class="small-ratings">
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                  </div>
+                  </div>
+                </div>
+               
+                <hr class="mx-auto w-100 mt-2  mb-2" style="color: rgb(200, 225, 233);">
+                <p>
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>                            
+              </div>
+            </div>
+            <div class="card shadow-sm testimonial-card mt-4" style="border-top:5px solid #389fff;">
+                    
+              <div class="card-body">
+                <!-- <h3 class="text-center">Search Engine Optimization</h3> -->
+                <div class="client-flex">
+                  <div class="client-img">
+                    <img src=" {% static 'user_ui/images/clients/prof_img.png' %} " alt="">
+                  </div>
+                  <div class="testimonial-client-name-wrapper my-auto">
+                    <p class=" mb-0 testimonial-client-name">Harshaadhithya K</p>
+                    <div class="small-ratings">
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                  </div>
+                  </div>
+                </div>
+               
+                <hr class="mx-auto w-100 mt-2  mb-2" style="color: rgb(200, 225, 233);">
+                <p>
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>                            
+              </div>
+            </div>
+            <div class="card shadow-sm testimonial-card mt-4" style="border-top:5px solid #389fff;">
+                    
+              <div class="card-body">
+                <!-- <h3 class="text-center">Search Engine Optimization</h3> -->
+                <div class="client-flex">
+                  <div class="client-img">
+                    <img src=" {% static 'user_ui/images/clients/prof_img.png' %} " alt="">
+                  </div>
+                  <div class="testimonial-client-name-wrapper my-auto">
+                    <p class=" mb-0 testimonial-client-name">Harshaadhithya K</p>
+                    <div class="small-ratings">
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                  </div>
+                  </div>
+                </div>
+               
+                <hr class="mx-auto w-100 mt-2  mb-2" style="color: rgb(200, 225, 233);">
+                <p>
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>                            
+              </div>
+            </div>
+            <div class="card shadow-sm testimonial-card mt-4" style="border-top:5px solid #389fff;">
+                    
+              <div class="card-body">
+                <!-- <h3 class="text-center">Search Engine Optimization</h3> -->
+                <div class="client-flex">
+                  <div class="client-img">
+                    <img src=" {% static 'user_ui/images/clients/prof_img.png' %} " alt="">
+                  </div>
+                  <div class="testimonial-client-name-wrapper my-auto">
+                    <p class=" mb-0 testimonial-client-name">Harshaadhithya K</p>
+                    <div class="small-ratings">
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                  </div>
+                  </div>
+                </div>
+               
+                <hr class="mx-auto w-100 mt-2  mb-2" style="color: rgb(200, 225, 233);">
+                <p>
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>                            
+              </div>
+            </div>
+            <div class="card shadow-sm testimonial-card mt-4" style="border-top:5px solid #389fff;">
+                    
+              <div class="card-body">
+                <!-- <h3 class="text-center">Search Engine Optimization</h3> -->
+                <div class="client-flex">
+                  <div class="client-img">
+                    <img src=" {% static 'user_ui/images/clients/prof_img.png' %} " alt="">
+                  </div>
+                  <div class="testimonial-client-name-wrapper my-auto">
+                    <p class=" mb-0 testimonial-client-name">Harshaadhithya K</p>
+                    <div class="small-ratings">
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                  </div>
+                  </div>
+                </div>
+               
+                <hr class="mx-auto w-100 mt-2  mb-2" style="color: rgb(200, 225, 233);">
+                <p>
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>                            
+              </div>
+            </div>
+            <div class="card shadow-sm testimonial-card mt-4" style="border-top:5px solid #389fff;">
+                    
+              <div class="card-body">
+                <!-- <h3 class="text-center">Search Engine Optimization</h3> -->
+                <div class="client-flex">
+                  <div class="client-img">
+                    <img src=" {% static 'user_ui/images/clients/prof_img.png' %} " alt="">
+                  </div>
+                  <div class="testimonial-client-name-wrapper my-auto">
+                    <p class=" mb-0 testimonial-client-name">Harshaadhithya K</p>
+                    <div class="small-ratings">
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill rating-color"></i>
+                      <i class="bi bi-star-fill"></i>
+                      <i class="bi bi-star-fill"></i>
+                  </div>
+                  </div>
+                </div>
+               
+                <hr class="mx-auto w-100 mt-2  mb-2" style="color: rgb(200, 225, 233);">
+                <p>
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>                            
+              </div>
+            </div>
+
+    
+          </div>
+
+         
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+    <div class="container mb-5">
+      <p class="component-heading-text">Recommended Products</p>
+      <div class="row">
+        <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+          <a href=" {% static '' %} ">
+            <div class="card product-card" >
+              
+              
+              
+            <div class="card-img-top-container">
+              <img src=" {% static 'user_ui/images/products/apple-watch-pcq.png' %} " class="card-img-top img-fluid" alt="...">
+            </div>
+            <div class="card-body text-center">
+              
+              <div class="variants-container mb-2">
+                <div class="color-variants">
+                  <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                  <div class="color-box"><span class="color-box-span color-black"></span></div>
+                  <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                  <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                </div>
+              </div>
+              <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+              <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+              <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+              <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+              <div class=" d-flex justify-content-center align-items-center">
+                <div class="small-ratings">
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="small-rating-count-container">
+                  <p class="small-rating-count mb-0 ms-2" >954</p>
+                </div>
+                
+              </div>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div></a>
+          
+        </div>
+        <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+          <a href=" {% static '' %} ">
+            <div class="card product-card" >
+              <!-- <div class="badge-container">
+                <div class="dummy-badge">
+                  <span class="badge  bg-primary ">Best Selling</span>
+                </div>
+              </div> -->
+              <span class=" product-badge-outer-span position-absolute  badge  bg-primary">
+                Best Selling
+                <!-- <span class="visually-hidden">unread messages</span> -->
+              </span>
+              
+            <div class="card-img-top-container">
+              <img src=" {% static 'user_ui/images/products/Apple-Airpods-Transparent-PNG.png' %} " class="card-img-top img-fluid" alt="...">
+            </div>
+            <div class="card-body text-center">
+              
+              <div class="variants-container mb-2">
+                <div class="color-variants">
+                  <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                  <div class="color-box"><span class="color-box-span color-black"></span></div>
+                  <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                  <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                </div>
+              </div>
+              <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+              <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+              <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+              <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+              <div class=" d-flex justify-content-center align-items-center">
+                <div class="small-ratings">
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="small-rating-count-container">
+                  <p class="small-rating-count mb-0 ms-2" >954</p>
+                </div>
+                
+              </div>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div></a>
+          
+        </div>
+        <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+          <a href=" {% static '' %} ">
+            <div class="card product-card" >
+              
+              
+            <div class="card-img-top-container">
+              <img src=" {% static 'user_ui/images/iphone_purple.png' %} " class="card-img-top img-fluid" alt="...">
+            </div>
+            <div class="card-body text-center">
+              
+              <div class="variants-container mb-2">
+                <div class="color-variants">
+                  <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                  <div class="color-box"><span class="color-box-span color-black"></span></div>
+                  <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                  <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                </div>
+              </div>
+              <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+              <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+              <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+              <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+              <div class=" d-flex justify-content-center align-items-center">
+                <div class="small-ratings">
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="small-rating-count-container">
+                  <p class="small-rating-count mb-0 ms-2" >954</p>
+                </div>
+                
+              </div>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div></a>
+          
+        </div>
+        <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+          <a href=" {% static '' %} ">
+            <div class="card product-card" >
+              <!-- <div class="badge-container">
+                <div class="dummy-badge">
+                  <span class="badge  bg-primary ">Best Selling</span>
+                </div>
+              </div> -->
+              <span class=" product-badge-outer-span position-absolute  badge  bg-primary">
+                Best Selling
+                <!-- <span class="visually-hidden">unread messages</span> -->
+              </span>
+              
+            <div class="card-img-top-container">
+              <img src=" {% static 'user_ui/images/products/hub3.png' %} " class="card-img-top img-fluid" alt="...">
+            </div>
+            <div class="card-body text-center">
+              
+              <div class="variants-container mb-2">
+                <div class="color-variants">
+                  <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                  <div class="color-box"><span class="color-box-span color-black"></span></div>
+                  <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                  <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                </div>
+              </div>
+              <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+              <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+              <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+              <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+              <div class=" d-flex justify-content-center align-items-center">
+                <div class="small-ratings">
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="small-rating-count-container">
+                  <p class="small-rating-count mb-0 ms-2" >954</p>
+                </div>
+                
+              </div>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div></a>
+          
+        </div>
+        <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+          <a href=" {% static '' %} ">
+            <div class="card product-card" >
+              
+              
+            <div class="card-img-top-container">
+              <img src=" {% static 'user_ui/images/products/apple-watch-pcq.png' %} " class="card-img-top img-fluid" alt="...">
+            </div>
+            <div class="card-body text-center">
+              
+              <div class="variants-container mb-2">
+                <div class="color-variants">
+                  <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                  <div class="color-box"><span class="color-box-span color-black"></span></div>
+                  <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                  <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                </div>
+              </div>
+              <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+              <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+              <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+              <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+              <div class=" d-flex justify-content-center align-items-center">
+                <div class="small-ratings">
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="small-rating-count-container">
+                  <p class="small-rating-count mb-0 ms-2" >954</p>
+                </div>
+                
+              </div>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div></a>
+          
+        </div>
+        <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+          <a href=" {% static '' %} ">
+            <div class="card product-card" >
+              
+              
+            <div class="card-img-top-container">
+              <img src=" {% static 'user_ui/images/products/Apple-Airpods-Transparent-PNG.png' %} " class="card-img-top img-fluid" alt="...">
+            </div>
+            <div class="card-body text-center">
+              
+              <div class="variants-container mb-2">
+                <div class="color-variants">
+                  <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                  <div class="color-box"><span class="color-box-span color-black"></span></div>
+                  <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                  <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                </div>
+              </div>
+              <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+              <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+              <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+              <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+              <div class=" d-flex justify-content-center align-items-center">
+                <div class="small-ratings">
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="small-rating-count-container">
+                  <p class="small-rating-count mb-0 ms-2" >954</p>
+                </div>
+                
+              </div>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div></a>
+          
+        </div>
+        <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+          <a href=" {% static '' %} ">
+            <div class="card product-card" >
+              
+              
+            <div class="card-img-top-container">
+              <img src=" {% static 'user_ui/images/iphone_purple.png' %} " class="card-img-top img-fluid" alt="...">
+            </div>
+            <div class="card-body text-center">
+              
+              <div class="variants-container mb-2">
+                <div class="color-variants">
+                  <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                  <div class="color-box"><span class="color-box-span color-black"></span></div>
+                  <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                  <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                </div>
+              </div>
+              <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+              <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+              <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+              <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+              <div class=" d-flex justify-content-center align-items-center">
+                <div class="small-ratings">
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="small-rating-count-container">
+                  <p class="small-rating-count mb-0 ms-2" >954</p>
+                </div>
+                
+              </div>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div></a>
+          
+        </div>
+        <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+          <a href=" {% static '' %} ">
+            <div class="card product-card" >
+             
+              
+            <div class="card-img-top-container">
+              <img src=" {% static 'user_ui/images/products/hub3.png' %} " class="card-img-top img-fluid" alt="...">
+            </div>
+            <div class="card-body text-center">
+              
+              <div class="variants-container mb-2">
+                <div class="color-variants">
+                  <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                  <div class="color-box"><span class="color-box-span color-black"></span></div>
+                  <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                  <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                </div>
+              </div>
+              <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+              <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+              <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+              <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+              <div class=" d-flex justify-content-center align-items-center">
+                <div class="small-ratings">
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="small-rating-count-container">
+                  <p class="small-rating-count mb-0 ms-2" >954</p>
+                </div>
+                
+              </div>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div></a>
+          
+        </div>
+        <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+          <a href=" {% static '' %} ">
+            <div class="card product-card" >
+              
+              
+            <div class="card-img-top-container">
+              <img src=" {% static 'user_ui/images/products/apple-watch-pcq.png' %} " class="card-img-top img-fluid" alt="...">
+            </div>
+            <div class="card-body text-center">
+              
+              <div class="variants-container mb-2">
+                <div class="color-variants">
+                  <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                  <div class="color-box"><span class="color-box-span color-black"></span></div>
+                  <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                  <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                </div>
+              </div>
+              <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+              <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+              <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+              <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+              <div class=" d-flex justify-content-center align-items-center">
+                <div class="small-ratings">
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="small-rating-count-container">
+                  <p class="small-rating-count mb-0 ms-2" >954</p>
+                </div>
+                
+              </div>
+            </div>
+          </div></a>
+          
+        </div>
+        <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+          <a href=" {% static '' %} ">
+            <div class="card product-card" >
+             
+              
+            <div class="card-img-top-container">
+              <img src=" {% static 'user_ui/images/products/Apple-Airpods-Transparent-PNG.png' %} " class="card-img-top img-fluid" alt="...">
+            </div>
+            <div class="card-body text-center">
+              
+              <div class="variants-container mb-2">
+                <div class="color-variants">
+                  <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                  <div class="color-box"><span class="color-box-span color-black"></span></div>
+                  <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                  <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                </div>
+              </div>
+              <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+              <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+              <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+              <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+              <div class=" d-flex justify-content-center align-items-center">
+                <div class="small-ratings">
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="small-rating-count-container">
+                  <p class="small-rating-count mb-0 ms-2" >954</p>
+                </div>
+                
+              </div>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div></a>
+          
+        </div>
+        <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+          <a href=" {% static '' %} ">
+            <div class="card product-card" >
+              
+              
+            <div class="card-img-top-container">
+              <img src=" {% static 'user_ui/images/iphone_purple.png' %} " class="card-img-top img-fluid" alt="...">
+            </div>
+            <div class="card-body text-center">
+              
+              <div class="variants-container mb-2">
+                <div class="color-variants">
+                  <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                  <div class="color-box"><span class="color-box-span color-black"></span></div>
+                  <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                  <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                </div>
+              </div>
+              <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+              <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+              <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+              <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+              <div class=" d-flex justify-content-center align-items-center">
+                <div class="small-ratings">
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="small-rating-count-container">
+                  <p class="small-rating-count mb-0 ms-2" >954</p>
+                </div>
+                
+              </div>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div></a>
+          
+        </div>
+        <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+          <a href=" {% static '' %} ">
+            <div class="card product-card" >
+
+              
+            <div class="card-img-top-container">
+              <img src=" {% static 'user_ui/images/products/hub3.png' %} " class="card-img-top img-fluid" alt="...">
+            </div>
+            <div class="card-body text-center">
+              
+              <div class="variants-container mb-2">
+                <div class="color-variants">
+                  <div class="color-box active"><span class="color-box-span color-orange"></span></div>
+                  <div class="color-box"><span class="color-box-span color-black"></span></div>
+                  <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                  <div class="color-box"><span class="color-box-span color-blue"></span></div>
+                </div>
+              </div>
+              <h5 class="card-title">TEQTA 6 in 1 USB C HUB</h5>
+              <!-- <p class="card-text mb-1">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p> -->
+              <!-- <p class="product-card-price" >Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p> -->
+              <p class="product-card-price mb-1 text-success">Rs. 3,199.00</p>
+              <div class=" d-flex justify-content-center align-items-center">
+                <div class="small-ratings">
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill rating-color"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="small-rating-count-container">
+                  <p class="small-rating-count mb-0 ms-2" >954</p>
+                </div>
+                
+              </div>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div></a>
+          
+        </div>
+
+
+      </div>
+    </div>
+  
+  
+</section>
+
+
+
+
+{% endblock %}
+
+{% block script_reference %}
+
+<script>
+
+  const carousel_imgs_html_content=(img_list)=>{
+    html_content=''
+    for(let img_url of img_list){
+      html_content+=`<div class="item custom-owl-item">                      
+        <div class="single-product-main-image-container">
+            <img src="${img_url} " alt="" class="img-fluid single-product-main-image">
+        </div>
+     </div>\n`
+    }
+    return html_content;
+  }
+  const variant_change_handler=(event)=>{
+    console.log(event.target.id);
+    let product_id=event.target.id.split('_')[0];
+    let variant_id=event.target.id.split('_')[1];
+    fetch(`/variant_change_handler_endpoint/${variant_id}/`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        if(data['status'] === 'success'){
+          let img_container= document.getElementById(`${product_id}_display_image_container`);
+          let variant_img_urls = data['variant_img_urls']
+          img_container.innerHTML=`
+          <div class="owl-carousel single-product-carousel owl-theme" style="position: relative;">
+            ${carousel_imgs_html_content(variant_img_urls)}
+        </div>
+          `;
+          let color_boxes=document.getElementsByName(`${product_id}_color_boxes`);
+          for(let color_box of color_boxes){
+            color_box.classList.remove("active");
+          }
+          document.getElementById(`${product_id}_${variant_id}_color_box`).classList.add("active");
+          //reinitislising owl
+          $('.single-product-carousel').owlCarousel({
+            loop:true,
+            margin:10,
+            nav:false,
+            responsive:{
+                0:{
+                    items:1
+                },
+                600:{
+                    items:1
+                },
+                1000:{
+                    items:1
+                }
+            }
+          })
+          }
+
+          let product_detail_container=document.getElementById(`${product_id}_product_detail_container`);
+          let product=data['product']
+          console.log(product)
+          product_detail_container.innerHTML=`
+          <div class="d-flex justify-content-start align-items-center" >
+            ${parseInt(product.original_price) > parseInt(product.current_price) ? `<del class="me-1" style="font-size:14px; color:#7e7e7e;">Rs .${product.original_price}</del>`:''}
+            ${product.offer !== null ? `<span class="ms-1 badge bg-success rounded-pill" style="height:fit-content;">${product.offer.percentage}%</span>` : ''}
+          </div>
+          <p class="product-card-price mb-2 text-success">Rs. ${product.current_price}</p>
+          
+          `;
+
+          let product_extra_detail_container=document.getElementById(`${product_id}_product_extra_detail_container`);
+          product_extra_detail_container.innerHTML=`
+          <p class="single-product-availabilty mb-2">Availabilty : 
+            ${parseInt(product.available_stock) > 9 ? `<span class="text-success" >In Stock</span>` : ''}
+            ${parseInt(product.available_stock) < 10 && parseInt(product.available_stock) > 5 ? `<span class="text-warning" >Only ${product.available_stock} left in Stock</span>` : ''}
+            ${parseInt(product.available_stock) < 6 && parseInt(product.available_stock) > 0 ? `<span class="text-danger" >Only ${product.available_stock} left in Stock</span>` : '' }
+            ${parseInt(product.available_stock) < 1 ? `<span class="text-danger" >Out of Stock !!</span>` : ''}
+
+          </p>
+          <p class="single-product-delivery-date" >Free delivery to <span>641014</span> by <span>27 September</span> </p>
+         
+                        
+                        
+          `;
+
+          let update_cart_btn = document.getElementById(`${product_id}_update_cart_btn`);
+          update_cart_btn.dataset.product_variant_id=product.variant_id;
+          if(parseInt(product.available_stock) > 0 ){
+            update_cart_btn.disabled=false;
+          }
+          else{
+            update_cart_btn.disabled=true;
+          }
+
+          let product_description_container=document.getElementById(`${product_id}_product_description_container`);
+          product_description_container.innerHTML=`
+          <div class="single-product-description-container">
+
+               ${product.description}
+            
+            
+          </div>
+          `
+
+          
+      })
+  }
+</script>
+{% endblock %}

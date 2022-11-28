@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     'users',
     'inventory',
     'admin_dashboard',
+    "orders",
+    "store",
+
+    'rest_framework',
 
     'ckeditor',
     'ckeditor_uploader',
