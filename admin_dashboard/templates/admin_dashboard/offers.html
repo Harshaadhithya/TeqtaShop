@@ -156,7 +156,7 @@
                   <div class="card-header d-flex justify-content-end">
                     <!-- <h4>Advanced Table</h4> -->
                     
-                    <a href="{% url 'add_collection' %}" class="btn btn-icon icon-left btn-success"><i class="fas fa-plus"></i> Add Collections</a>
+                    <a href="{% url 'add_offer' %}" class="btn btn-icon icon-left btn-success"><i class="fas fa-plus"></i> Add Offers</a>
 
                   </div>
                   <div class="card-body">
@@ -166,11 +166,7 @@
                           <tr>
                             
                             <th>Name</th>
-                            
-                            <th>Count</th>
-                            <th>Products</th>
-                            <th>Offers</th>
-                            <th>Status</th>
+                            <th>Percentage</th>
                             <th>Created At</th>
                             <th>Actions</th>
                             
@@ -180,49 +176,28 @@
                           </tr>
                         </thead>
                         <tbody>
-                          {% for collection in collections %}
+                          {% for offer in offers %}
                           <tr>
                             
                             
                             
-                            <td  class="align-middle" ><p class="m-auto font-weight-bold text-primary" >{{collection.name}}</p></td>
+                            <td  class="align-middle" ><p class="m-auto font-weight-bold text-primary" >{{offer.name}}</p></td>
                             
                             <td  class="align-middle">
-                              <p id="{{collection.id}}_count" class="mb-0">{{collection.products.count}}</p>
+                              <p class="mb-0">{{offer.percentage}}</p>
                             </td>
                          
-                            <td  class="align-middle">
-                                <a href="" data-toggle="modal" data-target="#view_collection_modal" id="{{collection.id}}_eye_btn" onclick="viewBtnHandler(event);"><i id="{{collection.id}}_eye_btn" class="far fa-eye" id="{{collection.id_eye_icon}}"></i></a>
-                            </td>
                             
                             <td  class="align-middle">
-                              {% if collection.offer != None %}
-                                <p class="mb-0">{{collection.offer}} - {{collection.offer.percentage}}%</p>
-                              {% else %}
-                                <p class="mb-0">-</p>
-                              {% endif %}
-                            </td>
-
-                            <td class="align-middle">
-                              {% if collection.status == 'Active' %}
-                                <div class="badge badge-success">Active</div>
-                              {% elif collection.status == 'Inactive' %}
-                                <div class="badge badge-warning">inactive</div>
-                              {% else %}
-                                <div class="badge badge-info">{{collection.status}}</div>
-                              {% endif %}
-                            </td>
-
-                            <td  class="align-middle">
-                              <p class="mb-0" >{{collection.created}}</p>
+                              <p class="mb-0" >{{offer.created}}</p>
                             </td>
                             
                             <!-- <td class="align-middle">
                               <p>{{product_dict.product.description|slice:80}}</p>
                             </td> -->
                             <td  class="align-middle">
-                                <a href="{% url 'edit_collection' collection.id %}" class="btn btn-icon btn-warning"><i class="far fa-edit"></i></a>
-                                <a href="{% url 'delete_collection' collection.id %}" class="btn btn-icon btn-danger ml-3"><i class="fas fa-trash"></i></a>
+                                <a href="{% url 'edit_offer' offer.id %}" class="btn btn-icon btn-warning"><i class="far fa-edit"></i></a>
+                                <a href="{% url 'delete_offer' offer.id %}" class="btn btn-icon btn-danger ml-3"><i class="fas fa-trash"></i></a>
                             </td>
 
                           </tr>
@@ -241,40 +216,7 @@
         <!-- Button trigger modal -->
 
   
-  <!-- Modal -->
-  <div class="modal fade" id="view_collection_modal" tabindex="-1" role="dialog" aria-labelledby="view_collection_modal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="view_collection_products_title"></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body" id="modal-body">
-           
-            <!-- <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-4">
-                        <img alt="image" src="{% static 'iphone_purple.png' %}" class="rounded" width="55" data-toggle="tooltip" title="" data-original-title="iPhone Pro">
-                    </div>
-                    <div class="col-6 ">
-                        <p class="mb-0">iPhone Pro</p>
-                    </div>
-                    <div class="col-2">
-                        <a href="" class="text-danger"><i class="fas fa-times"></i></a>
-                    </div>
-                </div>
-                <hr>
-            </div> -->
-            
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  
     
 
 {% endblock %}
@@ -294,82 +236,9 @@
         "{% endfor %}"
     "{% endif %}"
 
-    const removeItemFromCollectionHandler=(event)=>{
-      console.log(event.target.id);
-      let collection_id=event.target.id.split('_')[0];
-      let product_id=event.target.id.split('_')[1];
+    
 
-      fetch(`/admin-dashboard/remove_product_from_collection/${collection_id}/${product_id}/`)
-      .then(response => response.json())
-      .then(data => {
-        if(data['status']==='success'){
-          document.getElementById(`${collection_id}_count`).innerText=data['count'];
-          document.getElementById(`${collection_id}_${product_id}_row`).style.display="none";
-        }
-      })
-      
-    }
-
-    const viewBtnHandler=(event)=>{
-      let collection_id=event.target.id.split('_')[0];
-      fetch(`/admin-dashboard/view_collection_products_endpoint/${collection_id}/`)
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('modal-body').innerHTML='';
-        document.getElementById('view_collection_products_title').innerText='';
-        let product_list=data['product_list'];
-
-        let view_product_content='';
-        
-        document.getElementById('view_collection_products_title').innerText=data['collection_title'];
-        for(let product_dict of product_list){
-          console.log(product_dict);
-          let content=`
-          <tr id="${collection_id}_${product_dict['product_id']}_row">
-            <th scope="row">${product_dict['s_no']}</th>
-            <td>
-                <img alt="image" src="${product_dict['image_url']}" class="rounded mt-3 mb-3" width="55" data-toggle="tooltip" title="" data-original-title="iPhone Pro">
-            </td>
-            <td>${product_dict['product_name']}</td>
-            <td>
-                <button id="${collection_id}_${product_dict['product_id']}" onclick="removeItemFromCollectionHandler(event)" class="btn text-danger"><i id="${collection_id}_${product_dict['product_id']}_icon" class="fas fa-times"></i></button>
-            </td>
-          </tr>
-          `
-          view_product_content+='\n'+content;
-          
-        }
-        
-        const div = document.createElement('div');
-        div.className = 'row';
-        div.id = 'appended_div'
-      
-        div.innerHTML = `
-        <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Image</th>
-                <th scope="col">Product</th>
-                <th scope="col">Remove</th>
-              </tr>
-            </thead>
-            <tbody id="hello">
-              ${view_product_content}
-            </tbody>
-          </table>
-        `;
-        document.getElementById('modal-body').appendChild(div);
-      })
-
-      
-    }
-
-    $('#view_collection_modal').on('shown.bs.modal', function (event) {
-        console.log(event.target.id)
-        
-        
-    })
+    
 
    
 </script>

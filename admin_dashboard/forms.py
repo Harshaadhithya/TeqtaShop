@@ -18,6 +18,7 @@ class AddProductForm(ModelForm):
         self.fields['description'].widget.attrs.update({'class':'form-control'})
         self.fields['description'].required=True
         self.fields['general_price'].widget.attrs.update({'class':'form-control currency'})
+        self.fields['badge'].widget.attrs.update({'class':'select2-tags form-control'})
         self.fields['tags'].widget.attrs.update({'class':'select2-tags form-control'})
 
         # self.fields['tags'].widget.attrs.update({'class':'select-item form-control'})
@@ -76,4 +77,17 @@ class CollectionForm(ModelForm):
     def __init__(self,*args,**kwargs):
             super(CollectionForm,self).__init__(*args,**kwargs)
             self.fields['name'].widget.attrs.update({'class':'form-control'})
+            self.fields['offer'].widget.attrs.update({'class':'form-control select2'})
             self.fields['products'].widget.attrs.update({'class':'form-control select2'})
+            self.fields['status'].widget.attrs.update({'class':'form-control'})
+
+
+class OfferForm(ModelForm):
+    class Meta:
+        model=Offer
+        fields='__all__'
+
+    def __init__(self,*args,**kwargs):
+            super(OfferForm,self).__init__(*args,**kwargs)
+            self.fields['name'].widget.attrs.update({'class':'form-control'})
+            self.fields['percentage'].widget.attrs.update({'class':'form-control'})

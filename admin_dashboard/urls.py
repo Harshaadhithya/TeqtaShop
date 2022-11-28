@@ -17,8 +17,18 @@ urlpatterns = [
     path('edit_collection/<str:pk>/',edit_collection,name='edit_collection'),
     path('delete_collection/<str:pk>/',delete_collection,name='delete_collection'),
 
+    path('offers/',offers,name='offers'),
+    path('add_offer/',add_offer,name='add_offer'),
+    path('edit_offer/<str:pk>/',edit_offer,name='edit_offer'),
+    path('delete_offer/<str:pk>/',delete_offer,name='delete_offer'),
+
     path('update_stock_endpoint/',update_stock_endpoint,name='update_stock_endpoint'),
     path('delete_img_endpoint/<str:pk>/',delete_img_endpoint,name='delete_img_endpoint'),
+    path('view_collection_products_endpoint/<str:pk>/',view_collection_products_endpoint,name='view_collection_products_endpoint'),
+    path('remove_product_from_collection/<str:c_id>/<str:p_id>/',remove_product_from_collection,name='remove_product_from_collection'),
 
-    path('check/',check,name='check')
+   
+
+    path('check/',check,name='check'),
+    # path('test_data/',test_data,name='test_data')
 ]

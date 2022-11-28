@@ -1,3 +1,5 @@
+from importlib.resources import path
+from math import prod
 from multiprocessing import context
 from sys import prefix
 from django.shortcuts import render,redirect
@@ -69,8 +71,29 @@ def add_product(request):
             print("taglist",tag_list)
 
         post.setlist('tags', tag_list)
+
+        badge_list=[]
+        for badge_id in request.POST.getlist('badge'):
+            print(badge_id)
+            try:
+                if SpecialBadge.objects.filter(id=badge_id).exists(): #if this arises any error then there exist no such tag, this error is arised because we will be getting id if already tag is exist, else we will get the name of the new tag entered and when we try to match with tag id it causes an error.
+                    pass
+                
+                else:
+                    badge_obj=SpecialBadge.objects.create(name=badge_id)
+                    badge_id=badge_obj.id
+
+            except:
+                badge_obj=SpecialBadge.objects.create(name=badge_id)
+                badge_id=badge_obj.id
+            badge_list.append(badge_id)
+            print("badgelist",badge_list)
+
+        post.setlist('badge', badge_list)
+
         request.POST=post
         print(request.POST['tags'],request.POST)
+        print(request.POST["badge"])
 
         
         product_form=AddProductForm(request.POST)
@@ -240,16 +263,33 @@ def delete_img_endpoint(request,pk):
         
 def collections(request):
     collections=Collection.objects.all()
-    context={'collections':collections}
+    context={'collections':collections,'page':'Collections'}
     return render(request,'admin_dashboard/collections.html',context)
 
 def add_collection(request):
     form=CollectionForm(request.POST or None)
     if request.method == 'POST':
+        print("post method")
         if form.is_valid():
-            form.save()
-            messages.success(request,"New Collections Added !!")
-            return redirect('collections')
+            print("form valid")
+            flag=True
+            message=''
+            products=form.cleaned_data['products']
+            print("dict",products)
+            for product in products:
+                print("product",product)
+                if product.offer != None:
+                    flag=False
+                    message=f'{product.name} has an active offer : {product.offer}'
+                    break
+            if flag:
+                form.save()
+                messages.success(request,"New Collections Added !!")
+            
+                return redirect('collections')
+            else:
+                messages.warning(request,f"{message}")
+
         else:
             messages.error(request,"Something Went Wrong")
     context={'form_title':'New Collection','form':form}
@@ -260,9 +300,26 @@ def edit_collection(request,pk):
     form=CollectionForm(request.POST or None,instance=collection_obj)
     if request.method == 'POST':
         if form.is_valid():
-            form.save()
-            messages.success(request,"Collection Updated Successfully !!")
-            return redirect('collections')
+            print("form valid")
+            flag=True
+            message=''
+            products=form.cleaned_data['products']
+            print("dict",products)
+            for product in products:
+                print("product",product)
+                if product.offer != None:
+                    flag=False
+                    message=f'{product.name} has an active offer : {product.offer}'
+                    break
+            if flag:
+                form.save()
+                messages.success(request,"Collection Updated Successfully !!")            
+                return redirect('collections')
+            else:
+                messages.warning(request,f"{message}")
+            # form.save()
+            # 
+            # return redirect('collections')
         else:
             messages.error(request,"Something Went Wrong!!")
     context={'form_title':'Edit Collection','form':form}
@@ -275,6 +332,82 @@ def delete_collection(request,pk):
     messages.success(request,"Collection Deleted Successfully !!")
     return redirect('collections')
     
+def view_collection_products_endpoint(request,pk):
+    collection_obj=Collection.objects.get(id=pk)
+    collection_products=collection_obj.products.all()
+    products_list=[]
+    for index,product in enumerate(collection_products):
+        product_dict={}
+        product_dict['s_no']=index+1
+        product_dict['product_name']=product.name
+        product_dict['product_id']=product.id
+        product_dict['image_url']=product.product_variants.first().variant_image.first().image.url
+        print(product_dict)
+        products_list.append(product_dict)
+
+    context={'collection_title':collection_obj.name,'product_list':products_list,'status':'success'}
+    return JsonResponse(context)
+
+def remove_product_from_collection(request,c_id,p_id):
+    try:
+        collection_obj=Collection.objects.get(id=c_id)
+        products_obj=Product.objects.get(id=p_id)
+        collection_obj.products.remove(products_obj)
+        count=collection_obj.products.count()
+        return JsonResponse({'status':'success','count':count})
+    except:
+        return JsonResponse({'status':'failed'})
+
+
+def offers(request):
+
+    offers=Offer.objects.all()
+    context={'page':'Offers','offers':offers}
+    
+    return render(request,'admin_dashboard/offers.html',context)
+
+def add_offer(request):
+    nxt = request.GET.get("next", None)
+
+    form=OfferForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Offer added Successfully !!')
+            if nxt is not None:
+                return redirect(nxt)
+            return redirect('offers')
+        else:
+            messages.error(request,"Something went wrong !!")
+    context={'form':form,'form_title':'New Offer'}
+    return render(request,'admin_dashboard/offer_form.html',context)
+
+def edit_offer(request,pk):
+    offer_obj=Offer.objects.get(id=pk)
+    form=OfferForm(request.POST or None,instance=offer_obj)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Offer updated Successfully !!')
+            return redirect('offers')
+        else:
+            messages.error(request,"Something went wrong !!")
+    context={'form':form,'form_title':'Edit Offer'}
+    return render(request,'admin_dashboard/offer_form.html',context)
+
+def delete_offer(request,pk):
+    offer_obj=Offer.objects.get(id=pk)
+    offer_obj.delete()
+    messages.success(request,'Offer deleted successfully!!')
+    return redirect('offers')
+
+
+
+
+
+
+
+
 # from barcode import EAN13
 import barcode
   
