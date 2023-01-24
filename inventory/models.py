@@ -24,6 +24,7 @@ class Product(models.Model):
     total_reviews = models.PositiveIntegerField(default=0, null=True, blank=True)
     avg_rating = models.DecimalField(default=0, max_digits=2, decimal_places=1)
     tags = models.ManyToManyField('ProductTag', blank=True)
+    category=models.ManyToManyField('ProductCategory',blank=True)
     offer = models.ForeignKey('Offer', null=True, blank=True, on_delete=models.SET_NULL)
     badge = models.ForeignKey("SpecialBadge", on_delete=models.SET_NULL, null=True, blank=True)
 
@@ -65,6 +66,12 @@ class Variant(models.Model):
     def __str__(self):
         return f'{self.variant_type}-{self.variant_name}'
 
+class ProductCategory(models.Model):
+    name=models.CharField(max_length=200,unique=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
 
 class ProductVariant(models.Model):
     varaint_type_choices = (
@@ -75,6 +82,7 @@ class ProductVariant(models.Model):
                                 blank=True)
     # variant=models.ForeignKey(Variant,on_delete=models.SET_NULL,null=True,blank=True)
     description = RichTextUploadingField(null=True, blank=True)
+    table_content = RichTextUploadingField(null=True, blank=True)
     # variant_type=models.ForeignKey(VariantType,on_delete=models.CASCADE,null=True,blank=True)
     variant_type = models.CharField(max_length=100, null=True, choices=varaint_type_choices, default='other')
     variant_name = models.CharField(max_length=200, null=True, blank=True)
@@ -154,7 +162,7 @@ class ProductTag(models.Model):
 
 
 class SpecialBadge(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,null=False)
 
     def __str__(self):
         return self.name

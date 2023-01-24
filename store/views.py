@@ -3,7 +3,7 @@ from itertools import product
 from logging import exception
 from multiprocessing import context
 from tkinter.messagebox import NO
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from inventory.models import *
 import json
@@ -16,6 +16,10 @@ from rest_framework.response import Response
 from .serializers import *
 
 from admin_dashboard.templatetags.custom_tags import get_cart_total_qty
+from .forms import *
+from django.db.models import Q
+
+from .utils import *
 
 
 # Create your views here.
@@ -30,6 +34,53 @@ def get_cart_detail(request, msg=None):
     # print(augmented_serializer_data)
     return JsonResponse(augmented_serializer_data)
 
+
+def get_guest_cart_detail(request):
+    try:
+        cart = json.loads(request.COOKIES['cart'])
+        # we get cookie cart as a string, so we are using json.loads to ocnvert it in to dict object
+    except:
+        # whenever there is no cart cookie, then it may raise an error here, so empty dict is assigned to cart
+        cart = {}
+    
+    order = {'id':'guest_id','get_cart_total': 0, 'get_cart_qty_total': len(cart)}
+    items = []
+    cart_total_qty = order['get_cart_qty_total']
+
+    for i in cart:
+        product = ProductVariant.objects.get(id=i)
+        # print("cart total",order['get_cart_total'],"+",product.current_price * cart[i]['quantity'],"=",product.current_price * cart[i]['quantity']+order['get_cart_total'])
+        item_total=product.current_price * cart[i]['quantity']
+        order['get_cart_total'] += item_total
+        
+        # item = {
+        #     'id':product.id,
+        #     'product':{
+        #         'id':product.id,
+        #         'product':{'name':product.product.name},
+        #         'current_price':product.current_price,
+        #         'variant_name':product.variant_name,
+        #         'variant_image':{
+        #             'first':{'image':{'url':product.variant_image.first().image.url}}
+        #             },
+                
+        #         },
+        #     'quantity':cart[i]['quantity'],
+        #     'get_total':order['get_cart_total'],
+        # }
+        item = {
+            'id':product.id,
+            'product':product,
+            'quantity':cart[i]['quantity'],
+            'get_total':item_total,
+        }
+        serialized_item=GuestCartSerializer(item).data
+        
+        print(json.dumps(serialized_item),"\n\n")
+        items.append((serialized_item))
+
+    return JsonResponse({'items':items,'order':order,'cart_total_qty':cart_total_qty})
+        
 
 @api_view(['GET'])
 def get_order_item_endpoint(request, pk):
@@ -48,6 +99,13 @@ def get_order_item_endpoint(request, pk):
     print("cart", cart, "\n", type(cart))
     return cart
 
+@api_view(['GET'])
+def api_test(request,pk):
+    # product_variant_obj=ProductVariant.objects.get(id=pk)
+    # data1={'id':pk,'product':product_variant_obj}
+    # serialized_product_variant=TestSerializer(data1).data
+    # return Response(serialized_product_variant)
+    return JsonResponse({})
 
 def home(request):
     products = Product.objects.filter().order_by('-created')[:12]
@@ -60,7 +118,14 @@ def home(request):
 
 
 def products(request):
-    context = {'page_title': 'products_page'}
+    search_query=request.GET.get('search_query')
+    if search_query==None:
+        search_query=''
+    
+    products=Product.objects.distinct().filter(
+        Q(name__icontains=search_query) | Q(tags__name__icontains=search_query) | Q(category__name__icontains=search_query)
+    )
+    context = {'page_title': 'products_page','products': products,'search_query':search_query,'result_length':len(products)}
     return render(request, 'store/products.html', context)
 
 
@@ -93,29 +158,93 @@ def single_product(request, name):
 
 def cart(request):
     # context={}
-    if request.user.is_authenticated:
-        customer = request.user.profile
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        items = order.orderitem_set.all()
-    else:
-        order = {'get_cart_total': 0, 'get_cart_qty_total': 0}
-        items = []
-    cart_total_qty = order.get_cart_qty_total
+    # if request.user.is_authenticated:
+    #     customer = request.user.profile
+    #     order, created = Order.objects.get_or_create(customer=customer, complete=False)
+    #     items = order.orderitem_set.all()
+    #     cart_total_qty = order.get_cart_qty_total
+    # else:
+    #     cookieData=cookieCart(request)
+    #     items=cookieData['items']
+    #     order=cookieData['order']
+    #     cart_total_qty=cookieData['cart_total_qty']
+        
+    data=cartData(request)
+    items=data['items']
+    order=data['order']
+    cart_total_qty=data['cart_total_qty']
+
     context = {'items': items, 'order': order, 'cart_total_qty': cart_total_qty}
     return render(request, 'store/cart-page.html', context)
 
 
 def checkout(request):
+    data=cartData(request)
+    items=data['items']
+    order=data['order']
+    shippingForm=ShippingForm()
+    context = {'items': items, 'order': order, 'shippingForm':shippingForm}
     if request.user.is_authenticated:
-        customer = request.user.profile
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        items = order.orderitem_set.all()
-    else:
-        order = {'get_cart_total': 0, 'get_cart_qty_total': 0}
-        items = []
-    context = {'items': items, 'order': order}
+        customer=request.user.profile
+        context['customer']=customer
+
+    
+    # if request.method == 'POST':
+    #     if shippingForm.is_valid():
+    #         shippingAddress=shippingForm.save(commit=False)
+    #         shippingAddress.order=order
+    #         shippingAddress.customer=request.user.profile
+    #         shippingAddress.save()
+    #         return redirect('process_order')
+            # check for the above else where order_id is not included
+    
     return render(request, 'store/checkout.html', context)
 
+def process_order(request):
+    if request.method == 'POST':
+        shippingForm=ShippingForm(request.POST)
+        if request.user.is_authenticated:
+            customer=request.user.profile
+            order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        else:
+            cookieData=cookieCart(request)
+            print("cookiedata\n",cookieData)
+            items=cookieData['items']
+            
+            
+            customer,created=Profile.objects.get_or_create(email=request.POST['email'],mobile=request.POST['mobile'])
+            customer.first_name=request.POST['first_name']
+            customer.last_name=request.POST['last_name']
+            customer.mobile=request.POST['mobile']
+            customer.save()
+            print("custom",customer)
+            order=Order.objects.create(customer=customer,complete=False)
+            # for guest orders, we should not use get_or_create by seeing cutomer and complete fields, because sometimes the cookie cart maybe cleared now new cart will be created and the user wants to buy the new cart items, so if we use old orders it will also include old products from old orders.
+            for item in items:
+                product=ProductVariant.objects.get(id=item['id'])
+                order_item=OrderItem.objects.create(order=order,product=product,quantity=item['quantity'])
+
+                
+        if shippingForm.is_valid():
+            print("insisde if")
+            shipping_form=shippingForm.save()
+            shipping_form.order=order
+            shipping_form.customer=customer
+            shipping_form.save()
+        # refer 1hr at video
+            total=order.get_cart_total
+            # payment logic
+            order.complete=True
+            order.save()
+            messages.success(request,'Order Processing')
+            # cart should be emptied after transaction is successfull
+        else:
+            print("inside else",shippingForm.errors)
+            messages.warning(request,"Something went wrong!")
+            return redirect('checkout')
+
+    
+    return redirect('home')
 
 def variant_change_handler_endpoint(request, v_id):
     variant_obj = ProductVariant.objects.get(id=v_id)
@@ -148,6 +277,7 @@ def get_cart(request):
     return Response(serialized_order)
 
 
+# for logged in users
 def updateCartItem(request):
     data = json.loads(request.body)
     productId = data['productId']
@@ -171,6 +301,7 @@ def updateCartItem(request):
             {'status': 'not_updated', 'message': 'out of stock', 'detail_msg': f'{product} is out of stock !!',
              'msg_tag': 'warning', 'order_item_id': order_item_id})
 
+    # only if the product has available stocks then orderitem is saved else it returns with an out of stock msg without updating(refer prev line)
     orderItem.save()
 
     if orderItem.quantity <= 0:

@@ -30,6 +30,11 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+REST_FRAMEWORK = {
+    # 'COERCE_DECIMAL_TO_STRING': False,
+    # Your other settings
+    
+}
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -49,7 +54,10 @@ INSTALLED_APPS = [
 
     'ckeditor',
     'ckeditor_uploader',
+    'django_filters',
 ]
+
+
 
 CKEDITOR_UPLOAD_PATH='product_desc_images/'
 CKEDITOR_CONFIGS = {

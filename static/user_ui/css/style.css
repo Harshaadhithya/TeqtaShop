@@ -1123,6 +1123,7 @@ transition: transform 0.8s 0s ease-out; */
     display: block;
     position: relative;
     border: 1px solid #e5e8eb;
+    /* border-bottom: 0px; */
 }
 
 .filter-products-layout .left-layout{
@@ -1179,6 +1180,8 @@ box-shadow: 8px 2px 9px -1px rgba(0,0,0,0.05);
     width: 100%;
     padding-top: 1.5rem;
     border-left: 1px solid #e5e8eb;
+    border-bottom:0px;
+    
 }
 
 .product-filter-heading{
@@ -1731,6 +1734,8 @@ ul.checkmark li::before {
     top: 0;
 }
 
+/* .table-container . */
+
 @media(min-width:991px){
     .product-table-col{
         position: sticky;
@@ -1891,6 +1896,10 @@ box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.04);
 .product-table{
     width: 100%;
 }
+
+.table-container table{
+    width: 100% !important;
+}
 .product-table-card .card-body{
     padding: 0;
 }
@@ -1903,9 +1912,19 @@ box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.04);
 }
 
 .product-table th{
-    font-weight: bold;
+    font-weight: bold;   
+}
 
-    
+.table-container th,td{
+    border: 1px solid #e5e8eb;
+    padding: 1rem 1.25rem;
+    vertical-align: top;
+    font-family: 'Poppins',sans-serif;
+    font-size: 15px;
+}
+
+.table-container th{
+    font-weight: bold;
 }
 
 .table-container{
@@ -1914,13 +1933,13 @@ box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.04);
     overflow-x: auto;
 }
 
-.table-container ul li {
+.product-table ul li {
     list-style: none;
     position: relative;
     padding: 0 0 0 20px;
 }
 
-.table-container ul.checkmark li::before{
+.product-table ul.checkmark li::before{
     top:5px;
 }
 
@@ -2147,4 +2166,64 @@ box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.04);
     height: auto;
     object-fit: contain;
 
+}
+
+/* pagination */
+
+.pagination-container{
+    width: 100%;
+    display:flex; 
+    justify-content:center;
+}
+
+.pagination {
+    /* margin-top: 8rem;
+    margin-bottom: 10rem; */
+  }
+  
+  .pagination > ul {
+    flex-wrap: wrap;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .pagination .btn {
+    color: #2d2d39;
+
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    background-color:#e5e7eb;
+    font-weight:500;
+    color:#2d2d39;
+    text-decoration: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.4rem;
+    border: none;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
+    font-size: 12px;
+    outline-width: 0;
+    outline-color: transparent;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .pagination .btn.btn--sub {
+    color: #fffefd;
+    background-color: #389fff;
+  }
+/* ----  */
+@media(min-width:575.98px){
+    .no-result-img-container{
+        height: 95vh;
+    }
 }

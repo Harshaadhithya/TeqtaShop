@@ -642,7 +642,7 @@
 </section>
 
 
-<script>
+<!-- <script>
   const variant_img_change_handler=(event)=>{
     console.log(event.target.id);
     let product_id=event.target.id.split('_')[0];
@@ -688,6 +688,10 @@
         
       })
   }
-</script>
+</script> -->
 
+{% endblock %}
+
+{% block script_reference %}
+  <script src="{% static 'user_ui/js/variant_changer.js' %}"></script>
 {% endblock %}

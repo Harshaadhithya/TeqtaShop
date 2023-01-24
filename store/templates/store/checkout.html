@@ -13,22 +13,24 @@
                   <h5 class="mb-0">Cart - 2 items</h5>
                 </div> -->
                 <div class="card-body p-4">
-                    <form class=" form-floating checkout-form">
+                    <form class=" form-floating checkout-form" method="POST" action="{% url 'process_order' %}">
+                      {% csrf_token %}
                       <div class="row g-3 mb-4">
                         <div class="col-12 checkout-form-title-container">
                           <p class="fw-bold fs-6" >Contact Details <br><span class="fw-normal" style="font-size:14px; color:#6c6d6f;">For order & delivery notifications.</span></p>
                         </div>
                         <div class="col-md-6 form-floating">
                           
-                          <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-                          <label for="inputEmail4" class="form-label">Email</label>
+                          <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{customer.email}}">
+                          <label for="email" class="form-label">Email</label>
                         </div>
                        
                           
                         <div class="col-md-6 form-floating">
                           
-                            <input type="text" class="form-control" id="inputpassword" placeholder="Mobile">
-                            <label for="inputpassword" class="form-label">Mobile</label>
+                            <!-- <input type="number" class="form-control" id="mobile" name="mobile" placeholder="Mobile" value="{{customer.mobile}}"> -->
+                           {{shippingForm.mobile}}
+                            <label for="mobile" class="form-label">Mobile</label>
                         </div>
                         
                       </div>
@@ -39,43 +41,50 @@
                         </div>
                         <div class="col-md-6 form-floating">
                           
-                          <input type="text" class="form-control" id="inputEmail4" placeholder="First Name">
+                          <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name" required>
+                          <!-- {{shippingForm.first_name}} -->
                           <label for="inputEmail4" class="form-label">First Name</label>
                         </div>
                        
                           
                         <div class="col-md-6 form-floating">
                           
-                            <input type="text" class="form-control" id="inputpassword" placeholder="Last Name">
+                            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name" required>
+                            <!-- {{shippingForm.last_name}} -->
                             <label for="inputpassword" class="form-label">Last Name</label>
                         </div>
                         <div class="col-12 form-floating">
                           
-                          <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                          <label for="inputAddress" class="form-label">Address</label>
+                          <!-- <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St"> -->
+                          {{shippingForm.address_line_1}}
+                          <label for="inputAddress" class="form-label">Address Line 1</label>
                         </div>
                         <div class="col-12 form-floating">
                           
-                          <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                          <label for="inputAddress2" class="form-label">Address 2</label>
+                          <!-- <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor"> -->
+                          {{shippingForm.address_line_2}}
+                          <label for="inputAddress2" class="form-label">Address Line 2</label>
                         </div>
                         <div class="col-md-6 form-floating">
                           
                           
-                          <input type="text" class="form-control" id="inputCity" placeholder="City">
+                          <!-- <input type="text" class="form-control" id="inputCity" placeholder="City"> -->
+                          {{shippingForm.city}}
                           <label for="inputCity" class="form-label">City</label>
                         </div>
                         <div class="col-md-6 form-floating">
                           
-                          <select id="inputState" class="form-select">
+                          <!-- <select id="inputState" class="form-select">
                             <option selected>Choose State</option>
                             <option>...</option>
-                          </select>
+                          </select> -->
+                          {{shippingForm.state}}
                           <label for="inputState" class="form-label">State</label>
                         </div>
                         <div class="col-md-4 form-floating">
                           
-                          <input type="text" class="form-control" id="inputZip" placeholder="Zip">
+                          <!-- <input type="text" class="form-control" id="inputZip" placeholder="Zip"> -->
+                          {{shippingForm.zipcode}}
                           <label for="inputZip" class="form-label">Zip</label>
                         </div>
                       </div>

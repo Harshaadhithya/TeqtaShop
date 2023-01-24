@@ -90,8 +90,8 @@
         <div class="search-container hide">
           <div class="link-search" id="link-search"></div>
           <div class="search-bar">
-              <form action="">
-                  <input type="text" placeholder="Search Products">
+              <form method="get" action="{% url 'products' %}">
+                  <input type="text" name="search_query" placeholder="Search Products" value="{{search_query}}">
               </form>
           </div>
           <div class="link-close"></div>
@@ -100,19 +100,19 @@
               <h2>Quick Links</h2>
               <ul>
                   <li>
-                      <a href="#">iPhone</a>
+                      <a href="{% url 'products' %}?search_query=iphone">iPhone</a>
                   </li>
                   <li>
-                      <a href="#">iMac</a>
+                      <a href="{% url 'products' %}?search_query=imac">iMac</a>
                   </li>
                   <li>
-                      <a href="#">Accessories</a>
+                      <a href="{% url 'products' %}?search_query=accessories">Accessories</a>
                   </li>
                   <li>
-                      <a href="#">AirPods</a>
+                      <a href="{% url 'products' %}?search_query=airpods">AirPods</a>
                   </li>
                   <li>
-                      <a href="#">USB-C Hub</a>
+                      <a href="{% url 'products' %}?search_query=hub">USB-C Hub</a>
                   </li>
               </ul>
           </div>

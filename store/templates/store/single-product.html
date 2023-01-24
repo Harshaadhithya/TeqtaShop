@@ -12,10 +12,13 @@
                       
                         <div class="owl-carousel single-product-carousel owl-theme" style="position: relative;">
                           {% for variant_img_obj in product.product_variants.first.variant_image.all %}
-                          <div class="item custom-owl-item">                      
-                              <div class="single-product-main-image-container">
+                          <div class="item custom-owl-item gallerys">                      
+                              <!-- <div class="single-product-main-image-container">
                                   <img src=" {{variant_img_obj.image.url}} " alt="" class="img-fluid single-product-main-image">
-                              </div>
+                              </div> -->
+                              <a class="single-product-main-image-container" href="{{variant_img_obj.image.url}}" target="_blank">
+                                  <img src=" {{variant_img_obj.image.url}} " alt="" class="img-fluid single-product-main-image">
+                              </a>
                            </div>
                            {% endfor %}
   
@@ -168,90 +171,92 @@
         <div class="row">
           
         </div>
-        <p class="component-heading-text" >Product Specification</p>
-        <div class="card product-table-card shadow-sm">
-          <div class="card-body">
-            <div class="table-container">
-              <table class="product-table">
-                <tbody>
-                  <tr>
-                    <th>Name</th>
-                    <td>Teqta 6 in 1 USB-C Hub Teqta 6 in 1 USB-C Hub</td>
-                  </tr>
-                  <tr>
-                    <th>Warranty</th>
-                    <td>6 Months</td>
-                  </tr>
-                  <tr>
-                    <th>Manufactured Date</th>
-                    <td>24th September 2022</td>
-                  </tr>
-                  <tr>
-                    <th>Compatible with</th>
-                    <td>
-                      <ul class="checkmark ps-0 mb-0">
-                        <li>Macbook Pro</li>
-                        <li>Macbook Air</li>
-                        <li>iPad Pro</li>
-                      </ul>
-                    </td>
-                  </tr>
+        {% if product.product_variants.first.table_content != '' %}
+          <p class="component-heading-text mt-3" >Product Specification</p>
+          <div class="card product-table-card" style="border:0px ;">
+            <div class="card-body">
+              <div class="table-container">
+                
+                  {{product.product_variants.first.table_content | safe}}
+                
 
-                  <tr>
-                    <th>Name</th>
-                    <td>Teqta 6 in 1 USB-C Hub Teqta 6 in 1 USB-C Hub</td>
-                  </tr>
-                  <tr>
-                    <th>Warranty</th>
-                    <td>6 Months</td>
-                  </tr>
-                  <tr>
-                    <th>Manufactured Date</th>
-                    <td>24th September 2022</td>
-                  </tr>
-                  <tr>
-                    <th>Compatible with</th>
-                    <td>
-                      <ul class="checkmark ps-0 mb-0">
-                        <li>Macbook Pro</li>
-                        <li>Macbook Air</li>
-                        <li>iPad Pro</li>
-                      </ul>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>Name</th>
-                    <td>Teqta 6 in 1 USB-C Hub Teqta 6 in 1 USB-C Hub</td>
-                  </tr>
-                  <tr>
-                    <th>Warranty</th>
-                    <td>6 Months</td>
-                  </tr>
-                  <tr>
-                    <th>Manufactured Date</th>
-                    <td>24th September 2022</td>
-                  </tr>
-                  <tr>
-                    <th>Compatible with</th>
-                    <td>
-                      <ul class="checkmark ps-0 mb-0">
-                        <li>Macbook Pro</li>
-                        <li>Macbook Air</li>
-                        <li>iPad Pro</li>
-                      </ul>
-                    </td>
-                  </tr>
+                <!-- <table class="product-table">
+                  <tbody>
+                    <tr>
+                      <th>Name</th>
+                      <td>Teqta 6 in 1 USB-C Hub Teqta 6 in 1 USB-C Hub</td>
+                    </tr>
+                    <tr>
+                      <th>Warranty</th>
+                      <td>6 Months</td>
+                    </tr>
+                    <tr>
+                      <th>Manufactured Date</th>
+                      <td>24th September 2022</td>
+                    </tr>
+                    <tr>
+                      <th>Compatible with</th>
+                      <td>
+                        <ul class="checkmark ps-0 mb-0">
+                          <li>Macbook Pro</li>
+                          <li>Macbook Air</li>
+                          <li>iPad Pro</li>
+                        </ul>
+                      </td>
+                    </tr>
 
-                </tbody>
-              </table>
+                    <tr>
+                      <th>Name</th>
+                      <td>Teqta 6 in 1 USB-C Hub Teqta 6 in 1 USB-C Hub</td>
+                    </tr>
+                    <tr>
+                      <th>Warranty</th>
+                      <td>6 Months</td>
+                    </tr>
+                    <tr>
+                      <th>Manufactured Date</th>
+                      <td>24th September 2022</td>
+                    </tr>
+                    <tr>
+                      <th>Compatible with</th>
+                      <td>
+                        <ul class="checkmark ps-0 mb-0">
+                          <li>Macbook Pro</li>
+                          <li>Macbook Air</li>
+                          <li>iPad Pro</li>
+                        </ul>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Name</th>
+                      <td>Teqta 6 in 1 USB-C Hub Teqta 6 in 1 USB-C Hub</td>
+                    </tr>
+                    <tr>
+                      <th>Warranty</th>
+                      <td>6 Months</td>
+                    </tr>
+                    <tr>
+                      <th>Manufactured Date</th>
+                      <td>24th September 2022</td>
+                    </tr>
+                    <tr>
+                      <th>Compatible with</th>
+                      <td>
+                        <ul class="checkmark ps-0 mb-0">
+                          <li>Macbook Pro</li>
+                          <li>Macbook Air</li>
+                          <li>iPad Pro</li>
+                        </ul>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table> -->
+              </div>
             </div>
           </div>
-        </div>
-        
-      </div>
-      <div class="col-lg-7 p-md-4 mt-5 mt-lg-0">
-        <div class="comment-section-container p-1">
-          <div class="comment-form-container">
+        {% else %}
+          <div class="comment-form-container mt-3">
             <form>
               
               <div class="mb-3">
@@ -288,6 +293,50 @@
               <button type="submit" class="btn btn-primary my-primary-bg add-to-cart-btn">Post</button>
             </form>
           </div>
+        {% endif %}
+        
+      </div>
+      <div class="col-lg-7 p-md-4 mt-5 mt-lg-0">
+        <div class="comment-section-container p-1">
+          {% if product.product_variants.first.table_content != '' %}
+            <div class="comment-form-container">
+              <form>
+                
+                <div class="mb-3">
+                  <label for="exampleFormControlTextarea1" class="form-label my-form-label mb-0">Post a Review:</label>
+                  
+                  <!-- <div class="mb-3 d-flex comment-rating" id="comment_rating">
+                    <i class="bi bi-star-fill rating-checked" name="review-star" data-rating_value="1" onmouseover="ratingHandler(event,'review-star')" onmouseout="ratingHandler(event,'review-star')"></i>
+                    <i class="bi bi-star-fill" name="review-star" data-rating_value="2" onmouseover="ratingHandler(event,'review-star')" onmouseout="ratingHandler(event,'review-star')"></i>
+                    <i class="bi bi-star-fill" name="review-star" data-rating_value="3" onmouseover="ratingHandler(event,'review-star')" onmouseout="ratingHandler(event,'review-star')"></i>
+                    <i class="bi bi-star-fill" name="review-star" data-rating_value="4" onmouseover="ratingHandler(event,'review-star')" onmouseout="ratingHandler(event,'review-star')"></i>
+                    <i class="bi bi-star-fill" name="review-star" data-rating_value="5" onmouseover="ratingHandler(event,'review-star')" onmouseout="ratingHandler(event,'review-star')"></i>
+                  </div> -->
+                  <div class="rate_container">
+                    <!-- <div class="post">
+                      <div class="text">Thanks for rating us!</div>
+                      <div class="edit">EDIT</div>
+                    </div> -->
+                    <div class="star-widget">
+                      <input type="radio" name="rate" id="rate-5">
+                      <label for="rate-5" class="bi bi-star-fill "></label>
+                      <input type="radio" name="rate" id="rate-4">
+                      <label for="rate-4" class="bi bi-star-fill "></label>
+                      <input type="radio" name="rate" id="rate-3">
+                      <label for="rate-3" class="bi bi-star-fill "></label>
+                      <input type="radio" name="rate" id="rate-2">
+                      <label for="rate-2" class="bi bi-star-fill "></label>
+                      <input type="radio" name="rate" id="rate-1">
+                      <label for="rate-1" class="bi bi-star-fill"></label>
+                    </div>
+                  </div>
+                  <textarea class="form-control" placeholder="Describe your experience..." id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary my-primary-bg add-to-cart-btn">Post</button>
+              </form>
+            </div>
+          {% endif %}
           <div class="other-comments-container">
             <div class="card shadow-sm testimonial-card mt-4" style="border-top:5px solid #389fff;">
                     
@@ -1069,10 +1118,10 @@
   const carousel_imgs_html_content=(img_list)=>{
     html_content=''
     for(let img_url of img_list){
-      html_content+=`<div class="item custom-owl-item">                      
-        <div class="single-product-main-image-container">
+      html_content+=`<div class="item custom-owl-item gallerys">                      
+        <a class="single-product-main-image-container" href="${img_url}" target="_blank">
             <img src="${img_url} " alt="" class="img-fluid single-product-main-image">
-        </div>
+        </a>
      </div>\n`
     }
     return html_content;
@@ -1115,6 +1164,15 @@
                 }
             }
           })
+
+          //reinistialising magnify popup
+          $(document).ready(function() {
+            $('.gallerys').magnificPopup({
+              type:'image',
+              delegate:'a'
+            });
+          });
+
           }
 
           let product_detail_container=document.getElementById(`${product_id}_product_detail_container`);
@@ -1167,4 +1225,6 @@
       })
   }
 </script>
+<!-- magnify popup -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js" integrity="sha512-IsNh5E3eYy3tr/JiX2Yx4vsCujtkhwl7SLqgnwLNgf04Hrt9BT9SXlLlZlWx+OK4ndzAoALhsMNcCmkggjZB1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 {% endblock %}

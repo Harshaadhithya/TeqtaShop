@@ -7,6 +7,7 @@ urlpatterns = [
     path('product/<str:name>/',single_product,name='single-product'),
     path('cart/',cart,name='cart'),
     path('checkout/',checkout,name='checkout'),
+    path('process_order/',process_order,name='process_order'),
 
     path('change_product_img_endpoint/<str:v_id>/',change_product_img_endpoint,name='change_product_img_endpoint'),
     path('variant_change_handler_endpoint/<str:v_id>/',variant_change_handler_endpoint,name='variant_change_handler'),
@@ -15,4 +16,5 @@ urlpatterns = [
     path('returnCartTotal/',returnCartTotal,name='returnCartTotal'),
 
     path('get_order_item_endpoint/<str:pk>/',get_order_item_endpoint,name='get_order_item_endpoint'),
+    path('get_guest_cart_detail/',get_guest_cart_detail,name='get_guest_cart_detail')
 ]

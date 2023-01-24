@@ -110,11 +110,15 @@
                                   </div>
 
                                   <div class="form-group">
+                                    <label>Category</label>
+                                    {{product_form.category}}
+                                  </div>
+                                  <div class="form-group">
                                     <label>Badge</label>
                                     {{product_form.badge}}
                                   </div>
                                   <div class="form-group">
-                                    <label>Tags</label>
+                                    <label>Tags(Used for searching)</label>
                                     {{product_form.tags}}
                                   </div>
                                   
@@ -208,6 +212,13 @@
                                                 <label>Description</label>
                                                 <div class="form-group">                                        
                                                   {{form.description}}
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <label>Table Content(Specification)</label>
+                                                <div class="form-group">                                        
+                                                  {{form.table_content}}
                                                 </div>
                                             </div>
                                               

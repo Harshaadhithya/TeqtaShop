@@ -4,11 +4,31 @@ from .models import *
 from inventory.models import *
 
 
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+class VariantImageSerializer(serializers.ModelSerializer):
+    image=serializers.SerializerMethodField()
+    class Meta:
+        model = ProductImage
+        fields = '__all__'
+
+    def get_image(self,obj):
+        return {'url':obj.image.url}
+
 class ProductVariantSerializer(serializers.ModelSerializer):
+    product=ProductSerializer(many=False)
+    variant_image=serializers.SerializerMethodField()
     class Meta:
         model = ProductVariant
         fields = '__all__'
 
+    def get_variant_image(self, obj):
+        return {'first':VariantImageSerializer(obj.variant_image.first(),many=False).data}
 
 class OrderItemSerializer(serializers.ModelSerializer):
     product = ProductVariantSerializer(many=False)
@@ -41,3 +61,11 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_cart_total_qty(self, obj):
         return obj.get_cart_qty_total
+
+
+
+class GuestCartSerializer(serializers.Serializer):
+    id=serializers.CharField(max_length = 200)
+    product=ProductVariantSerializer(many=False)
+    quantity=serializers.IntegerField()
+    get_total=serializers.DecimalField(max_digits=10, decimal_places=2)

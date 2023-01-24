@@ -1,3 +1,4 @@
+import decimal
 from importlib.resources import path
 from math import prod
 from multiprocessing import context
@@ -16,6 +17,20 @@ def admin_dashboard(request):
 
 def demo_form(request):
     return render(request,'admin_dashboard/forms-advanced-form.html')
+
+def update_offer_price(product,offer):
+    product_variants=product.product_variants.all()
+    if offer==None:
+        for product_variant_obj in product_variants:
+            product_variant_obj.current_price=product_variant_obj.original_price
+            product_variant_obj.save()
+    else:
+        for product_variant_obj in product_variants:
+            offer_price=(product_variant_obj.original_price)-(decimal.Decimal(offer.percentage/100)*product_variant_obj.original_price)
+            product_variant_obj.current_price=offer_price
+            product_variant_obj.save()
+
+    
 
 def products_list(request):
     product_objs=Product.objects.all()
@@ -73,23 +88,40 @@ def add_product(request):
         post.setlist('tags', tag_list)
 
         badge_list=[]
+        print("badge post",request.POST.getlist('badge'))
         for badge_id in request.POST.getlist('badge'):
-            print(badge_id)
-            try:
-                if SpecialBadge.objects.filter(id=badge_id).exists(): #if this arises any error then there exist no such tag, this error is arised because we will be getting id if already tag is exist, else we will get the name of the new tag entered and when we try to match with tag id it causes an error.
-                    pass
-                
-                else:
+            print("batch_id",badge_id)
+            if badge_id!='':
+                try:
+                    if SpecialBadge.objects.filter(id=badge_id).exists(): #if this arises any error then there exist no such tag, this error is arised because we will be getting id if already tag is exist, else we will get the name of the new tag entered and when we try to match with tag id it causes an error.
+                        pass
+                    
+                    else:
+                        badge_obj=SpecialBadge.objects.create(name=badge_id)
+                        badge_id=badge_obj.id
+
+                except:
                     badge_obj=SpecialBadge.objects.create(name=badge_id)
                     badge_id=badge_obj.id
+                badge_list.append(badge_id)
+                print("badgelist",badge_list)
 
-            except:
-                badge_obj=SpecialBadge.objects.create(name=badge_id)
-                badge_id=badge_obj.id
-            badge_list.append(badge_id)
-            print("badgelist",badge_list)
+            post.setlist('badge', badge_list)
 
-        post.setlist('badge', badge_list)
+        category_list=[]
+        for category_id in request.POST.getlist('category'):
+            if category_id!='':
+                try:
+                    if ProductCategory.objects.filter(id=category_id).exists():
+                        pass
+                    else:
+                        category_obj=ProductCategory.objects.create(name=category_id)
+                        category_id=category_obj.id
+                except:
+                    category_obj=ProductCategory.objects.create(name=category_id)
+                    category_id=category_obj.id
+                category_list.append(category_id)
+            post.setlist('category',category_list)
 
         request.POST=post
         print(request.POST['tags'],request.POST)
@@ -177,6 +209,65 @@ def edit_product(request,pk):
     i_pv_formset=inlineformset_factory(Product,ProductVariant,form=ProductVariantFullForm,extra=10, can_delete=True)
     formset1=i_pv_formset(instance=product_obj,queryset=ProductVariant.objects.none())
     if request.method=='POST':
+        # handling new tags and badges
+        post=request.POST.copy()
+        tag_list=[]
+        for tag_id in request.POST.getlist('tags'):
+            print(tag_id)
+            try:
+                if ProductTag.objects.filter(id=tag_id).exists(): #if this arises any error then there exist no such tag, this error is arised because we will be getting id if already tag is exist, else we will get the name of the new tag entered and when we try to match with tag id it causes an error.
+                    pass
+                
+                else:
+                    tag_obj=ProductTag.objects.create(name=tag_id)
+                    tag_id=tag_obj.id
+
+            except:
+                tag_obj=ProductTag.objects.create(name=tag_id)
+                tag_id=tag_obj.id
+            tag_list.append(tag_id)
+            print("taglist",tag_list)
+
+        post.setlist('tags', tag_list)
+
+        badge_list=[]
+        print("badge post",request.POST.getlist('badge'))
+        for badge_id in request.POST.getlist('badge'):
+            print("batch_id",badge_id)
+            if badge_id!='':
+                try:
+                    if SpecialBadge.objects.filter(id=badge_id).exists(): #if this arises any error then there exist no such tag, this error is arised because we will be getting id if already tag is exist, else we will get the name of the new tag entered and when we try to match with tag id it causes an error.
+                        pass
+                    
+                    else:
+                        badge_obj=SpecialBadge.objects.create(name=badge_id)
+                        badge_id=badge_obj.id
+
+                except:
+                    badge_obj=SpecialBadge.objects.create(name=badge_id)
+                    badge_id=badge_obj.id
+                badge_list.append(badge_id)
+                print("badgelist",badge_list)
+
+            post.setlist('badge', badge_list)
+
+        category_list=[]
+        for category_id in request.POST.getlist('category'):
+            if category_id!='':
+                try:
+                    if ProductCategory.objects.filter(id=category_id).exists():
+                        pass
+                    else:
+                        category_obj=ProductCategory.objects.create(name=category_id)
+                        category_id=category_obj.id
+                except:
+                    category_obj=ProductCategory.objects.create(name=category_id)
+                    category_id=category_obj.id
+                category_list.append(category_id)
+            post.setlist('category',category_list)
+            
+        request.POST=post
+        # 
         product_form=AddProductForm(request.POST,instance=product_obj)
         formset1=i_pv_formset(request.POST,request.FILES,instance=product_obj)
         if product_form.is_valid():
@@ -199,7 +290,7 @@ def edit_product(request,pk):
                     for image in images:
                         ProductImage.objects.create(product_variant=variant_obj,image=image)
             messages.success(request,"Product Updated Successfully !!")
-            return redirect('edit_product',pk=pk)
+            return redirect('products_list')
         else:
             messages.error(request,"Failed to update!!")
             return redirect('products_list')
@@ -276,6 +367,7 @@ def add_collection(request):
             message=''
             products=form.cleaned_data['products']
             print("dict",products)
+            offer=form.cleaned_data['offer']
             for product in products:
                 print("product",product)
                 if product.offer != None:
@@ -283,6 +375,11 @@ def add_collection(request):
                     message=f'{product.name} has an active offer : {product.offer}'
                     break
             if flag:
+                for product in products:
+                    product.offer=offer
+                    product.save()
+                    update_offer_price(product,product.offer)
+                    
                 form.save()
                 messages.success(request,"New Collections Added !!")
             
@@ -298,20 +395,37 @@ def add_collection(request):
 def edit_collection(request,pk):
     collection_obj=Collection.objects.get(id=pk)
     form=CollectionForm(request.POST or None,instance=collection_obj)
+    
     if request.method == 'POST':
         if form.is_valid():
             print("form valid")
             flag=True
             message=''
             products=form.cleaned_data['products']
+            old_products=collection_obj.products.all()
+            offer=form.cleaned_data['offer']
+            
+            print("products-seom",set(products)-set(old_products))
+            newly_added_products=list(set(products)-set(old_products))
             print("dict",products)
-            for product in products:
-                print("product",product)
+            for product in newly_added_products:
+                # print("product",type(product),product,product.offer)
+                product=Product.objects.get(id=product.id) #here we are doing this because,in the previous for loop we have updated the product by removing the offers,but the products list that we fetched earlier has old data in it, so for getting the updated product we are ding this
                 if product.offer != None:
                     flag=False
                     message=f'{product.name} has an active offer : {product.offer}'
                     break
             if flag:
+                for product in old_products:
+                    product.offer=None
+                    product.save()
+                    update_offer_price(product,product.offer)
+                    print("product.offer",product,product.offer)
+                for product in products:
+                    product.offer=offer
+                    product.save()
+                    update_offer_price(product,product.offer)
+
                 form.save()
                 messages.success(request,"Collection Updated Successfully !!")            
                 return redirect('collections')
@@ -328,6 +442,11 @@ def edit_collection(request,pk):
 
 def delete_collection(request,pk):
     collection_obj=Collection.objects.get(id=pk)
+    products=collection_obj.products.all()
+    for product in products:
+        product.offer=None
+        product.save()
+        update_offer_price(product,product.offer)
     collection_obj.delete()
     messages.success(request,"Collection Deleted Successfully !!")
     return redirect('collections')

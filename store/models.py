@@ -1,7 +1,7 @@
 from django.db import models
 from users.models import Profile
 from inventory.models import *
-
+import uuid
 
 # Create your models here.
 
@@ -9,7 +9,7 @@ class Order(models.Model):
     customer = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False)
-    transaction_id = models.CharField(max_length=100, null=True)
+    transaction_id = models.UUIDField(default=uuid.uuid4,unique=True,editable=False,null=True)
 
     def __str__(self):
         return str(self.id)
@@ -50,13 +50,21 @@ class OrderItem(models.Model):
 
 
 class ShippingAddress(models.Model):
+    state_choices=(
+        ('admin','admin'),
+        ('customer','customer')
+    )
     customer = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-    address = models.CharField(max_length=200, null=False)
-    city = models.CharField(max_length=200, null=False)
-    state = models.CharField(max_length=200, null=False)
-    zipcode = models.CharField(max_length=200, null=False)
+    first_name = models.CharField(max_length=200,null=True)
+    last_name = models.CharField(max_length=200,null=True)
+    mobile=models.PositiveBigIntegerField(null=True)
+    address_line_1 = models.CharField(max_length=200, null=False, blank=False)
+    address_line_2 = models.CharField(max_length=200, null=True, blank=True)
+    city = models.CharField(max_length=200, null=False, blank=False)
+    state = models.CharField(choices=state_choices,max_length=200, null=False, blank=False)
+    zipcode = models.CharField(max_length=200, null=False, blank=False)
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.address
+        return self.address_line_1

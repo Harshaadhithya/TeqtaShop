@@ -20,6 +20,7 @@ class AddProductForm(ModelForm):
         self.fields['general_price'].widget.attrs.update({'class':'form-control currency'})
         self.fields['badge'].widget.attrs.update({'class':'select2-tags form-control'})
         self.fields['tags'].widget.attrs.update({'class':'select2-tags form-control'})
+        self.fields['category'].widget.attrs.update({'class':'select2-tags form-control'})
 
         # self.fields['tags'].widget.attrs.update({'class':'select-item form-control'})
 
@@ -50,7 +51,7 @@ class ProductVariantFullForm(ModelForm):
 
     class Meta:
         model=ProductVariant
-        fields=['description','variant_type','variant_name','value','total_stock','available_stock','original_price','current_price']
+        fields=['description','table_content','variant_type','variant_name','value','total_stock','available_stock','original_price','current_price']
         # exclude=['product']
 
     

@@ -45,7 +45,7 @@
                     <p id="{{item.id}}_cart_quantity" ><span>Quantity</span> : {{item.quantity}}</p>
                     <p> <span>Price</span>: Rs. {{item.product.current_price}}</p>
                     <button type="button" class="btn btn-danger btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
-                      title="Remove item" id="{{item.id}}_remove_from_cart_btn" onclick="removeFromCart(event)" data-product_id="{{item.product.id}}">
+                      title="Remove item" id="{{item.id}}_remove_from_cart_btn" onclick="removeFromCart(event,user='{{request.user}}')" data-product_id="{{item.product.id}}">
                       <i class="bi bi-trash" id="{{item.id}}_remove_from_cart_icon" data-product_id="{{item.product.id}}"></i>
                     </button>
                     
@@ -76,7 +76,6 @@
                 
                                 <!-- Price -->
                                 <p class="text-start text-md-center cart-product-price text-success" style="font-size:16px;">
-                                  <!-- <strong>Rs. {% multiply item.quantity item.product.current_price %}</strong> -->
                                   <strong id="{{item.id}}_product_total" >Rs. {{item.get_total}}</strong>
                                 </p>
                           </div>
@@ -124,7 +123,7 @@
                   <div class="card shadow-sm" style="border-top:5px solid #389fff;">
                       <div class="card-body">
                           <div class="mb-4 d-flex justify-content-between"><p class="mb-0">Subtotal</p> <p class="mb-0 font-weight-600 text-success" id="{{order.id}}_order_subtotal">
-                              Rs. {{order.get_cart_total}}
+                              Rs. {{order.get_cart_total}},{{order.id1}}
                             </p></div>
 
                             <div class="mb-4 d-flex justify-content-between"><p class="mb-0">Shipping</p> <p class="mb-0 font-weight-600 text-success">
