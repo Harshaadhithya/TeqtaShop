@@ -1,0 +1,39 @@
+{% if has_other_pages %}
+<div class="pagination-container" >
+  <div class="pagination mb-2 mt-2 fixed-widget" style="right: auto; left:auto; position:static;">
+    <ul class="container">
+      {% if has_prev_page %}
+        <li><a href="#" name="pagination-btn" data-page_no="{{previous_page_number}}" class="btn" onclick="paginationHandler(event);">&#10094; Prev</a></li>
+      {% else %}
+        <li><a href="#" class="btn btn--disabled">&#10094; Prev</a></li>
+      {% endif %}
+
+      {% if 1 not in custom_page_num_range and 2 not in custom_page_num_range%}
+        <li><a href="#"  name="pagination-btn"  class="btn page-link" data-page_no="{{1}}" onclick="paginationHandler(event);">1</a></li> . . . .
+      {% endif %}
+
+      {% for page_num in custom_page_num_range %}
+        
+        {% if current_page_num == page_num %}
+          <li><a href="#"  name="pagination-btn" data-page_no="{{page_num}}" class="btn btn--sub" onclick="paginationHandler(event);">{{page_num}}</a></li>
+        {% else %}
+          <li><a href="#"  name="pagination-btn" data-page_no="{{page_num}}" class="btn" onclick="paginationHandler(event);">{{page_num}}</a></li>
+        {% endif %}
+        
+      {% endfor %}
+
+      {% if last_page_num not in custom_page_num_range and last_page_num_minus_1 not in custom_page_num_range%}
+        . . . . <li><a href="#"  name="pagination-btn" class="btn page-link" data-page_no="{{last_page_num}}" onclick="paginationHandler(event);">{{last_page_num}}</a></li>
+      {% endif %}
+
+      {% if has_next_page %}
+        <li><a href="#"  name="pagination-btn" data-page_no="{{next_page_number}}" class="btn" onclick="paginationHandler(event);">Next &#10095;</a></li>
+      {% else %}
+        <li><a href="#" class="btn btn--disabled">Next &#10095;</a></li> 
+      {% endif %}
+     
+    </ul>
+  </div>
+</div>
+
+{% endif %}

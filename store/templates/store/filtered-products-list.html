@@ -1,0 +1,100 @@
+{% load static %}
+{% if search_query != '' %}
+        {% if result_length != 0 %}
+        <h6 class="text-center mb-3">{{result_length}} Result{{result_length|pluralize}} for <span class="font-bold" style="color: #389fff;">{{search_query}}</span></h6>
+        {% else %}
+        <h6 class="text-center mb-3">{{result_length}} Result{{result_length|pluralize}} for <span class="font-bold" style="color: #389fff;">{{search_query}}</span></h6>
+        <!-- <div class="empty-cart-img-container no-result-img-container"  >
+            <img class="empty-cart-img img-fluid" src="{% static 'user_ui/images/noresults.png' %}" alt="">
+        </div> -->
+        {% endif %}
+    {% else %}
+            
+                  
+    {% endif %}
+
+    {% if result_length == 0 %}
+        <div class="empty-cart-img-container no-result-img-container"  >
+         <img class="empty-cart-img img-fluid" src="{% static 'user_ui/images/noresults.png' %}" alt="">
+        </div>
+    {% endif %}
+{% for product in products %}
+    
+    
+    <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+    <a href=" {% url 'single-product' product.name %} ">
+        <div class="card product-card" >
+        
+        {% if product.badge != None %}
+        <span class=" product-badge-outer-span rounded-pill position-absolute  badge  my-primary-bg">
+            {{product.badge}}
+            <!-- <span class="visually-hidden">unread messages</span> -->
+        </span>
+        {% endif %}
+        
+        <div class="card-img-top-container" id="{{product.id}}_product_cover_img_container">
+        <img id="{{product.id}}_product_cover_img" src="{{product.product_variants.first.variant_image.first.image.url}}" class="card-img-top img-fluid" alt="...">
+        
+        </div>
+        <div class="card-body text-center">
+        
+        <div class="variants-container mb-2">
+            
+            <div class="color-variants">
+                {% for variant in product.product_variants.all %}
+                {% if variant.variant_type == 'color' %}
+                    {% if forloop.counter0 == 0 %}
+                    <div class="color-box active" id="{{product.id}}_{{variant.id}}_color_box" name="{{product.id}}_color_boxes">
+                    {% else %}
+                    <div class="color-box" id="{{product.id}}_{{variant.id}}_color_box" name="{{product.id}}_color_boxes">
+                    {% endif %}
+                    <a id="{{product.id}}_{{variant.id}}_color_link" onclick="variant_img_change_handler(event)">
+                        <span id="{{product.id}}_{{variant.id}}_color_span" class="color-box-span" style="background-color:{{variant.value}};"></span> 
+                    </a>
+                    </div>
+                    
+                    <!-- <div class="color-box"><span class="color-box-span color-black"></span></div>
+                    <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                    <div class="color-box"><span class="color-box-span color-blue"></span></div> -->
+                {% endif %}
+                {% endfor %}
+            </div>
+            
+        </div>
+        <div id="{{product.id}}_product_detail_container" >
+            <h5 class="card-title">{{product.name}}</h5>
+        
+            
+            <div class="d-flex justify-content-center align-items-center" >
+            {% if product.product_variants.first.original_price > product.product_variants.first.current_price %}
+            <del class="me-1" style="font-size:14px; color:#7e7e7e;">Rs .{{product.product_variants.first.original_price}}</del>
+            {% endif %}
+            {% if product.offer != None %}
+            <span class="ms-1 badge bg-success rounded-pill" style="height:fit-content;">{{product.offer.percentage}}%</span>
+            {% endif %}
+
+
+            </div>
+        
+            <p class="product-card-price mb-1 text-success">Rs. {{product.product_variants.first.current_price}}</p>
+        </div>
+            <div class=" d-flex justify-content-center align-items-center" >
+            <div class="small-ratings" style="height:fit-content;">
+                <i class="bi bi-star-fill rating-color"></i>
+                <i class="bi bi-star-fill rating-color"></i>
+                <i class="bi bi-star-fill rating-color"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+            </div>
+            <div class="small-rating-count-container">
+                <p class="small-rating-count mb-0 ms-2 pt-0" style="height:fit-content; line-height:0%;" >954</p>
+            </div>
+            
+            </div>
+        
+        
+        </div>
+    </div></a>
+    
+    </div>
+{% endfor %}

@@ -8,6 +8,7 @@ urlpatterns = [
     path('cart/',cart,name='cart'),
     path('checkout/',checkout,name='checkout'),
     path('process_order/',process_order,name='process_order'),
+    path('filter_products/',filter_products,name='filter_products'),
 
     path('change_product_img_endpoint/<str:v_id>/',change_product_img_endpoint,name='change_product_img_endpoint'),
     path('variant_change_handler_endpoint/<str:v_id>/',variant_change_handler_endpoint,name='variant_change_handler'),

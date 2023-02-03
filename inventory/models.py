@@ -30,6 +30,9 @@ class Product(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering=['-created']
+
     @property
     def apply_offer_price(self):
         if self.offer != None or self.offer != '':
@@ -80,13 +83,14 @@ class ProductVariant(models.Model):
     )
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_variants', null=True,
                                 blank=True)
-    # variant=models.ForeignKey(Variant,on_delete=models.SET_NULL,null=True,blank=True)
     description = RichTextUploadingField(null=True, blank=True)
     table_content = RichTextUploadingField(null=True, blank=True)
-    # variant_type=models.ForeignKey(VariantType,on_delete=models.CASCADE,null=True,blank=True)
+    # colors,sizes,etc...
     variant_type = models.CharField(max_length=100, null=True, choices=varaint_type_choices, default='other')
     variant_name = models.CharField(max_length=200, null=True, blank=True)
     value = models.CharField(max_length=100, null=True, blank=True)
+    # 
+    compatible_with = models.ManyToManyField('Compatibilty')
     total_stock = models.PositiveIntegerField(default=0)
     available_stock = models.PositiveIntegerField(default=0)
     total_sales = models.PositiveIntegerField(default=0)
@@ -104,6 +108,7 @@ class ProductVariant(models.Model):
     #     return f'{self.product.name}-{self.variant_type}-{self.variant_name}'
 
 
+
 class ProductImage(models.Model):
     product_variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE, related_name='variant_image')
     image = models.ImageField(null=False, blank=False, upload_to='product_images/')
@@ -114,6 +119,13 @@ class ProductImage(models.Model):
         else:
             return self.product_variant.product.name
 
+
+class Compatibilty(models.Model):
+    name=models.CharField(max_length=200,unique=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
 
 class Offer(models.Model):
     name = models.CharField(max_length=200, unique=True)

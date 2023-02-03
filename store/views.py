@@ -4,6 +4,7 @@ from logging import exception
 from multiprocessing import context
 from tkinter.messagebox import NO
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 from django.http import HttpResponse, JsonResponse
 from inventory.models import *
 import json
@@ -20,6 +21,7 @@ from .forms import *
 from django.db.models import Q
 
 from .utils import *
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 
 
 # Create your views here.
@@ -119,15 +121,52 @@ def home(request):
 
 def products(request):
     search_query=request.GET.get('search_query')
+    filters=get_filters()
     if search_query==None:
         search_query=''
     
     products=Product.objects.distinct().filter(
         Q(name__icontains=search_query) | Q(tags__name__icontains=search_query) | Q(category__name__icontains=search_query)
     )
-    context = {'page_title': 'products_page','products': products,'search_query':search_query,'result_length':len(products)}
-    return render(request, 'store/products.html', context)
+    products,context2 = paginate_products(request,products=products)
+    context = {'page_title': 'products_page','products': products,'search_query':search_query,'result_length':len(products),'filters':filters}
+    combined_context = {**context,**context2}
+    return render(request, 'store/products.html', combined_context)
 
+
+def filter_products(request):
+    search_query=request.GET.get('search_query')
+    filters=get_filters()
+    colors=[]
+    compatiblity=[]
+    categories=[]
+    if search_query==None:
+        search_query=''
+    
+    if request.method=='POST':
+        selected_filters=json.loads(request.POST.get('selected_filters'))
+        colors=selected_filters['color']
+        compatiblity=selected_filters['compatibility']
+        categories=selected_filters['category']
+        
+    # all_products=Product.objects.all()
+    all_products = Product.objects.distinct().filter(
+        Q(name__icontains=search_query) | Q(tags__name__icontains=search_query) | Q(category__name__icontains=search_query)
+    )
+    if len(colors)>0:
+        print("colo",colors)
+        all_products=all_products.filter(product_variants__variant_name__in=colors).distinct()
+    if len(compatiblity)>0:
+        all_products=all_products.filter(product_variants__compatible_with__name__in=compatiblity).distinct()
+    if len(categories)>0:
+        all_products=all_products.filter(category__name__in=categories).distinct()
+
+    all_products,context2 = paginate_products(request,all_products)
+
+    template = render_to_string('store/filtered-products-list.html',{'products':all_products,'search_query':search_query,'result_length':len(all_products)}) #render_to_string turns the template into a string and stores it in this template variable
+    pagination_template = render_to_string('store/pagination.html',context2)
+
+    return JsonResponse({'template_text':template,'pagination_template':pagination_template}) #the template which is converted into string is passed as a response
 
 def change_product_img_endpoint(request, v_id):
     try:
@@ -152,7 +191,21 @@ def change_product_img_endpoint(request, v_id):
 def single_product(request, name):
     product = Product.objects.get(name=name)
     product_variants = product.product_variants.all()
-    context = {'product': product, 'product_variants': product_variants}
+    print(get_filters())
+    
+    categories=product.category.all()
+    tags=product.tags.all()
+    # print(categories_list)
+    recommended_products = Product.objects.distinct().filter(Q(category__in=categories) | Q(tags__in=tags)).exclude(id=product.id)[:8]
+    if(len(recommended_products)<8): 
+        # 8 is the maximum number of products that can be showned in recommended products section , so to ensure whether 8 products are displayed
+        difference=8-len(recommended_products)
+        extra_products=Product.objects.filter().exclude(Q(id__in=[rec_product.id for rec_product in recommended_products]) | Q(id=product.id)) #here we are excluding the products that are in recommended products and excluding the current product also
+        extra_products=extra_products[:difference]
+        recommended_products = recommended_products | extra_products #combining both the querysets
+    
+    # print(recommended_products)
+    context = {'product': product, 'product_variants': product_variants,'recommended_products':recommended_products}
     return render(request, 'store/single-product.html', context)
 
 

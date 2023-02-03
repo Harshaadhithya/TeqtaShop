@@ -68,6 +68,7 @@ def add_product(request):
     formset = product_variant_formset(queryset=ProductVariant.objects.none())
     if request.method=='POST':
         post=request.POST.copy()
+        # print("post",post)
         tag_list=[]
         for tag_id in request.POST.getlist('tags'):
             print(tag_id)
@@ -83,7 +84,7 @@ def add_product(request):
                 tag_obj=ProductTag.objects.create(name=tag_id)
                 tag_id=tag_obj.id
             tag_list.append(tag_id)
-            print("taglist",tag_list)
+            # print("taglist",tag_list)
 
         post.setlist('tags', tag_list)
 
@@ -104,7 +105,7 @@ def add_product(request):
                     badge_obj=SpecialBadge.objects.create(name=badge_id)
                     badge_id=badge_obj.id
                 badge_list.append(badge_id)
-                print("badgelist",badge_list)
+                # print("badgelist",badge_list)
 
             post.setlist('badge', badge_list)
 
@@ -123,9 +124,11 @@ def add_product(request):
                 category_list.append(category_id)
             post.setlist('category',category_list)
 
+        
+
         request.POST=post
-        print(request.POST['tags'],request.POST)
-        print(request.POST["badge"])
+        # print(request.POST['tags'],request.POST)
+        # print(request.POST["badge"])
 
         
         product_form=AddProductForm(request.POST)
@@ -133,9 +136,33 @@ def add_product(request):
         if product_form.is_valid():
             print("inisde first valid")
             product_obj=product_form.save()
+
+            for index,form in enumerate(formset1):  #this for loop is used for iterating over each variant form and handling the compatibilty field
+                post=request.POST.copy()
+                # print("each form",form)
+                compatibilty_list=[]
+                for compatibility_id in request.POST.getlist(f'product_variants-{index}-compatible_with'):
+                    if compatibility_id!='':
+                        try:
+                            if Compatibilty.objects.filter(id=compatibility_id).exists():
+                                pass
+                            else:
+                                compatibility_obj=Compatibilty.objects.create(name=compatibility_id)
+                                compatibility_id=compatibility_obj.id
+                        except:
+                            compatibility_obj=Compatibilty.objects.create(name=compatibility_id)
+                            compatibility_id=compatibility_obj.id
+                        compatibilty_list.append(compatibility_id)
+                    post.setlist(f'product_variants-{index}-compatible_with',compatibilty_list)
+
+                request.POST=post
+
+
             formset1=i_pv_formset(request.POST,request.FILES,instance=product_obj,queryset=ProductVariant.objects.none())
             # print("formset1",formset1)
             for index,form in enumerate(formset1):
+                
+
                 all_product_variant_objs=[]
                 all_varaint_img_objs=[]
                 if form.is_valid():

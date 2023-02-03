@@ -9,146 +9,219 @@
           </div>
           <div class="filters-container">
               <div class="accordion accordion-flush" id="accordionFlushExample">
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingOne">
-                      <button class="accordion-button filter-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                          <div class="filter-icon-text-wrapper">
-                              <i class="bi bi-stack me-2"></i>
-                              <h2 class="h6 mb-0">Product Category</h2>
-                          </div>
-                      </button>
-                    </h2>
-                    <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" >
-                      <div class="accordion-body">
-                          <div class="filter-options">
-                              <div class="filter-option">
-                                  <div class="custom-input-group">
-                                      <label class="control control--checkbox pt-1">USB Hubs
-                                          <input type="checkbox" />
-                                          <div class="control__indicator"></div>
-                                      </label>
-                                  </div>
-                                  <div class="custom-input-group">
-                                      <label class="control control--checkbox pt-1">Watches
-                                          <input type="checkbox" />
-                                          <div class="control__indicator"></div>
-                                      </label>
-                                  </div>
-                                  <div class="custom-input-group">
-                                      <label class="control control--checkbox pt-1">Mobile Phones
-                                          <input type="checkbox" checked="checked"/>
-                                          <div class="control__indicator"></div>
-                                      </label>
-                                  </div>
-                                  <div class="custom-input-group">
-                                      <label class="control control--checkbox pt-1">Headphones
-                                          <input type="checkbox" />
-                                          <div class="control__indicator"></div>
-                                      </label>
-                                  </div> 
-                              </div>
-                          </div>
-                      </div>
+
+               <form action="" method="POST">
+                {% csrf_token %}
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="flush-headingOne">
+                    <button class="accordion-button filter-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        <div class="filter-icon-text-wrapper">
+                            <i class="bi bi-stack me-2"></i>
+                            <h2 class="h6 mb-0">Product Category</h2>
+                        </div>
+                    </button>
+                  </h2>
+                  <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" >
+                    <div class="accordion-body">
+                        <div class="filter-options">
+                            <div class="filter-option">
+                              {% for category in filters.categories %}
+                                <div class="custom-input-group">
+                                    <label class="control control--checkbox pt-1">{{category}}
+                                        <input type="checkbox" name="filter-product" data-filter="category" value="{{category}}" />
+                                        <div class="control__indicator"></div>
+                                    </label>
+                                </div>
+                              {% endfor %}
+                                <!-- <div class="custom-input-group">
+                                    <label class="control control--checkbox pt-1">Watches
+                                        <input type="checkbox" />
+                                        <div class="control__indicator"></div>
+                                    </label>
+                                </div>
+                                <div class="custom-input-group">
+                                    <label class="control control--checkbox pt-1">Mobile Phones
+                                        <input type="checkbox" checked="checked"/>
+                                        <div class="control__indicator"></div>
+                                    </label>
+                                </div>
+                                <div class="custom-input-group">
+                                    <label class="control control--checkbox pt-1">Headphones
+                                        <input type="checkbox" />
+                                        <div class="control__indicator"></div>
+                                    </label>
+                                </div>  -->
+                            </div>
+                        </div>
                     </div>
                   </div>
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingTwo">
-                      <button class="accordion-button filter-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseOne">
-                          <div class="filter-icon-text-wrapper">
-                              <i class="bi bi-laptop-fill me-2"></i>
-                              <h2 class="h6 mb-0">Compatible With</h2>
-                          </div>
-                      </button>
-                    </h2>
-                    <div id="flush-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="flush-headingTwo" >
-                      <div class="accordion-body">
-                          <div class="filter-options">
-                              <div class="filter-option">
-                                  <div class="custom-input-group">
-                                      <label class="control control--checkbox pt-1">USB Hubs
-                                          <input type="checkbox" />
-                                          <div class="control__indicator"></div>
-                                      </label>
-                                  </div>
-                                  <div class="custom-input-group">
-                                      <label class="control control--checkbox pt-1">Watches
-                                          <input type="checkbox" />
-                                          <div class="control__indicator"></div>
-                                      </label>
-                                  </div>
-                                  <div class="custom-input-group">
-                                      <label class="control control--checkbox pt-1">Mobile Phones
-                                          <input type="checkbox" checked="checked"/>
-                                          <div class="control__indicator"></div>
-                                      </label>
-                                  </div>
-                                  <div class="custom-input-group">
-                                      <label class="control control--checkbox pt-1">Headphones
-                                          <input type="checkbox" />
-                                          <div class="control__indicator"></div>
-                                      </label>
-                                  </div> 
-                              </div>
-                          </div>
-                      </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="flush-headingTwo">
+                    <button class="accordion-button filter-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseOne">
+                        <div class="filter-icon-text-wrapper">
+                          <i class="bi bi-palette-fill me-2"></i>
+                          <h2 class="h6 mb-0">Color</h2>
+                        </div>
+                    </button>
+                  </h2>
+                  <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" >
+                    <div class="accordion-body">
+                        <div class="filter-options">
+                            <div class="filter-option">
+                              {% for color_name,color_code in filters.colors.items %}
+                                <div class="custom-input-group" style="display: flex;"> <!--here inline style diplay-flex is used for displaying the color boxes right after the label text-->
+                                  
+
+                                    <label class="control control--checkbox pt-1">{{color_name}} 
+                                        <input type="checkbox" name="filter-product" data-filter="color" value="{{color_name}}" />
+                                        <div class="control__indicator"></div>   
+                                    </label>
+                                    <!-- <div class="color-square" style="background-color: {{color_code}}; height:20px;width:20px; display:inline-block;" ></div> -->
+                                </div>
+                              {% endfor %}
+                                 
+                            </div>
+                        </div>
                     </div>
                   </div>
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingThree">
-                      <button class="accordion-button filter-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseOne">
-                          <div class="filter-icon-text-wrapper">
-                              <i class="bi bi-currency-exchange me-2"></i>
-                              <h2 class="h6 mb-0">Price</h2>
-                          </div>
-                      </button>
-                    </h2>
-                    <div id="flush-collapseThree" class="accordion-collapse collapse show" aria-labelledby="flush-headingThree">
-                      <div class="accordion-body">
-                          <div class="filter-options">
-                              <div class="filter-option">
-                                  <div class="custom-input-group">
-                                      <label class="control control--checkbox pt-1">USB Hubs
-                                          <input type="checkbox" />
-                                          <div class="control__indicator"></div>
-                                      </label>
-                                  </div>
-                                  <div class="custom-input-group">
-                                      <label class="control control--checkbox pt-1">Watches
-                                          <input type="checkbox" />
-                                          <div class="control__indicator"></div>
-                                      </label>
-                                  </div>
-                                  <div class="custom-input-group">
-                                      <label class="control control--checkbox pt-1">Mobile Phones
-                                          <input type="checkbox" checked="checked"/>
-                                          <div class="control__indicator"></div>
-                                      </label>
-                                  </div>
-                                  <div class="custom-input-group">
-                                      <label class="control control--checkbox pt-1">Headphones
-                                          <input type="checkbox" />
-                                          <div class="control__indicator"></div>
-                                      </label>
-                                  </div> 
-                              </div>
-                          </div>
-                      </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="flush-headingThree">
+                    <button class="accordion-button filter-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseOne">
+                        <div class="filter-icon-text-wrapper">
+                          <i class="bi bi-laptop-fill me-2"></i>
+                            <!-- <i class="bi bi-currency-exchange me-2"></i> -->
+                            <h2 class="h6 mb-0">Compatible with</h2>
+                        </div>
+                    </button>
+                  </h2>
+                  <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree">
+                    <div class="accordion-body">
+                        <div class="filter-options">
+                            <div class="filter-option">
+                              {% for compatiblity in filters.compatible_with_list %}
+                                <div class="custom-input-group">
+                                    <label class="control control--checkbox pt-1">{{compatiblity}}
+                                        <input type="checkbox" name="filter-product" data-filter="compatibility" value="{{compatiblity}}" />
+                                        <div class="control__indicator"></div>
+                                    </label>
+                                </div>
+                              {% endfor %}
+                                <!-- <div class="custom-input-group">
+                                    <label class="control control--checkbox pt-1">Watches
+                                        <input type="checkbox" />
+                                        <div class="control__indicator"></div>
+                                    </label>
+                                </div>
+                                <div class="custom-input-group">
+                                    <label class="control control--checkbox pt-1">Mobile Phones
+                                        <input type="checkbox" checked="checked"/>
+                                        <div class="control__indicator"></div>
+                                    </label>
+                                </div>
+                                <div class="custom-input-group">
+                                    <label class="control control--checkbox pt-1">Headphones
+                                        <input type="checkbox" />
+                                        <div class="control__indicator"></div>
+                                    </label>
+                                </div>  -->
+                            </div>
+                        </div>
                     </div>
                   </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="flush-headingFour">
+                    <button class="accordion-button filter-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseOne">
+                        <div class="filter-icon-text-wrapper">
+                            <i class="bi bi-currency-exchange me-2"></i>
+                            <h2 class="h6 mb-0">Price</h2>
+                        </div>
+                    </button>
+                  </h2>
+                  <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour">
+                    <div class="accordion-body">
+                        <div class="filter-options">
+                            <div class="filter-option">
+                             
+                              <!-- <label for="customRange1" class="form-label">Example range</label> -->
+                              <input type="range" class="form-range" id="customRange1">
+                              <div class="row g-3 align-items-center"  style="flex-wrap: nowrap;">
+                                <div class="col-auto">
+                                  <label for="" class="col-form-label" style="font-size: 14px;">Max:</label>
+                                </div>
+                                <div class="col-auto">
+                                  <input type="number" id="max-price" style="font-size: 12px;" class="form-control" >
+                                </div>
+                                
+                              </div>
+                             
+                              <!-- {% for compatiblity in filters.compatible_with_list %}
+                                <div class="custom-input-group">
+                                    <label class="control control--checkbox pt-1">{{compatiblity}}
+                                        <input type="checkbox" name="compatibility_filter" />
+                                        <div class="control__indicator"></div>
+                                    </label>
+                                </div>
+                              {% endfor %} -->
+                                
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+               </form>
+
+                  
                 </div>
           </div>
       </div>
       <div class="right-layout">
           <div class="container">
-              <div class="row">
+            <!-- <div class="hero-section__box">
+              <h2>Search for <span>Projects</span></h2>
+            </div> -->
+    
+            <!-- <div class="hero-section__search">
+              <form id="search_form" class="form" action="" method="get">
+                <div class="form__field">
+                  <label for="formInput#search">Search</label>
+                  <input class="input input--text" id="formInput#search" type="text" name="search_query"
+                    placeholder="Search by Project Title" value={{search_query}}>
+                </div>
+    
+                <input class="btn btn--sub btn--lg" type="submit" value="Search" />
+              </form>
+            </div> -->
+            <div class="product-search-container">
+              <!-- <form action="">
+                <div class="row">
+                  <input type="text" class="form-control col-md-6 mb-3" name="search_query" id="exampleFormControlInput1" placeholder="Search">
+                  <input type="submit" class="btn btn-primary col-md-3  my-primary-bg  mb-3">
+                </div>
+              </form> -->
+              <form class="row g-2 justify-content-center" method="get" action="{% url 'products' %}" >
+                
+                <div class="col-6 col-xl-4">
+                  <!-- <label for="inputPassword2" class="visually-hidden">Password</label> -->
+                  <input type="text" class="form-control" name="search_query" placeholder="Search" value="{{search_query}}">
+                </div>
+                <div class="col-auto ">
+                  <button type="submit" class="btn btn-primary my-primary-bg  mb-3">Submit</button>
+                </div>
+              </form>
+            </div>
+              <div class="row" id="products-list-container">
                 {% if search_query != '' %}
                   {% if result_length != 0 %}
                     <h6 class="text-center mb-3">{{result_length}} Result{{result_length|pluralize}} for <span class="font-bold" style="color: #389fff;">{{search_query}}</span></h6>
                   {% else %}
                     <h6 class="text-center mb-3">{{result_length}} Result{{result_length|pluralize}} for <span class="font-bold" style="color: #389fff;">{{search_query}}</span></h6>
-                    <div class="empty-cart-img-container no-result-img-container"  >
+                    <!-- <div class="empty-cart-img-container no-result-img-container"  >
                       <img class="empty-cart-img img-fluid" src="{% static 'user_ui/images/noresults.png' %}" alt="">
-                    </div>
+                    </div> -->
                   {% endif %}
                 {% else %}
                 <!-- <h6 class="text-center mb-3">{{result_length}} Result{{result_length|pluralize}} for <span class="font-bold" style="color: #389fff;">{{search_query}}</span></h6> -->
@@ -156,6 +229,12 @@
                   <img class="empty-cart-img img-fluid" src="{% static 'user_ui/images/noresults.png' %}" alt="">
                 </div> -->
                   
+                {% endif %}
+
+                {% if result_length == 0 %}
+                  <div class="empty-cart-img-container no-result-img-container"  >
+                    <img class="empty-cart-img img-fluid" src="{% static 'user_ui/images/noresults.png' %}" alt="">
+                  </div>
                 {% endif %}
 
                   {% for product in products %}
@@ -242,27 +321,10 @@
 
               </div>
 
-              {% if result_length != 0 %}
-              <div class="pagination-container" >
-                <div class="pagination mb-2 mt-2 fixed-widget" style="right: auto; left:auto; position:static;">
-                  <ul class="container">
-                    <li><a href="#" class="btn btn--disabled">&#10094; Prev</a></li>
-                    <li><a href="#" class="btn btn--sub">01</a></li>
-                    <li><a href="#" class="btn">02</a></li>
-                    <li><a href="#" class="btn">03</a></li>
-                    <li><a href="#" class="btn">04</a></li>
-                    <li><a href="#" class="btn">05</a></li>
-                    <li><a href="#" class="btn">06</a></li>
-                    <li><a href="#" class="btn">07</a></li>
-                    <li><a href="#" class="btn">08</a></li>
-                    <li><a href="#" class="btn">09</a></li>
-                    <li><a href="#" class="btn">10</a></li>
-                    <li><a href="#" class="btn">Next &#10095;</a></li>
-                  </ul>
-                </div>
+              <div id="pagination-wrapper">
+                {% include 'store/pagination.html' %}
               </div>
-              
-              {% endif %}
+             
 
             </div>
       </div>
@@ -280,6 +342,7 @@
    
 {% block script_reference %}
   <script src="{% static 'user_ui/js/variant_changer.js' %}"></script>
+  <script src="{% static 'user_ui/js/productFilter.js' %}"></script>
 {% endblock %}
    
 

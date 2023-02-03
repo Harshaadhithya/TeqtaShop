@@ -39,7 +39,7 @@ class ProductVariantForm(ModelForm):
             self.fields['total_sales'].widget.attrs.update({'class':'form-control'})
             self.fields['original_price'].widget.attrs.update({'class':'form-control currency'})
             self.fields['current_price'].widget.attrs.update({'class':'form-control currency'})
-
+            self.fields['compatible_with'].widget.attrs.update({'class':'select2-tags form-control'})
             # self.fields['tags'].widget.attrs.update({'class':'select2-tags form-control'})
     
 
@@ -51,7 +51,7 @@ class ProductVariantFullForm(ModelForm):
 
     class Meta:
         model=ProductVariant
-        fields=['description','table_content','variant_type','variant_name','value','total_stock','available_stock','original_price','current_price']
+        fields=['description','table_content','variant_type','variant_name','value','compatible_with','total_stock','available_stock','original_price','current_price']
         # exclude=['product']
 
     
@@ -67,6 +67,9 @@ class ProductVariantFullForm(ModelForm):
             # self.fields['total_sales'].widget.attrs.update({'class':'form-control'})
             self.fields['original_price'].widget.attrs.update({'class':'form-control currency'})
             self.fields['current_price'].widget.attrs.update({'class':'form-control currency'})
+            self.fields['compatible_with'].widget.attrs.update({'class':'select2-tags form-control'})
+
+           
 
 
 

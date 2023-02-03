@@ -1,5 +1,6 @@
 import json
 from .models import *
+from inventory.models import *
 from .serializers import *
 
 def cookieCart(request):
@@ -67,3 +68,59 @@ def cartData(request):
         cart_total_qty=cookieData['cart_total_qty']
 
     return {'items': items, 'order': order, 'cart_total_qty': cart_total_qty}
+
+def get_filters():
+    filters=dict()
+    # categories
+    filters['categories']=list(ProductCategory.objects.values_list("name",flat=True)) #we have set unique = true for name field in ProductCategory model so every object in that model has unique name. so we are directly getting all the values from that model without using distinct() function
+
+    # colors
+    colors_list=list(ProductVariant.objects.filter(variant_type='color').values_list("variant_name","value"))  #[('red', '#000000'), ('blue', '#0D18ED'), ('blue', '#2CE7FB'), ('blue', '#358BFF'), ('purple', '#834AA6'), ('violet', '#8621C4'), ('red', '#CE2222'), ('red', '#E726B0'), ('red', '#F1225D'), ('red', '#F5E7ED'), ('black', '#FF0000'), ('red', '#FF1256'), ('pink', '#FF3BBE'), ('white', '#FFFFFF')]    
+    colors_dict=dict()
+    for color_name,color_code in colors_list:
+        colors_dict[color_name]=color_code # it has only the unique color names and its value => {'red': '#FF1256', 'blue': '#358BFF', 'purple': '#834AA6', 'violet': '#8621C4', 'black': '#FF0000', 'pink': '#FF3BBE', 'white': '#FFFFFF'}
+    filters['colors']=colors_dict
+    
+    # compatibilty
+    compatible_with_list=list(Compatibilty.objects.values_list("name",flat=True))
+    filters['compatible_with_list']=compatible_with_list
+
+
+    return filters
+
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+
+def paginate_products(request,products):
+    products_per_page=4
+    pages=Paginator(products,products_per_page)
+    page_num_range=pages.page_range
+    page_no=request.GET.get('page_no')
+    if not request.GET.get('page_no'):
+        page_no=1
+        
+    try: 
+        products=pages.page(page_no)
+    except PageNotAnInteger:
+        page_no=1
+        products=pages.page(page_no)
+    except EmptyPage:
+        page_no=len(page_num_range) #this gives the last page no
+        products=pages.page(page_no)
+    current_page_num = products.number
+    has_prev_page = products.has_previous()
+    has_next_page = products.has_next()
+    has_other_pages = products.has_other_pages()
+    previous_page_number = products.previous_page_number
+    next_page_number = products.next_page_number
+
+    left_index = int(page_no)-2
+    right_index = int(page_no)+2
+    if left_index < 1:
+        left_index = 1
+    if right_index > len(page_num_range):
+        right_index = len(page_num_range)
+    custom_page_num_range = range(left_index,right_index+1)
+
+    context2={'page_num_range':page_num_range,'current_page_num':current_page_num,'has_prev_page':has_prev_page,'has_next_page':has_next_page,'has_other_pages':has_other_pages,'previous_page_number':previous_page_number,'next_page_number':next_page_number,'custom_page_num_range':custom_page_num_range,'last_page_num':len(page_num_range),'last_page_num_minus_1':len(page_num_range)-1}
+
+    return products,context2
