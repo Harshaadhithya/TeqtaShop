@@ -3,6 +3,7 @@ from .models import *
 from inventory.models import *
 from .serializers import *
 
+
 def cookieCart(request):
     print("utils working")
     try:
@@ -69,6 +70,8 @@ def cartData(request):
 
     return {'items': items, 'order': order, 'cart_total_qty': cart_total_qty}
 
+
+from django.db.models import Max
 def get_filters():
     filters=dict()
     # categories
@@ -85,6 +88,9 @@ def get_filters():
     compatible_with_list=list(Compatibilty.objects.values_list("name",flat=True))
     filters['compatible_with_list']=compatible_with_list
 
+    # max price
+    filters['maxPrice']=ProductVariant.objects.all().aggregate(Max('current_price'))
+    print("filters",filters)
 
     return filters
 

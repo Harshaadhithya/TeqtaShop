@@ -25,14 +25,18 @@
                     <div class="accordion-body">
                         <div class="filter-options">
                             <div class="filter-option">
-                              {% for category in filters.categories %}
-                                <div class="custom-input-group">
+                              <input type="text" class="form-control mb-2" id="category_search" placeholder="Search" >
+                              <div id="items-to-search-category" class="filter-text-items-container">
+                                {% for category in filters.categories %}
+                                <div class="custom-input-group" data-search-data="{{category}}">
                                     <label class="control control--checkbox pt-1">{{category}}
                                         <input type="checkbox" name="filter-product" data-filter="category" value="{{category}}" />
                                         <div class="control__indicator"></div>
                                     </label>
                                 </div>
                               {% endfor %}
+                              </div>
+                              
                                 <!-- <div class="custom-input-group">
                                     <label class="control control--checkbox pt-1">Watches
                                         <input type="checkbox" />
@@ -69,10 +73,10 @@
                     <div class="accordion-body">
                         <div class="filter-options">
                             <div class="filter-option">
-                              {% for color_name,color_code in filters.colors.items %}
-                                <div class="custom-input-group" style="display: flex;"> <!--here inline style diplay-flex is used for displaying the color boxes right after the label text-->
-                                  
-
+                              <input type="text" class="form-control mb-2" id="color_search" placeholder="Search" >
+                              <div id="items-to-search-color" class="filter-text-items-container">
+                                {% for color_name,color_code in filters.colors.items %}
+                                <div class="custom-input-group" style="display: flex;" data-search-data="{{color_name}}"> <!--here inline style diplay-flex is used for displaying the color boxes right after the label text-->
                                     <label class="control control--checkbox pt-1">{{color_name}} 
                                         <input type="checkbox" name="filter-product" data-filter="color" value="{{color_name}}" />
                                         <div class="control__indicator"></div>   
@@ -80,6 +84,8 @@
                                     <!-- <div class="color-square" style="background-color: {{color_code}}; height:20px;width:20px; display:inline-block;" ></div> -->
                                 </div>
                               {% endfor %}
+                              </div>
+                              
                                  
                             </div>
                         </div>
@@ -100,14 +106,18 @@
                     <div class="accordion-body">
                         <div class="filter-options">
                             <div class="filter-option">
-                              {% for compatiblity in filters.compatible_with_list %}
-                                <div class="custom-input-group">
-                                    <label class="control control--checkbox pt-1">{{compatiblity}}
-                                        <input type="checkbox" name="filter-product" data-filter="compatibility" value="{{compatiblity}}" />
-                                        <div class="control__indicator"></div>
-                                    </label>
-                                </div>
-                              {% endfor %}
+                              <input type="text" class="form-control mb-2" id="compatiblity_search" placeholder="Search" >
+                              <div id="items-to-search-compatiblity" class="filter-text-items-container">
+                                {% for compatiblity in filters.compatible_with_list %}
+                                  <div class="custom-input-group" data-search-data="{{compatiblity}}">
+                                      <label class="control control--checkbox pt-1">{{compatiblity}}
+                                          <input type="checkbox" name="filter-product" data-filter="compatibility" value="{{compatiblity}}" />
+                                          <div class="control__indicator"></div>
+                                      </label>
+                                  </div>
+                                {% endfor %}
+                              </div>
+                              
                                 <!-- <div class="custom-input-group">
                                     <label class="control control--checkbox pt-1">Watches
                                         <input type="checkbox" />
@@ -147,13 +157,13 @@
                             <div class="filter-option">
                              
                               <!-- <label for="customRange1" class="form-label">Example range</label> -->
-                              <input type="range" class="form-range" id="customRange1">
+                              <input type="range" class="form-range"  id="priceSlider" min="0" max="{{filters.maxPrice.current_price__max}}" value="{{filters.maxPrice.current_price__max}}" oninput="maxprice.value=this.value;">
                               <div class="row g-3 align-items-center"  style="flex-wrap: nowrap;">
                                 <div class="col-auto">
-                                  <label for="" class="col-form-label" style="font-size: 14px;">Max:</label>
+                                  <label for="" class="col-form-label"  style="font-size: 14px;">Max:</label>
                                 </div>
                                 <div class="col-auto">
-                                  <input type="number" id="max-price" style="font-size: 12px;" class="form-control" >
+                                  <input type="number" id="maxprice" min="0" max="{{filters.maxPrice.current_price__max}}" onkeyup="priceSlider.value=this.value;" style="font-size: 12px;" class="form-control" disabled >
                                 </div>
                                 
                               </div>
@@ -178,7 +188,7 @@
                 </div>
           </div>
       </div>
-      <div class="right-layout">
+      <div class="right-layout" id="products-container-layout">
           <div class="container">
             <!-- <div class="hero-section__box">
               <h2>Search for <span>Projects</span></h2>
@@ -343,6 +353,28 @@
 {% block script_reference %}
   <script src="{% static 'user_ui/js/variant_changer.js' %}"></script>
   <script src="{% static 'user_ui/js/productFilter.js' %}"></script>
+  <script src="{% static 'user_ui/js/jquery-search.js' %}"></script>
+  <script>
+    //compatiblity search
+    $('#items-to-search-compatiblity > div').jqSearch({
+        searchInput:'#compatiblity_search',
+        searchTarget:'data'
+    });
+
+    //color search
+    $('#items-to-search-color > div').jqSearch({
+      searchInput:'#color_search',
+      searchTarget:'data'
+    });
+
+    //category search
+    $('#items-to-search-category > div').jqSearch({
+      searchInput:'#category_search',
+      searchTarget:'data'
+    });
+  </script>
+  
+    
 {% endblock %}
    
 

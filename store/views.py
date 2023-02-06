@@ -148,11 +148,16 @@ def filter_products(request):
         colors=selected_filters['color']
         compatiblity=selected_filters['compatibility']
         categories=selected_filters['category']
+
+        maxPrice = selected_filters['maxPrice']
+        print(type(maxPrice),maxPrice)
         
     # all_products=Product.objects.all()
     all_products = Product.objects.distinct().filter(
         Q(name__icontains=search_query) | Q(tags__name__icontains=search_query) | Q(category__name__icontains=search_query)
     )
+    if maxPrice!='' or maxPrice!=None:
+        all_products=all_products.filter(product_variants__current_price__lte=int(maxPrice)).distinct()   
     if len(colors)>0:
         print("colo",colors)
         all_products=all_products.filter(product_variants__variant_name__in=colors).distinct()
@@ -191,7 +196,7 @@ def change_product_img_endpoint(request, v_id):
 def single_product(request, name):
     product = Product.objects.get(name=name)
     product_variants = product.product_variants.all()
-    print(get_filters())
+    # print(get_filters())
     
     categories=product.category.all()
     tags=product.tags.all()
