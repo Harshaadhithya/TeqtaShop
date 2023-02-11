@@ -27,6 +27,14 @@ urlpatterns = [
     path('view_collection_products_endpoint/<str:pk>/',view_collection_products_endpoint,name='view_collection_products_endpoint'),
     path('remove_product_from_collection/<str:c_id>/<str:p_id>/',remove_product_from_collection,name='remove_product_from_collection'),
 
+    path('coupons/',coupons,name='coupons'),
+    path('add_coupon/',add_coupon,name='add_coupon'),
+    path('edit_coupon/<str:pk>/',edit_coupon,name='edit_coupon'),
+    path('view_coupon_products_endpoint/<str:pk>/',view_coupon_products_endpoint,name='view_coupon_products_endpoint'),
+    path('remove_product_from_coupon/<str:c_id>/<str:p_id>/',remove_product_from_coupon,name='remove_product_from_coupon'),
+
+
+
    
 
     path('check/',check,name='check'),

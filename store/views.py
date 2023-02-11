@@ -1,3 +1,4 @@
+import decimal
 import imp
 from itertools import product
 from logging import exception
@@ -232,7 +233,12 @@ def cart(request):
     order=data['order']
     cart_total_qty=data['cart_total_qty']
 
-    context = {'items': items, 'order': order, 'cart_total_qty': cart_total_qty}
+    # print("items",items)
+    # recommended products
+    
+    recommended_products = products_recommendation(request,items)
+    
+    context = {'items': items, 'order': order, 'cart_total_qty': cart_total_qty,'recommended_products':recommended_products}
     return render(request, 'store/cart-page.html', context)
 
 
@@ -241,6 +247,7 @@ def checkout(request):
     items=data['items']
     order=data['order']
     shippingForm=ShippingForm()
+    
     context = {'items': items, 'order': order, 'shippingForm':shippingForm}
     if request.user.is_authenticated:
         customer=request.user.profile
@@ -390,3 +397,84 @@ def returnCartTotal(request):
     total = get_cart_total_qty(request)
     print("totoal", total)
     return JsonResponse({'cart_total_qty': total})
+
+
+from itertools import chain
+
+def apply_coupon(request):
+    coupon_code = request.POST.get("coupon_code")
+    try:
+        coupon_obj = Coupon.objects.get(name = coupon_code,status='Active')
+        print(cartData(request))
+        data=cartData(request)
+        items=data['items']
+        order=data['order']
+        print("items",items)
+        if not request.user.is_authenticated:
+            items_id_list=[item["id"] for item in items]
+            product_variants_list=[ProductVariant.objects.get(id=prod_var_id) for prod_var_id in items_id_list]
+            
+            # print("items id",items_id_list)
+            discount_dict = {prod_var.product:0 for prod_var in product_variants_list}
+        else:
+            discount_dict = {order_item.product.product:0 for order_item in items} #the key will be unique products, not product variants. if i have iphone-blue and iphone-purple in my cart, then this dict has only one key coresponding to both that product variants which is the product object(iphone)
+        coupon_applicable_products = coupon_obj.applicable_products.all()
+        print(coupon_applicable_products)
+        
+        print("dis dict",discount_dict)
+
+        # if request.user.is_authenticated:
+        for product,discount in discount_dict.items():
+            if product in coupon_applicable_products:
+                total_price=0  #this variable is going to hold the total price for each key(product) in discount dict. if i have both iphone-blue and iphone-purple in my cart then these both variants belongs to the same key(iphone) and the total_proce variable computes and adds the price of both variants and stores it in this single variable
+                
+                print("items",items)
+                if not request.user.is_authenticated:
+                    product_variants_in_order_items = [prod_var for prod_var in product_variants_list if prod_var.product==product] #we can only use .filter in querysets, but here we have a list of objects not a queryset, so we use list comprehension to filter the product variants that belongs the current product in this loop
+                    for prod_var in product_variants_in_order_items:
+                        print('provarid',prod_var.id)
+                        print([item["id"] for item in items if int(item["id"])==prod_var.id])
+                        total_price+=sum([decimal.Decimal(item["get_total"]) for item in items if int(item["id"])==prod_var.id])
+                        # print("tot pri",total_price)
+                        # 
+                    # total_price=sum([prod_var.id for prod_var in product_variants_in_order_items])
+                else:
+                    product_variants_in_order_items = items.filter(product__product=product)  #this is executed in a for lopp which iterates over each key, f the key is iphone then it filters all the orderitems that has the product iphone, it returns iphone-blue and iphone-purple in this case
+                    for order_item in product_variants_in_order_items:
+                        total_price+=order_item.get_total
+                print("filtered",product_variants_in_order_items)
+                
+                print(product,"=",total_price)
+
+                if coupon_obj.coupon_type == 'percentage':
+                    print("percentage")
+                    discount = round(decimal.Decimal(coupon_obj.value/100)*total_price)
+                    if discount < total_price:
+                        discount_dict[product] = discount
+                elif coupon_obj.coupon_type == 'cashback':
+                    if coupon_obj.value < total_price:  #this is checked to enesure whether the total price for the product is greater than the cashback. if total price of product =10 but cashback is 15 then the discounted prices will be -5 which is negative
+                        # discount+=coupon_obj.value
+                        discount_dict[product] = coupon_obj.value
+                    print("cashback",coupon_obj.value)
+                else:
+                    pass
+                print("dis dict",discount_dict)
+            else:
+                pass
+                print(product,"not in list")
+            
+        # else:
+        #     pass
+        
+        total_discount=sum(discount_dict.values())
+        if not request.user.is_authenticated:
+            discounted_order_total = order['get_cart_total']-decimal.Decimal(total_discount)
+        else:
+            discounted_order_total = order.get_cart_total-decimal.Decimal(total_discount)
+        
+        checkout_card_template = render_to_string('store/checkout-card.html',context={'items':items,'order':order,"discount":total_discount,"discounted_order_total":discounted_order_total,'coupon_code':coupon_code})
+
+    except Exception as e:
+        print(e)
+        return JsonResponse({"status":"failed","msg":f"Coupon '{coupon_code}' does not exist"})
+    return JsonResponse({"coupon_code":request.POST.get("coupon_code"), "discount":total_discount, "checkout_card_template":checkout_card_template})

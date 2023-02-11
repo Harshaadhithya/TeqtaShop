@@ -1,0 +1,59 @@
+
+<div class="card-body">
+    <div class="mb-4" >
+      <a class="btn btn-sm btn-primary my-primary-bg my-light-btn " href="{% url 'cart' %}"><i class="bi bi-arrow-left-circle-fill"></i> Back to Cart</a>
+
+    </div>
+    
+    {% for item in items %}
+      <div class="mb-4 d-flex justify-content-between">
+          <div class="checkout-product-detail">
+              
+              <div class="checkout-product-img-container position-relative">
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill my-primary-bg">
+                    {{item.quantity}}
+                      <span class="visually-hidden">Quantity</span>
+                    </span>
+                  <img src="{{item.product.variant_image.first.image.url}}" alt="{{item.product.product.name}}">
+              </div>
+              <div class="checkout-product-detail-desc ms-3">
+                {% if item.product.variant_name != None %}
+                  <p class="mb-0 text-break" >{{item.product.product.name}}</p>
+                  <p class="mb-0" style="color: #6c6d6f;" >{{item.product.variant_name}}</p>
+                {% else %}
+                  <p class="mb-0 text-break" >{{item.product.product.name}}</p>
+
+                {% endif %}
+                  
+                  
+              </div>
+          </div>
+          
+          <p class="mb-0 font-weight-600 my-text-purple-dark">Rs. {{item.get_total}}</p>
+      </div>
+    {% endfor %}
+
+     
+
+      
+        <hr>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control form-control-lg" style="font-size: 16px;" placeholder="Coupon Code or Voucher" id="coupon_code" aria-describedby="coupon-btn" value="{{coupon_code}}">
+          <button class="btn my-btn-purple" type="button" id="coupon-btn">Apply</button>
+        </div>
+        <div id="coupon-discount-badge">
+
+        </div>
+        
+        
+        <div class="mb-4 d-flex justify-content-between"><p class="mb-0">Subtotal</p> <p class="mb-0 font-weight-600 my-text-purple-dark"> Rs. {{order.get_cart_total}}</p></div>
+        <div class="mb-4 d-flex justify-content-between"><p class="mb-0">Coupon Discount</p> <p class="mb-0 font-weight-600 my-text-purple-dark"> Rs. {{discount}}</p></div>
+        
+        <div class="mb-4 d-flex justify-content-between"><p class="mb-0">Shipping Cost</p> <p class="mb-0 font-weight-600 my-text-purple-dark"> Rs. 0.00</p></div>
+          <hr>
+      <div class="mb-2 d-flex justify-content-between">
+          <p class="mb-0 fw-bold fs-5">Total <br><span class="fw-lighter  text-break" style="font-size: 14px;" >Inclusive of all taxes</span></p> 
+          <p class="mb-0 fw-bold my-text-purple-dark fs-5"> Rs. {{discounted_order_total}}</p>
+      </div>
+      
+  </div>

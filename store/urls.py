@@ -17,5 +17,6 @@ urlpatterns = [
     path('returnCartTotal/',returnCartTotal,name='returnCartTotal'),
 
     path('get_order_item_endpoint/<str:pk>/',get_order_item_endpoint,name='get_order_item_endpoint'),
-    path('get_guest_cart_detail/',get_guest_cart_detail,name='get_guest_cart_detail')
+    path('get_guest_cart_detail/',get_guest_cart_detail,name='get_guest_cart_detail'),
+    path('apply_coupon/',apply_coupon,name='apply_coupon')
 ]

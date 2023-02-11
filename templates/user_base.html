@@ -777,7 +777,10 @@
  <script src=" {% static 'user_ui/js/main.js' %} "></script>
  <script src="{% static 'user_ui/js/cart.js' %}" ></script>
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <!-- <script src="{% static 'node_modules/sweetalert/dist/sweetalert.min.js' %}"></script>
+ <script src="{% static 'assets/js/page/modules-sweetalert.js' %}"></script> -->
  <script>
+  
   "{% if messages %}"
       "{% for message in messages %}"
         Swal.fire('{{message}}','','{{message.tags}}')

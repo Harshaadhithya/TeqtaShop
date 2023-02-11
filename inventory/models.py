@@ -180,3 +180,35 @@ class SpecialBadge(models.Model):
         return self.name
 
 
+def productsList():
+    return Product.objects.all()
+
+class Coupon(models.Model):
+    type_choices=(
+        ('percentage','percentage'),
+        ('cashback','cashback') #price reduction
+    )
+    status_choices=(
+        ('Active','Active'),
+        ('Inactive','Inactive')
+    )
+    
+
+    name = models.CharField(max_length=200,unique=True)
+    coupon_type = models.CharField(max_length=200,choices=type_choices,default='percentage')
+    value = models.PositiveBigIntegerField()
+    applicable_products = models.ManyToManyField('Product',blank=True,default=productsList)
+    min_checkout_price = models.PositiveBigIntegerField(default=1)
+    status = models.CharField(max_length=100,default='Active',choices=status_choices)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering=['status','-created']
+
+
+
+
+

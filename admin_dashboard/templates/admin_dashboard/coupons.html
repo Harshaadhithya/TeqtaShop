@@ -156,7 +156,7 @@
                   <div class="card-header d-flex justify-content-end">
                     <!-- <h4>Advanced Table</h4> -->
                     
-                    <a href="{% url 'add_collection' %}" class="btn btn-icon icon-left btn-success"><i class="fas fa-plus"></i> Add Collections</a>
+                    <a href="{% url 'add_coupon' %}" class="btn btn-icon icon-left btn-success"><i class="fas fa-plus"></i> Add Coupons</a>
 
                   </div>
                   <div class="card-body">
@@ -167,11 +167,11 @@
                             
                             <th>Name</th>
                             
-                            <th>Count</th>
-                            <th>Products</th>
-                            <th>Offers</th>
+                            <th>Coupon Type</th>
+                            <th>Value</th>
+                            <th>Minimum Checkout</th>
+                            <th>Applicable Products</th>
                             <th>Status</th>
-                            <th>Created At</th>
                             <th>Actions</th>
                             
                             
@@ -180,49 +180,56 @@
                           </tr>
                         </thead>
                         <tbody>
-                          {% for collection in collections %}
+                          {% for coupon in coupons %}
                           <tr>
                             
                             
                             
-                            <td  class="align-middle" ><p class="m-auto font-weight-bold text-primary" >{{collection.name}}</p></td>
-                            
+                            <td  class="align-middle" ><p class="m-auto font-weight-bold text-primary" >{{coupon.name}}</p></td>
+                            <td  class="align-middle" ><p class="m-auto text-primary" >{{coupon.coupon_type}}
+                                
+                            </p></td>
+                            <td  class="align-middle" >
+                                <p class="m-auto text-primary" >
+                                    {% if coupon.coupon_type == 'percentage' %}
+                                        {{coupon.value}}%
+                                    {% elif coupon.coupon_type == 'cashback' %}
+                                        Rs. {{coupon.value}}
+                                    {% else %}
+                                        {{coupon.value}}
+                                    {% endif %}
+                                </p></td>
+                            <td  class="align-middle" ><p class="m-auto text-primary" >Rs. {{coupon.min_checkout_price}}</p></td>
                             <td  class="align-middle">
+                                <a href="" data-toggle="modal" data-target="#view_coupon_modal" id="{{coupon.id}}_eye_btn" onclick="viewBtnHandler(event);"><i  class="far fa-eye" id="{{coupon.id}}_eye_icon"></i></a>
+                            </td>
+
+                            
+                            <!-- <td  class="align-middle">
                               <p id="{{collection.id}}_count" class="mb-0">{{collection.products.count}}</p>
                             </td>
                          
                             <td  class="align-middle">
                                 <a href="" data-toggle="modal" data-target="#view_collection_modal" id="{{collection.id}}_eye_btn" onclick="viewBtnHandler(event);"><i id="{{collection.id}}_eye_btn" class="far fa-eye" id="{{collection.id_eye_icon}}"></i></a>
-                            </td>
+                            </td> -->
                             
-                            <td  class="align-middle">
-                              {% if collection.offer != None %}
-                                <p class="mb-0">{{collection.offer.name}} - {{collection.offer.percentage}}%</p>
-                              {% else %}
-                                <p class="mb-0">-</p>
-                              {% endif %}
-                            </td>
+                            
 
                             <td class="align-middle">
-                              {% if collection.status == 'Active' %}
+                              {% if coupon.status == 'Active'  %}
                                 <div class="badge badge-success">Active</div>
-                              {% elif collection.status == 'Inactive' %}
+                              {% elif coupon.status == 'Inactive' %}
                                 <div class="badge badge-warning">inactive</div>
                               {% else %}
-                                <div class="badge badge-info">{{collection.status}}</div>
+                                <div class="badge badge-info">{{coupon.status}}</div>
                               {% endif %}
                             </td>
 
-                            <td  class="align-middle">
-                              <p class="mb-0" >{{collection.created}}</p>
-                            </td>
+                           
                             
-                            <!-- <td class="align-middle">
-                              <p>{{product_dict.product.description|slice:80}}</p>
-                            </td> -->
+                           
                             <td  class="align-middle">
-                                <a href="{% url 'edit_collection' collection.id %}" class="btn btn-icon btn-warning"><i class="far fa-edit"></i></a>
-                                <a href="{% url 'delete_collection' collection.id %}" class="btn btn-icon btn-danger ml-3"><i class="fas fa-trash"></i></a>
+                                <a href="{% url 'edit_coupon' coupon.id %}" class="btn btn-icon btn-warning"><i class="far fa-edit"></i></a>
                             </td>
 
                           </tr>
@@ -242,11 +249,11 @@
 
   
   <!-- Modal -->
-  <div class="modal fade" id="view_collection_modal" tabindex="-1" role="dialog" aria-labelledby="view_collection_modal" aria-hidden="true">
+  <div class="modal fade" id="view_coupon_modal" tabindex="-1" role="dialog" aria-labelledby="view_coupon_modal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="view_collection_products_title"></h5>
+          <h5 class="modal-title" id="view_coupon_products_title"></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -283,8 +290,7 @@
 
 
 
-  
-<!-- JS Libraies -->
+ <!-- JS Libraies -->
 {% block script_reference %}
 
 <script>
@@ -294,45 +300,46 @@
         "{% endfor %}"
     "{% endif %}"
 
-    const removeItemFromCollectionHandler=(event)=>{
+    const removeItemFromCouponHandler=(event)=>{
       console.log(event.target.id);
-      let collection_id=event.target.id.split('_')[0];
+      let coupon_id=event.target.id.split('_')[0];
       let product_id=event.target.id.split('_')[1];
 
-      fetch(`/admin-dashboard/remove_product_from_collection/${collection_id}/${product_id}/`)
+      fetch(`/admin-dashboard/remove_product_from_coupon/${coupon_id}/${product_id}/`)
       .then(response => response.json())
       .then(data => {
         if(data['status']==='success'){
-          document.getElementById(`${collection_id}_count`).innerText=data['count'];
-          document.getElementById(`${collection_id}_${product_id}_row`).style.display="none";
+          //document.getElementById(`${collection_id}_count`).innerText=data['count'];
+          document.getElementById(`${coupon_id}_${product_id}_row`).style.display="none";
         }
       })
       
     }
 
     const viewBtnHandler=(event)=>{
-      let collection_id=event.target.id.split('_')[0];
-      fetch(`/admin-dashboard/view_collection_products_endpoint/${collection_id}/`)
+      let coupon_id=event.target.id.split('_')[0];
+      console.log("coupon id",coupon_id);
+      fetch(`/admin-dashboard/view_coupon_products_endpoint/${coupon_id}/`)
       .then(response => response.json())
       .then(data => {
         document.getElementById('modal-body').innerHTML='';
-        document.getElementById('view_collection_products_title').innerText='';
+        document.getElementById('view_coupon_products_title').innerText='';
         let product_list=data['product_list'];
 
         let view_product_content='';
         
-        document.getElementById('view_collection_products_title').innerText=data['collection_title'];
+        document.getElementById('view_coupon_products_title').innerText=data['coupon_title'];
         for(let product_dict of product_list){
           console.log(product_dict);
           let content=`
-          <tr id="${collection_id}_${product_dict['product_id']}_row">
+          <tr id="${coupon_id}_${product_dict['product_id']}_row">
             <th scope="row">${product_dict['s_no']}</th>
             <td>
                 <img alt="image" src="${product_dict['image_url']}" class="rounded mt-3 mb-3" width="55" data-toggle="tooltip" title="" data-original-title="iPhone Pro">
             </td>
             <td>${product_dict['product_name']}</td>
             <td>
-                <button id="${collection_id}_${product_dict['product_id']}" onclick="removeItemFromCollectionHandler(event)" class="btn text-danger"><i id="${collection_id}_${product_dict['product_id']}_icon" class="fas fa-times"></i></button>
+                <button id="${coupon_id}_${product_dict['product_id']}" onclick="removeItemFromCouponHandler(event)" class="btn text-danger"><i id="${coupon_id}_${product_dict['product_id']}_icon" class="fas fa-times"></i></button>
             </td>
           </tr>
           `
@@ -365,7 +372,7 @@
       
     }
 
-    $('#view_collection_modal').on('shown.bs.modal', function (event) {
+    $('#view_coupon_modal').on('shown.bs.modal', function (event) {
         console.log(event.target.id)
         
         
@@ -390,5 +397,4 @@
  <!-- <script src=" {% static 'assets/js/page/bootstrap-modal.js' %} "></script> -->
 
  {% endblock %}
-
 

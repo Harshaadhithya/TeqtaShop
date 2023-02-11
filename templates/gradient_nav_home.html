@@ -1,7 +1,7 @@
 {% load static %}
 {% load custom_tags %}
 
-{% if page_title == 'home_page' or page_title == 'products_page' %}
+{% if page_title == 'home_page' or page_title == 'products_page' or page_title == 'login_page' %}
     <div class="gradient-background-container">
 {% else %}
     <div class="">
@@ -208,6 +208,80 @@
     <p class="text-center banner-subtitle small-font mb-4" >OUR OFFICIAL SPONSORS</p>
     <div class="sponsors-sliding-background"></div>
     </div>
+
+{% elif page_title == 'login_page' %}
+<section id="home" class="banner_container">
+  <div class="container hero-container">
+    <div class="row align-items-center justify-content-center">
+      <div
+        class="col-md-6 mb-5 mb-md-0 text-center text-md-start my-banner-text"
+        id="banner-content"
+        data-aos="fade-left"
+        data-aos-delay="500"
+      >
+      <div class="login-container">
+        <div class="screen">
+          <div class="screen__content">
+            <form class="login">
+              <div class="login__field">
+                <i class="login__icon fas fa-user"></i>
+                <input type="text" class="login__input" placeholder="User name / Email">
+              </div>
+              <div class="login__field">
+                <i class="login__icon fas fa-lock"></i>
+                <input type="password" class="login__input" placeholder="Password">
+              </div>
+              <button class="button login__submit">
+                <span class="button__text">Log In Now</span>
+                <i class="button__icon fas fa-chevron-right"></i>
+              </button>				
+            </form>
+            <div class="social-login">
+              <h3>log in via</h3>
+              <div class="social-icons">
+                <a href="#" class="social-login__icon fab fa-instagram"></a>
+                <a href="#" class="social-login__icon fab fa-facebook"></a>
+                <a href="#" class="social-login__icon fab fa-twitter"></a>
+              </div>
+            </div>
+          </div>
+          <div class="screen__background">
+            <span class="screen__background__shape screen__background__shape4"></span>
+            <span class="screen__background__shape screen__background__shape3"></span>		
+            <span class="screen__background__shape screen__background__shape2"></span>
+            <span class="screen__background__shape screen__background__shape1"></span>
+          </div>		
+        </div>
+      </div>
+        <!-- <p class="banner-subtitle">PLUG. EXPAND.</p>
+        <h1 class="banner-title gradient-text">
+          Aluminium unibody design.
+        </h1>
+        <p class="banner-subtitle banner-light-text">
+          Powerful processor, 100W power delivery, <br />
+          5K display output and multiple ports <br />
+          cased in a soft alloy design.
+        </p>
+        <div class="contact-btn-section mt-3">
+          <a class="" href=" {% static '#about' %} "
+            ><button
+              class="btn btn-primary my-primary-bg pt-2 pb-2 pl-3 pr-3"
+            >
+              Browse
+            </button></a
+          >
+        </div> -->
+      </div>
+      <div class="col-md-6 " data-aos="fade-right">
+        <div class="banner-img-container">
+          <img class="ban-img img-fluid"  src=" {% static 'user_ui/images/mac.png' %} " alt="flagship_img">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</section>
+
 {% else %}
 
 {% endif %}

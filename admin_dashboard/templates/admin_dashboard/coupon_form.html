@@ -1,0 +1,202 @@
+{% extends 'admin_dashboard/admin_base.html' %}
+{% load custom_tags %}
+{% load static %}
+
+  <!-- CSS Libraries -->
+  {% block style_reference %}
+
+  <link rel="stylesheet" href=" {% static 'node_modules/bootstrap-daterangepicker/daterangepicker.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/select2/dist/css/select2.min.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/selectric/public/selectric.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/dropzone/dist/min/dropzone.min.css' %} ">
+  <link rel="stylesheet" href=" {% static 'node_modules/chocolat/dist/css/chocolat.css' %} ">
+  <style>
+    .large-select2 .select2{
+        max-height: 60px;
+        overflow-y: scroll;
+    }
+  </style>
+  
+  {% endblock %}
+  
+
+
+      
+      
+      
+
+      <!-- Main Content -->
+      
+{% block content %}
+
+<section class="section" >
+    <div class="section-header">
+        <h1>Coupons</h1>
+        <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+        <div class="breadcrumb-item"><a href="#">Forms</a></div>
+        <div class="breadcrumb-item">Advanced Forms</div>
+        </div>
+    </div>
+
+    <div class="section-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-xxl-8">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <h4>{{form_title}}</h4>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="" enctype="multipart/form-data" id="form_container">
+                                {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %} 
+                                        <div class="alert alert-danger">
+                                            <strong>{{ error|escape }}</strong>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                                {% endif %}
+ 
+                                {% csrf_token %}
+                                
+
+                                <div class="form-group col-12 ">       
+                                    <label>Coupon Name</label>
+                                    {{form.name}}
+                                    {% for error in form.name.errors %}
+                                        <p style="color: red;">{{error}}</p>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="form-group col-12 ">       
+                                    <label>Coupon Type</label>
+                                    {{form.coupon_type}}
+                                    {% for error in form.coupon_type.errors %}
+                                        <p style="color: red;">{{error}}</p>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="form-group col-12">
+                                    <label>Coupon Value</label>
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <div class="input-group-text" id="value_symbol">
+                                          %
+                                        </div>
+                                      </div>
+                                      {{form.value}}                                    
+                                    </div>
+                                    {% for error in form.value.errors %}
+                                        <p style="color: red;">{{error}}</p>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="form-group col-12 large-select2">       
+                                    <label>Applicable Products</label>
+                                    {{form.applicable_products}}
+                                    {% for error in form.applicable_products.errors %}
+                                        <p style="color: red;">{{error}}</p>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="form-group col-12 ">       
+                                    <label>Min Checkout Price</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <div class="input-group-text">
+                                            ₹
+                                          </div>
+                                        </div>
+                                        {{form.min_checkout_price}}   
+                                        {% for error in form.min_checkout_price.errors %}
+                                            <p style="color: red;">{{error}}</p>
+                                        {% endfor %}                           
+                                      </div>
+                                    
+                                </div>
+
+                                <div class="form-group col-12 ">       
+                                    <label>Status</label>
+                                    {{form.status}}
+                                    {% for error in form.status.errors %}
+                                            <p style="color: red;">{{error}}</p>
+                                    {% endfor %}
+                                    
+                                </div>
+
+
+
+                                <div class="add-btn-conatiner d-flex w-100 justify-content-end mb-4" style="padding-right: 15px;">
+                                    <button class="btn btn-success ml-4" type="submit">Submit</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+      
+     
+  
+
+
+<!-- JS Libraies -->
+{% block script_reference %}
+<script>
+    "{% if messages %}"
+      "{% for message in messages %}"
+        swal('{{message}}', '', '{{message.tags}}');
+      "{% endfor %}"
+    "{% endif %}"
+</script>
+<script>
+    console.log(document.getElementById("id_coupon_type"));
+    document.getElementById("id_coupon_type").addEventListener("input",function(event){
+        let symbol = document.getElementById("value_symbol");
+        if (event.target.value==='cashback'){
+            symbol.innerText="₹"
+        }
+        else if(event.target.value==='percentage'){
+            symbol.innerText="%";
+        }
+    })
+</script>
+<script src=" {% static 'node_modules/cleave.js/dist/cleave.min.js' %} "></script>
+<script src=" {% static 'node_modules/cleave.js/dist/addons/cleave-phone.us.js' %} "></script>
+<script src=" {% static 'node_modules/jquery-pwstrength/jquery.pwstrength.min.js' %} "></script>
+<script src=" {% static 'node_modules/bootstrap-daterangepicker/daterangepicker.js' %} "></script>
+<script src=" {% static 'node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js' %} "></script>
+<script src=" {% static 'node_modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js' %} "></script>
+<script src=" {% static 'node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %} "></script>
+<script src=" {% static 'node_modules/select2/dist/js/select2.full.min.js' %} "></script>
+<script src=" {% static 'node_modules/selectric/public/jquery.selectric.min.js' %} "></script>
+<script src=" {% static 'node_modules/dropzone/dist/min/dropzone.min.js' %} "></script>
+<script src=" {% static 'node_modules/chocolat/dist/js/jquery.chocolat.min.js' %} "></script>
+{% endblock %}
+
+
+
+
+<!-- Page Specific JS File -->
+{% block specific_script_reference %}
+<script src=" {% static 'assets/js/page/forms-advanced-forms.js' %} "></script>
+
+
+
+
+
+
+{% endblock %}
+      
+      

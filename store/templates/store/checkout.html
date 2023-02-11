@@ -108,7 +108,15 @@
             </div>
             <div class="col-lg-5">
                 <div class="checkout-card-container ">
-                    <div class="card shadow-sm" style="border-top:5px solid #389fff;">
+                    <!-- <div class="card shadow-sm" style="border-width: 3px;
+                    border-style: solid;
+                    border-image: 
+                    linear-gradient(to bottom, #e220af, #c05ada, #917df6, #5897ff, #00aaff) 1 100%;"> -->
+
+                    <div class="card shadow-sm gradient-top-border checkout-card" id="checkout-card">
+
+                    
+                      
                         <div class="card-body">
                           <div class="mb-4" >
                             <a class="btn btn-sm btn-primary my-primary-bg my-light-btn " href="{% url 'cart' %}"><i class="bi bi-arrow-left-circle-fill"></i> Back to Cart</a>
@@ -139,7 +147,7 @@
                                     </div>
                                 </div>
                                 
-                                <p class="mb-0 font-weight-600 text-success">Rs. {{item.get_total}}</p>
+                                <p class="mb-0 font-weight-600 my-text-purple-dark">Rs. {{item.get_total}}</p>
                             </div>
                           {% endfor %}
 
@@ -147,12 +155,44 @@
 
                             
                               <hr>
-                              <div class="mb-4 d-flex justify-content-between"><p class="mb-0">Subtotal</p> <p class="mb-0 font-weight-600 text-success"> Rs. {{order.get_cart_total}}</p></div>
-                              <div class="mb-4 d-flex justify-content-between"><p class="mb-0">Shipping Cost</p> <p class="mb-0 font-weight-600 text-success"> Rs. 0.00</p></div>
+                              <div class="input-group mb-3">
+                                <input type="text" class="form-control form-control-lg" style="font-size: 16px;" placeholder="Coupon Code or Voucher" id="coupon_code" aria-describedby="coupon-btn">
+                                <button class="btn my-btn-purple" type="button" id="coupon-btn">Apply</button>
+                              </div>
+                              <div id="coupon-discount-badge">
+                                <!-- <img src="{% static 'user_ui/gifs/popper.gif' %}" alt=""> -->
+                              </div>
+                              
+                              <!-- <input class="form-control form-control-lg" type="text" placeholder="Coupon Code or Voucher" > -->
+                                <!-- <div class="row g-3 mb-3">
+                                  
+                                  <div class="col-9 form-floating">
+                                    
+                                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name" required>
+                                    <label for="inputEmail4" class="form-label">First Name</label>
+                                  </div>
+                                
+                                    
+                                  <div class="col-3 form-floating">
+                                    
+                                      <button class="btn btn-primary btn-lg my-primary-bg add-to-cart-btn w-100 mb-3">Apply</button>
+                                  </div>
+                                </div> -->
+                                  
+                               
+                                
+                              
+                              
+                              <!-- <div class="input-group mb-3">
+                                <input type="text" class="form-control form-control-sm" id="coupon_code" placeholder="Enter a Coupon Code" >
+                                <button class="btn  btn-sm" style="background-color:#3c6663; color:azure " type="button" id="coupon-btn">Apply</button>
+                              </div> -->
+                              <div class="mb-4 d-flex justify-content-between"><p class="mb-0">Subtotal</p> <p class="mb-0 font-weight-600 my-text-purple-dark"> Rs. {{order.get_cart_total}}</p></div>
+                              <div class="mb-4 d-flex justify-content-between"><p class="mb-0">Shipping Cost</p> <p class="mb-0 font-weight-600 my-text-purple-dark"> Rs. 0.00</p></div>
                                 <hr>
                             <div class="mb-2 d-flex justify-content-between">
                                 <p class="mb-0 fw-bold fs-5">Total <br><span class="fw-lighter  text-break" style="font-size: 14px;" >Inclusive of all taxes</span></p> 
-                                <p class="mb-0 fw-bold text-success fs-5"> Rs. {{order.get_cart_total}}</p>
+                                <p class="mb-0 fw-bold my-text-purple-dark fs-5"> Rs. {{order.get_cart_total}}</p>
                             </div>
                             <!-- <hr> -->
                             <!-- <p class="fw-bold" >We Accept</p>
@@ -213,3 +253,52 @@
 
    
       {% endblock %}
+
+
+      {% block script_reference %}
+  <script>
+    
+  </script>
+ 
+      <script>
+        
+        
+        
+        const apply_coupon=(event)=>{
+          let coupon_input = document.getElementById("coupon_code").value.trim();
+          console.log(coupon_input);
+          const formData = new FormData();
+          formData.append('coupon_code',coupon_input);
+          formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+          console.log(formData)
+          
+          fetch('{% url "apply_coupon" %}',{
+            method: "POST",
+            body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            if(data.status === 'failed'){
+              Swal.fire(`${data.msg}`,"","warning");
+            }
+            else{
+              console.log(document.getElementById("checkout-card"));
+              document.getElementById("checkout-card").innerHTML=`${data.checkout_card_template}`;
+              document.getElementById("coupon-btn").addEventListener("click",apply_coupon);
+              Swal.fire(`₹${data.discount}`,'Savings with this coupon','success');
+              
+              document.getElementById("coupon-discount-badge").innerHTML=`<div href="#" class="v-badge mb-3">
+                ₹${data.discount} savings with this coupon
+                <span></span>
+              </div>`;
+              document.getElementById("checkout-card").style.background="url({% static 'user_ui/gifs/popper.gif' %}) repeat";
+              setTimeout(function(){
+                document.getElementById("checkout-card").style.background="none";
+              }, 2500);
+            }
+          })
+        }
+        let coupon_btn = document.getElementById("coupon-btn").addEventListener("click",apply_coupon);
+      </script>
+  {% endblock %}

@@ -548,6 +548,65 @@ def delete_offer(request,pk):
     return redirect('offers')
 
 
+def coupons(request):
+    coupons = Coupon.objects.all()
+    context={'coupons':coupons}
+    return render(request,'admin_dashboard/coupons.html',context)
+
+def add_coupon(request):
+    form = CouponForm()
+    if request.method == 'POST':
+        form = CouponForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Coupon Added Successfully!!")
+            return redirect('coupons')
+        else:
+            messages.error(request,"Something went wrong")
+            
+    context={'form':form,'form_title':'Add Coupon'}
+    return render(request,'admin_dashboard/coupon_form.html',context)
+
+def edit_coupon(request,pk):
+    coupon_obj = Coupon.objects.get(id=pk)
+    form = CouponForm(instance = coupon_obj)
+    if request.method == 'POST':
+        form = CouponForm(request.POST, instance = coupon_obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Coupon Updated Successfully !!")
+            return redirect ('coupons')
+        else:
+            messages.error(request,"Something went wrong")
+    context={'form':form,'form_title':'Edit Coupon'}
+    return render(request,'admin_dashboard/coupon_form.html',context)
+
+
+def view_coupon_products_endpoint(request,pk):
+    coupon_obj=Coupon.objects.get(id=pk)
+    coupon_products=coupon_obj.applicable_products.all()
+    products_list=[]
+    for index,product in enumerate(coupon_products):
+        product_dict={}
+        product_dict['s_no']=index+1
+        product_dict['product_name']=product.name
+        product_dict['product_id']=product.id
+        product_dict['image_url']=product.product_variants.first().variant_image.first().image.url
+        products_list.append(product_dict)
+
+    context={'coupon_title':coupon_obj.name,'product_list':products_list,'status':'success'}
+    return JsonResponse(context)
+
+def remove_product_from_coupon(request,c_id,p_id):
+    print("tried")
+    try:
+        coupon_obj=Coupon.objects.get(id=c_id)
+        products_obj=Product.objects.get(id=p_id)
+        coupon_obj.applicable_products.remove(products_obj)
+        # count=collection_obj.products.count()
+        return JsonResponse({'status':'success'})
+    except:
+        return JsonResponse({'status':'failed'})
 
 
 

@@ -95,3 +95,17 @@ class OfferForm(ModelForm):
             super(OfferForm,self).__init__(*args,**kwargs)
             self.fields['name'].widget.attrs.update({'class':'form-control'})
             self.fields['percentage'].widget.attrs.update({'class':'form-control'})
+
+class CouponForm(ModelForm):
+    class Meta:
+        model=Coupon
+        fields='__all__'
+
+    def __init__(self,*args,**kwargs):
+        super(CouponForm,self).__init__(*args,**kwargs)
+        self.fields['name'].widget.attrs.update({'class':'form-control'})
+        self.fields['coupon_type'].widget.attrs.update({'class':'form-control'})
+        self.fields['value'].widget.attrs.update({'class':'form-control'})
+        self.fields['applicable_products'].widget.attrs.update({'class':'form-control select2'})
+        self.fields['min_checkout_price'].widget.attrs.update({'class':'form-control'})
+        self.fields['status'].widget.attrs.update({'class':'form-control selectric'})

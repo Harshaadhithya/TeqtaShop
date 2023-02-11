@@ -1,0 +1,243 @@
+{% extends 'user_base.html' %}
+{% load static %}
+{% block content %}
+<section class="flagship-container">
+  <div class="container">
+      <div id="carouselExampleCaptions"  class="carousel carousel-dark slide flagship-carousel-container " data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="5000">
+              <div class="flagship-wrapper">
+                <div class="row align-items-center flagship-row">
+                  <div class="col-md-6 flagship-img-container d-flex justify-content-center align-items-center" data-aos="fade-right">
+                    <img class="flagship-img img-fluid d-block w-100"  src=" {% static 'user_ui/images/iphone_purple.png' %} " alt="banner_img">
+                  </div>
+                  
+        
+                  <div class="col-md-6 mb-5 p-5 flagship-text-container mb-md-0 text-center text-md-start d-flex ">
+                    <div class="m-auto">
+                      <h2 class="headline mb-2">The connectivity you want, all in one place</h2>
+                      <h3 class="subhead subhead-gradient" >TEQTA 6 in 1 USB C HUB for iPad Pro 11</h3>
+                      <p class="para-desc banner-subtitle banner-light-text">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p>
+    
+                      <p class="flagship-price mt-2">Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p>
+                      <div class="buy-links">
+                        <a href=" {% static '' %} "><button class="btn btn-primary my-primary-bg" >Buy Now</button></a>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+              <div class="flagship-wrapper">
+                <div class="row align-items-center flagship-row">
+                  <div class="col-md-6 flagship-img-container d-flex justify-content-center align-items-center" data-aos="fade-right">
+                    <img class="flagship-img img-fluid d-block w-100"  src=" {% static 'user_ui/images/iphone_blue.png' %} " alt="banner_img">
+                  </div>
+                  
+        
+                  <div class="col-md-6 mb-5 p-5 flagship-text-container mb-md-0 text-center text-md-start d-flex ">
+                    <div class="m-auto">
+                      <h2 class="headline mb-2">The connectivity you want, all in one place</h2>
+                      <h3 class="subhead subhead-gradient" >TEQTA 6 in 1 USB C HUB for iPad Pro 11</h3>
+                      <p class="para-desc banner-subtitle banner-light-text">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p>
+    
+                      <p class="flagship-price mt-2">Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p>
+                      <div class="buy-links">
+                        <a href=" {% static '' %} "><button class="btn btn-primary my-primary-bg" >Buy Now</button></a>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="5000">
+              <div class="flagship-wrapper">
+                <div class="row align-items-center flagship-row">
+                  <div class="col-md-6 flagship-img-container d-flex justify-content-center align-items-center" data-aos="fade-right">
+                    <img class="flagship-img img-fluid d-block w-100"  src=" {% static 'user_ui/images/mac.png' %} " alt="banner_img">
+                  </div>
+                  
+        
+                  <div class="col-md-6 mb-5 p-5 flagship-text-container mb-md-0 text-center text-md-start d-flex ">
+                    <div class="m-auto">
+                      <h2 class="headline mb-2">The connectivity you want, all in one place</h2>
+                      <h3 class="subhead subhead-gradient" >TEQTA 6 in 1 USB C HUB for iPad Pro 11</h3>
+                      <p class="para-desc banner-subtitle banner-light-text">iPad Air 4, MacBook, Mobile Phones, Laptops - 4K HDMI, 3.5mm Audio Jack, 2 USB 3.0, USB C PD Charging & Data/USB C Audio Jack.</p>
+    
+                      <p class="flagship-price mt-2">Rs. 3,199.00 <span class="price-strike"> Rs. 4,999.00 </span></p>
+                      <div class="buy-links">
+                        <a href=" {% static '' %} "><button class="btn btn-primary my-primary-bg" >Buy Now</button></a>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+  </div>
+
+</section>
+
+
+<section class="products-section mb-5 mt-5 pt-5">
+<div class="container ">
+<div class="row">
+  {% for product in products %}
+  
+    <div class="col-6 col-md-4 mb-5 col-lg-3 p-0">
+      <a href=" {% url 'single-product' product.name %} ">
+        <div class="card product-card" >
+          
+          {% if product.badge != None %}
+          <span class=" product-badge-outer-span rounded-pill position-absolute  badge  my-primary-bg">
+            {{product.badge}}
+            <!-- <span class="visually-hidden">unread messages</span> -->
+          </span>
+          {% endif %}
+          
+        <div class="card-img-top-container" id="{{product.id}}_product_cover_img_container">
+          <img id="{{product.id}}_product_cover_img" src="{{product.product_variants.first.variant_image.first.image.url}}" class="card-img-top img-fluid" alt="...">
+        
+        </div>
+        <div class="card-body text-center">
+          
+          <div class="variants-container mb-2">
+              
+              <div class="color-variants">
+                {% for variant in product.product_variants.all %}
+                  {% if variant.variant_type == 'color' %}
+                    {% if forloop.counter0 == 0 %}
+                    <div class="color-box active" id="{{product.id}}_{{variant.id}}_color_box" name="{{product.id}}_color_boxes">
+                    {% else %}
+                    <div class="color-box" id="{{product.id}}_{{variant.id}}_color_box" name="{{product.id}}_color_boxes">
+                    {% endif %}
+                      <a id="{{product.id}}_{{variant.id}}_color_link" onclick="variant_img_change_handler(event)">
+                        <span id="{{product.id}}_{{variant.id}}_color_span" class="color-box-span" style="background-color:{{variant.value}};"></span> 
+                      </a>
+                    </div>
+                      
+                    <!-- <div class="color-box"><span class="color-box-span color-black"></span></div>
+                    <div class="color-box"><span class="color-box-span color-pink"></span></div>
+                    <div class="color-box"><span class="color-box-span color-blue"></span></div> -->
+                  {% endif %}
+                {% endfor %}
+              </div>
+            
+          </div>
+          <div id="{{product.id}}_product_detail_container" >
+            <h5 class="card-title">{{product.name}}</h5>
+          
+            
+            <div class="d-flex justify-content-center align-items-center" >
+              {% if product.product_variants.first.original_price > product.product_variants.first.current_price %}
+              <del class="me-1" style="font-size:14px; color:#7e7e7e;">Rs .{{product.product_variants.first.original_price}}</del>
+              {% endif %}
+              {% if product.offer != None %}
+              <span class="ms-1 badge bg-success rounded-pill" style="height:fit-content;">{{product.offer.percentage}}%</span>
+              {% endif %}
+    
+
+            </div>
+          
+            <p class="product-card-price mb-1 text-success">Rs. {{product.product_variants.first.current_price}}</p>
+          </div>
+            <div class=" d-flex justify-content-center align-items-center" >
+              <div class="small-ratings" style="height:fit-content;">
+                  <i class="bi bi-star-fill rating-color"></i>
+                  <i class="bi bi-star-fill rating-color"></i>
+                  <i class="bi bi-star-fill rating-color"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+              </div>
+              <div class="small-rating-count-container">
+                <p class="small-rating-count mb-0 ms-2 pt-0" style="height:fit-content; line-height:0%;" >954</p>
+              </div>
+              
+            </div>
+          
+          
+        </div>
+      </div></a>
+      
+    </div>
+  {% endfor %}
+  
+
+
+</div>
+</div>
+
+</section>
+
+
+<!-- <script>
+  const variant_img_change_handler=(event)=>{
+    console.log(event.target.id);
+    let product_id=event.target.id.split('_')[0];
+    let variant_id=event.target.id.split('_')[1];
+    fetch(`/change_product_img_endpoint/${variant_id}/`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        if(data['status'] === 'success'){
+          console.log(data)
+          let img_url=data['image_url']
+          
+          let img_container= document.getElementById(`${product_id}_product_cover_img_container`);
+          //img_container.innerHTML='';
+          img_container.innerHTML=`
+          <img id="${product_id}_product_cover_img" src="${img_url}" class="card-img-top img-fluid" alt="...">
+          `
+
+          let color_boxes=document.getElementsByName(`${product_id}_color_boxes`);
+          for(let color_box of color_boxes){
+            color_box.classList.remove("active");
+          }
+          document.getElementById(`${product_id}_${variant_id}_color_box`).classList.add("active");
+
+          let product=data['product']
+          let product_detail_container=document.getElementById(`${product_id}_product_detail_container`)
+          product_detail_container.innerHTML=`
+          <h5 class="card-title">${product.name}</h5>
+        
+          
+          <div class="d-flex justify-content-center align-items-center" >
+            ${parseInt(product.original_price) > parseInt(product.current_price) ? `<del class="me-1" style="font-size:14px; color:#7e7e7e;">Rs .${product.original_price}</del>`:''}
+
+            ${product.offer !== null ? `<span class="ms-1 badge bg-success rounded-pill" style="height:fit-content;">${product.offer.percentage}%</span>` : ''}
+
+          </div>
+         
+          <p class="product-card-price mb-1 text-success">Rs. ${product.current_price}</p>
+  
+          
+          `;
+        }
+        
+      })
+  }
+</script> -->
+
+{% endblock %}
+
+{% block script_reference %}
+  <script src="{% static 'user_ui/js/variant_changer.js' %}"></script>
+{% endblock %}
