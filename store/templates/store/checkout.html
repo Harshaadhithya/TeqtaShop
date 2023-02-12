@@ -280,12 +280,15 @@
           .then(data => {
             console.log(data);
             if(data.status === 'failed'){
+
+              //document.getElementById("coupon-discount-badge").innerHTML='';
+              document.getElementById("checkout-card").innerHTML=`${data.checkout_card_template}`;
               Swal.fire(`${data.msg}`,"","warning");
             }
             else{
               console.log(document.getElementById("checkout-card"));
               document.getElementById("checkout-card").innerHTML=`${data.checkout_card_template}`;
-              document.getElementById("coupon-btn").addEventListener("click",apply_coupon);
+              
               Swal.fire(`₹${data.discount}`,'Savings with this coupon','success');
               
               document.getElementById("coupon-discount-badge").innerHTML=`<div href="#" class="v-badge mb-3">
@@ -297,6 +300,7 @@
                 document.getElementById("checkout-card").style.background="none";
               }, 2500);
             }
+            document.getElementById("coupon-btn").addEventListener("click",apply_coupon);
           })
         }
         let coupon_btn = document.getElementById("coupon-btn").addEventListener("click",apply_coupon);

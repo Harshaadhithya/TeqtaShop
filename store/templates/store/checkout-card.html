@@ -47,13 +47,20 @@
         
         
         <div class="mb-4 d-flex justify-content-between"><p class="mb-0">Subtotal</p> <p class="mb-0 font-weight-600 my-text-purple-dark"> Rs. {{order.get_cart_total}}</p></div>
-        <div class="mb-4 d-flex justify-content-between"><p class="mb-0">Coupon Discount</p> <p class="mb-0 font-weight-600 my-text-purple-dark"> Rs. {{discount}}</p></div>
+        {% if discount != None %}
+          <div class="mb-4 d-flex justify-content-between"><p class="mb-0">Coupon Discount</p> <p class="mb-0 font-weight-600 my-text-purple-dark"> Rs. {{discount}}</p></div>
+        {% endif %}
         
         <div class="mb-4 d-flex justify-content-between"><p class="mb-0">Shipping Cost</p> <p class="mb-0 font-weight-600 my-text-purple-dark"> Rs. 0.00</p></div>
           <hr>
       <div class="mb-2 d-flex justify-content-between">
           <p class="mb-0 fw-bold fs-5">Total <br><span class="fw-lighter  text-break" style="font-size: 14px;" >Inclusive of all taxes</span></p> 
-          <p class="mb-0 fw-bold my-text-purple-dark fs-5"> Rs. {{discounted_order_total}}</p>
+          {% if discounted_order_total != None %}
+              <p class="mb-0 fw-bold my-text-purple-dark fs-5"> Rs. {{discounted_order_total}}</p>
+          {% else %}
+            <p class="mb-0 fw-bold my-text-purple-dark fs-5"> Rs. {{order.get_cart_total}}</p>
+
+          {% endif %}
       </div>
       
   </div>

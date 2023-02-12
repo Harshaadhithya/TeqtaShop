@@ -4,6 +4,107 @@ from inventory.models import *
 from .serializers import *
 
 
+class Item:
+    def __init__(self,id,product,current_price,variant_name,variant_image,quantity,get_total):
+        self.id=id
+        self.product=self.ProductVar(id,product,current_price,variant_name,variant_image)
+        self.quantity=quantity
+        self.get_total=get_total
+        
+    def show(self):
+        print(self.id,self.product,self.current_price,self.variant_name,self.variant_image,self.quantity,self.get_total)
+        
+    class ProductVar:
+        def __init__(self,id,product,current_price,variant_name,variant_image):
+            self.id=id
+            self.product=self.Prod(product) #product name
+            self.current_price=current_price
+            self.variant_name=variant_name
+            self.variant_image=self.VarImage(variant_image)
+            
+        class Prod:
+            def __init__(self,name):
+                self.name=name
+
+            def __repr__(self):
+                return self.name
+
+            def __str__(self):
+                return self.name
+                
+        class VarImage:
+            def __init__(self,first):
+                self.first=self.Img(first)
+                
+            class Img:
+                def __init__(self,image):
+                    self.image=self.ImgUrl(image)
+                    
+                class ImgUrl:
+                    def __init__(self,url):
+                        self.url=url
+
+    def __repr__(self):
+        return f"<var_id={self.product.id},prod_name={self.product.product.name},qty:{self.quantity}>"
+
+def cookieCart(request):
+    # print("utils working")
+    try:
+        cart = json.loads(request.COOKIES['cart'])
+            # we get cookie cart as a string, so we are using json.loads to ocnvert it in to dict object
+    except:
+        # whenever there is no cart cookie, then it may raise an error here, so empty dict is assigned to cart
+        cart = {}
+        
+    order = {'id':'guest_id','get_cart_total': 0, 'get_cart_qty_total': len(cart)}
+    items = []
+    # unserialized_items=[]
+    cart_total_qty = order['get_cart_qty_total']
+
+    for i in cart:
+        try: #this try except is used because for guestcart, it remains until the cokkie or cache is removed, what if i delete some product at admin side and if a guest user tries to view his cart then no product matching query error will be shown, to avoid that we use try catch here
+            product = ProductVariant.objects.get(id=i)
+            # print("cart total",order['get_cart_total'],"+",product.current_price * cart[i]['quantity'],"=",product.current_price * cart[i]['quantity']+order['get_cart_total'])
+            item_total=product.current_price * cart[i]['quantity']
+            order['get_cart_total'] += item_total
+            
+            item=Item(product.id,product.product.name,product.current_price,product.variant_name,product.variant_image.first().image.url,cart[i]['quantity'],item_total)  #here we are using this Item Class created by us, because for unauthenticated users we don't create objects inside our order and orderitem models,whereas for authenticated users we create order and orderitems objects initially whenever a user adds soemthing tocart, so to mimic the behaviour of querysets and objects of orderitems and orders, we have created a class so that we can access the objects as same as we do for authenticated users in templates and backend.
+            # item1 = {
+            #     'id':product.id,
+            #     'product':{
+            #         'id':product.id,
+            #         'product':{'name':product.product.name},
+            #         'current_price':product.current_price,
+            #         'variant_name':product.variant_name,
+            #         'variant_image':{
+            #             'first':{'image':{'url':product.variant_image.first().image.url}}
+            #             },
+                    
+            #         },
+            #     'quantity':cart[i]['quantity'],
+            #     'get_total':item_total
+            #     # 'get_total':order['get_cart_total'],
+            # }
+            # print("item1",item1,"\n")
+            # item2 = {
+            #     'id':product.id,
+            #     'product':product,
+            #     'quantity':cart[i]['quantity'],
+            #     'get_total':item_total,
+            # }
+            # # unserialized_items.append(item2)
+            # serialized_item=GuestCartSerializer(item2).data
+            
+            # print("cookie cart item",json.dumps(serialized_item),"\n\n")
+            # items.append((serialized_item))
+            items.append(item)
+
+        except:
+            pass
+    return {'items': items, 'order': order, 'cart_total_qty': cart_total_qty}
+
+#serialized cookiecart
+"""
 def cookieCart(request):
     print("utils working")
     try:
@@ -56,23 +157,24 @@ def cookieCart(request):
             pass
     return {'items': items, 'order': order, 'cart_total_qty': cart_total_qty,'unserialized_items':unserialized_items}
 
+"""
 
 def cartData(request):
-    print("utils1 working")
+    # print("utils1 working")
     if request.user.is_authenticated:
         customer = request.user.profile
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
         cart_total_qty = order.get_cart_qty_total
-        unserialized_items = items
+        # unserialized_items = items
     else:
         cookieData=cookieCart(request)
         items=cookieData['items']
         order=cookieData['order']
         cart_total_qty=cookieData['cart_total_qty']
-        unserialized_items = cookieData['unserialized_items']
+        # unserialized_items = cookieData['unserialized_items']
 
-    return {'items': items, 'order': order, 'cart_total_qty': cart_total_qty,'unserialized_items':unserialized_items}
+    return {'items': items, 'order': order, 'cart_total_qty': cart_total_qty}
 
 
 from django.db.models import Max
