@@ -38,7 +38,11 @@
       
         <hr>
         <div class="input-group mb-3">
-          <input type="text" class="form-control form-control-lg" style="font-size: 16px;" placeholder="Coupon Code or Voucher" id="coupon_code" aria-describedby="coupon-btn" value="{{coupon_code}}">
+          {% if status == 'success' %}
+            <input type="text" class="form-control form-control-lg" style="font-size: 16px;" placeholder="Coupon Code or Voucher" id="coupon_code" aria-describedby="coupon-btn" value="{{coupon_code}}">
+          {% else %}
+            <input type="text" class="form-control form-control-lg" style="font-size: 16px;" placeholder="Coupon Code or Voucher" id="coupon_code" aria-describedby="coupon-btn" >
+          {% endif %}
           <button class="btn my-btn-purple" type="button" id="coupon-btn">Apply</button>
         </div>
         <div id="coupon-discount-badge">

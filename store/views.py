@@ -400,6 +400,7 @@ def returnCartTotal(request):
 
 
 from itertools import chain
+from django.core.exceptions import ObjectDoesNotExist
 
 def apply_coupon(request):
     coupon_code = request.POST.get("coupon_code")
@@ -452,7 +453,6 @@ def apply_coupon(request):
                     for order_item in product_variants_in_order_items:
                         total_price+=order_item.get_total
                 print("filtered",product_variants_in_order_items)
-                
                 print(product,"=",total_price)
 
                 if coupon_obj.coupon_type == 'percentage':
@@ -481,15 +481,22 @@ def apply_coupon(request):
         else:
             discounted_order_total = order.get_cart_total-decimal.Decimal(total_discount)
         
-        checkout_card_template = render_to_string('store/checkout-card.html',context={'items':items,'order':order,"discount":total_discount,"discounted_order_total":discounted_order_total,'coupon_code':coupon_code})
+        checkout_card_template = render_to_string('store/checkout-card.html',context={'items':items,'order':order,"discount":total_discount,"discounted_order_total":discounted_order_total,'coupon_code':coupon_code,'status':'success'})
+
+    except ObjectDoesNotExist:
+        print("does not exist")
+        data=cartData(request)
+        context={'items':items,'order':order,'discount':None,'discounted_order_total':None,'coupon_code':coupon_code,'status':'failed'}
+        checkout_card_template = render_to_string('store/checkout-card.html',context)
+        return JsonResponse({"status":"failed","msg":f"Coupon '{coupon_code}' does not exist","checkout_card_template":checkout_card_template})
 
     except Exception as e:
         data=cartData(request)
-        context={'items':items,'order':order,'discount':None,'discounted_order_total':None,'coupon_code':coupon_code}
+        context={'items':items,'order':order,'discount':None,'discounted_order_total':None,'coupon_code':coupon_code,'status':'failed'}
         checkout_card_template = render_to_string('store/checkout-card.html',context)
 
-        print(e)
-        return JsonResponse({"status":"failed","msg":f"Coupon '{coupon_code}' does not exist","checkout_card_template":checkout_card_template})
+        print(e.__class__.__name__)
+        return JsonResponse({"status":"failed","msg":"Something went wrong","checkout_card_template":checkout_card_template})
     return JsonResponse({"coupon_code":request.POST.get("coupon_code"), "discount":total_discount, "checkout_card_template":checkout_card_template})
 
 
